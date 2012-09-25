@@ -33,6 +33,8 @@ typedef enum {
 {
     UIImageView *_iconView;
     UILabel *_textLabel;
+    
+    BOOL _isTouch;
 }
 
 - (id) initWithMessage:(NSString*)message;

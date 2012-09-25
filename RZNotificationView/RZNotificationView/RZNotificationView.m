@@ -285,4 +285,13 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
 }
 
 
+// Handles the start of a touch
+-(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    if(!_isTouch && _delay == 0.0){
+        [self close];
+    }
+    _isTouch = YES;
+}
+
 @end
