@@ -291,6 +291,10 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
     if(!_isTouch && _delay == 0.0){
         [self close];
     }
+    if(!_isTouch){
+        if ([self.delegate respondsToSelector:@selector(notificationViewTouched:)])
+            [self.delegate notificationViewTouched:self];
+    }
     _isTouch = YES;
 }
 

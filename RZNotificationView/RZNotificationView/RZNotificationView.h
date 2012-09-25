@@ -29,6 +29,8 @@ typedef enum {
     RZNotificationColorBlue
 }RZNotificationColor;
 
+@protocol RZNotificationViewDelegate;
+
 @interface RZNotificationView : UIView
 {
     UIImageView *_iconView;
@@ -48,5 +50,10 @@ typedef enum {
 @property (nonatomic) BOOL vibrate;
 @property (nonatomic) RZNotificationIcon icon;
 @property (nonatomic, strong) NSString *customIcon;
+@property (assign, nonatomic) id <RZNotificationViewDelegate> delegate;
 
+@end
+
+@protocol RZNotificationViewDelegate <NSObject>
+- (void) notificationViewTouched:(RZNotificationView*)notificationView;
 @end

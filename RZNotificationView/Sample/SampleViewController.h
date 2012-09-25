@@ -7,8 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "RZNotificationView.h"
 
-@interface SampleViewController : UIViewController
+@interface SampleViewController : UIViewController <RZNotificationViewDelegate>
 {
     IBOutlet UISlider *_delaySlider;
     IBOutlet UILabel *_delayLabel;

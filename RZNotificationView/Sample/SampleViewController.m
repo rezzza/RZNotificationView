@@ -46,6 +46,7 @@
     notifView.icon = RZNotificationIconFacebook;
     notifView.delay = _delaySlider.value;
     notifView.position = RZNotificationPositionTop;
+    notifView.delegate = self;
     [notifView showFromController:self];
 }
 
@@ -56,7 +57,13 @@
     notifView.delay = _delaySlider.value;
     notifView.position = RZNotificationPositionBottom;
     notifView.color = RZNotificationColorBlue;
+    notifView.delegate = self;
     [notifView showFromController:self];
+}
+
+- (void) notificationViewTouched:(RZNotificationView*)notificationView
+{
+    NSLog(@"%@", notificationView);
 }
 
 - (IBAction) navBarHidden:(id)sender
