@@ -76,6 +76,33 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
     }
 }
 
+- (void) setIcon:(RZNotificationIcon)icon
+{
+    _icon = icon;
+    switch (_icon) {
+        case RZNotificationIconFacebook:
+            _iconView.image = [UIImage imageNamed:@"notif_facebook.png"];
+            break;
+        case RZNotificationIconGift:
+            _iconView.image = [UIImage imageNamed:@"notif_gift.png"];
+            break;
+        case RZNotificationIconInfo:
+            _iconView.image = [UIImage imageNamed:@"notif_info.png"];
+            break;
+        case RZNotificationIconSmiley:
+            _iconView.image = [UIImage imageNamed:@"notif_smiley.png"];
+            break;
+        case RZNotificationIconTwitter:
+            _iconView.image = [UIImage imageNamed:@"notif_twitter.png"];
+            break;
+        case RZNotificationIconWarning:
+            _iconView.image = [UIImage imageNamed:@"notif_warning.png"];
+            break;
+        default:
+            break;
+    }
+}
+
 - (id) initWithMessage:(NSString*)message
 {
     _message = message;
@@ -93,40 +120,13 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
     {
         self.autoresizingMask = UIViewAutoresizingFlexibleWidth;
        
-        UIImageView *error;
-        if(_customIcon){
-            error = [[UIImageView alloc] initWithImage:[UIImage imageNamed:_customIcon]];
-        }
-        else {
-            switch (_icon) {
-                case RZNotificationIconFacebook:
-                    error = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"notif_facebook.png"]];
-                    break;
-                case RZNotificationIconGift:
-                    error = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"notif_gift.png"]];
-                    break;
-                case RZNotificationIconInfo:
-                    error = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"notif_info.png"]];
-                    break;
-                case RZNotificationIconSmiley:
-                    error = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"notif_smiley.png"]];
-                    break;
-                case RZNotificationIconTwitter:
-                    error = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"notif_twitter.png"]];
-                    break;
-                case RZNotificationIconWarning:
-                    error = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"notif_warning.png"]];
-                    break;
-                default:
-                    break;
-            }
-        }
-        
-        CGRect newFrame = error.frame;
+        _iconView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 30, 30)];
+        _iconView.contentMode = UIViewContentModeCenter;
+        CGRect newFrame = _iconView.frame;
         newFrame.origin.y = self.center.y - newFrame.size.height/2.0;
         newFrame.origin.x = 15.0;
-        error.frame = newFrame;
-        [self addSubview:error];
+        _iconView.frame = newFrame;
+        [self addSubview:_iconView];
         
         UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(10.0, 5.0, WIDTH_SUPERVIEW-20.0, 80.0)];
         label.numberOfLines = 4;
@@ -141,7 +141,7 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
         [self addSubview:label];
         label.text = message;
         
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(deviceOrientationChanged) name:UIDeviceOrientationDidChangeNotification object:nil];
+//        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(deviceOrientationChanged) name:UIDeviceOrientationDidChangeNotification object:nil];
     }
     return self;
 }
@@ -150,8 +150,8 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
 - (void) showFromController:(UIViewController *)controller
 {
 
-    NSLog(@"%@", NSStringFromCGRect(controller.view.frame));
-    NSLog(@"%@", NSStringFromCGRect(controller.view.bounds));
+//    NSLog(@"%@", NSStringFromCGRect(controller.view.frame));
+//    NSLog(@"%@", NSStringFromCGRect(controller.view.bounds));
     
     if (_position == RZNotificationPositionTop) {
         self.transform = CGAffineTransformMakeTranslation(0.0, -CGRectGetHeight(self.frame));

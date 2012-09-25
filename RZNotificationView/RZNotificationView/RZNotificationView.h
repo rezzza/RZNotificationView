@@ -31,7 +31,7 @@ typedef enum {
 
 @interface RZNotificationView : UIView
 {
-    
+    UIImageView *_iconView;
 }
 
 - (id) initWithMessage:(NSString*)message;
