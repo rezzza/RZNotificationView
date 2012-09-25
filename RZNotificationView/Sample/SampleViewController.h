@@ -10,4 +10,8 @@
 
 @interface SampleViewController : UIViewController
 
+- (IBAction)testButtonTop:(id)sender;
+- (IBAction)testButtonBottom:(id)sender;
+- (IBAction)navBarHidden:(id)sender;
+
 @end
