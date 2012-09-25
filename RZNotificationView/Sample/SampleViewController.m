@@ -55,6 +55,7 @@
     notifView.icon = RZNotificationIconSmiley;
     notifView.delay = _delaySlider.value;
     notifView.position = RZNotificationPositionBottom;
+    notifView.color = RZNotificationColorBlue;
     [notifView showFromController:self];
 }
 
