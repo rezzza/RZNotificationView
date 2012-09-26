@@ -41,27 +41,39 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
     UIColor* colorStart;
     UIColor* colorEnd;
     
-    switch (_color) {
-        case RZNotificationColorGrey:
-            colorStart = [UIColor colorWithRed: 162.0/255.0 green: 156.0/255.0 blue: 142.0/255.0 alpha: 1];
-            colorEnd   = [UIColor colorWithRed: 123.0/255.0 green: 117.0/255.0 blue: 104.0/255.0 alpha: 1];
-            break;
-        case RZNotificationColorYellow:
-            colorStart = [UIColor colorWithRed: 255.0/255.0 green: 204.0/255.0 blue: 0.0/255.0 alpha: 1];
-            colorEnd   = [UIColor colorWithRed: 255.0/255.0 green: 174.0/255.0 blue: 0.0/255.0 alpha: 1];
-            break;
-        case RZNotificationColorRed:
-            colorStart = [UIColor colorWithRed: 227.0/255.0 green: 0.0/255.0 blue: 0.0/255.0 alpha: 1];
-            colorEnd   = [UIColor colorWithRed: 146.0/255.0 green: 20.0/255.0 blue: 20.0/255.0 alpha: 1];
-            break;
-        case RZNotificationColorBlue:
-            colorStart = [UIColor colorWithRed: 110.0/255.0 green: 132.0/255.0 blue: 181.0/255.0 alpha: 1];
-            colorEnd   = [UIColor colorWithRed: 59.0/255.0 green: 89.0/255.0 blue: 153.0/255.0 alpha: 1];
-            break;
-        default:
-            colorStart = [UIColor colorWithRed: 162.0/255.0 green: 156.0/255.0 blue: 142.0/255.0 alpha: 1];
-            colorEnd   = [UIColor colorWithRed: 123.0/255.0 green: 117.0/255.0 blue: 104.0/255.0 alpha: 1];
-            break;
+    if( _customTopColor || _customBottomColor) {
+        if( !_customTopColor)
+            _customTopColor = _customBottomColor;
+        
+        if( !_customBottomColor)
+            _customBottomColor = _customTopColor;
+        
+        colorStart = _customTopColor;
+        colorEnd   = _customBottomColor;
+    }
+    else {
+        switch (_color) {
+            case RZNotificationColorGrey:
+                colorStart = [UIColor colorWithRed: 162.0/255.0 green: 156.0/255.0 blue: 142.0/255.0 alpha: 1];
+                colorEnd   = [UIColor colorWithRed: 123.0/255.0 green: 117.0/255.0 blue: 104.0/255.0 alpha: 1];
+                break;
+            case RZNotificationColorYellow:
+                colorStart = [UIColor colorWithRed: 255.0/255.0 green: 204.0/255.0 blue: 0.0/255.0 alpha: 1];
+                colorEnd   = [UIColor colorWithRed: 255.0/255.0 green: 174.0/255.0 blue: 0.0/255.0 alpha: 1];
+                break;
+            case RZNotificationColorRed:
+                colorStart = [UIColor colorWithRed: 227.0/255.0 green: 0.0/255.0 blue: 0.0/255.0 alpha: 1];
+                colorEnd   = [UIColor colorWithRed: 146.0/255.0 green: 20.0/255.0 blue: 20.0/255.0 alpha: 1];
+                break;
+            case RZNotificationColorBlue:
+                colorStart = [UIColor colorWithRed: 110.0/255.0 green: 132.0/255.0 blue: 181.0/255.0 alpha: 1];
+                colorEnd   = [UIColor colorWithRed: 59.0/255.0 green: 89.0/255.0 blue: 153.0/255.0 alpha: 1];
+                break;
+            default:
+                colorStart = [UIColor colorWithRed: 162.0/255.0 green: 156.0/255.0 blue: 142.0/255.0 alpha: 1];
+                colorEnd   = [UIColor colorWithRed: 123.0/255.0 green: 117.0/255.0 blue: 104.0/255.0 alpha: 1];
+                break;
+        }
     }
     
     //// Gradient Declarations
@@ -284,13 +296,20 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
 
 // Handles the start of a touch
 -(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
-{
-    if(!_isTouch && _delay == 0.0){
-        [self close];
-    }
+{    
     if(!_isTouch){
-        if ([self.delegate respondsToSelector:@selector(notificationViewTouched:)])
-            [self.delegate notificationViewTouched:self];
+        if(_delay == 0.0){
+            if ([self.delegate respondsToSelector:@selector(notificationViewTouched:)]){
+                [self.delegate notificationViewTouched:self];
+                [self close];
+            }
+        }
+        else{
+            if ([self.delegate respondsToSelector:@selector(notificationViewTouched:)]){
+                [self.delegate notificationViewTouched:self];
+            }
+            [self close];
+        }
     }
     _isTouch = YES;
 }
