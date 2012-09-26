@@ -21,7 +21,7 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
     self = [super initWithFrame:frame];
     if (self) {
         // Initialization code
-        self.clipsToBounds = NO;
+        self.backgroundColor = [UIColor clearColor];
     }
     return self;
 }
@@ -41,44 +41,27 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
     UIColor* colorStart;
     UIColor* colorEnd;
     
-    // Gris : 	RGB 162 156 142 => 123 117 104
-    // Jaune : 	RGB  255 204 0 => 255 174 0
-    // Rouge : 	RGB 227 0 0 => 146 20 20
-    // Bleu : 	RGB 110 132 181 => 59 89 153
-    
-    if( _customTopColor || _customBottomColor) {
-        if( !_customTopColor)
-            _customTopColor = _customBottomColor;
-        
-        if( !_customBottomColor)
-            _customBottomColor = _customTopColor;
-        
-        colorStart = _customTopColor;
-        colorEnd   = _customBottomColor;
-    }
-    else {
-        switch (_color) {
-            case RZNotificationColorGrey:
-                colorStart = [UIColor colorWithRed: 162.0/255.0 green: 156.0/255.0 blue: 142.0/255.0 alpha: 1];
-                colorEnd   = [UIColor colorWithRed: 123.0/255.0 green: 117.0/255.0 blue: 104.0/255.0 alpha: 1];
-                break;
-            case RZNotificationColorYellow:
-                colorStart = [UIColor colorWithRed: 255.0/255.0 green: 204.0/255.0 blue: 0.0/255.0 alpha: 1];
-                colorEnd   = [UIColor colorWithRed: 255.0/255.0 green: 174.0/255.0 blue: 0.0/255.0 alpha: 1];
-                break;
-            case RZNotificationColorRed:
-                colorStart = [UIColor colorWithRed: 227.0/255.0 green: 0.0/255.0 blue: 0.0/255.0 alpha: 1];
-                colorEnd   = [UIColor colorWithRed: 146.0/255.0 green: 20.0/255.0 blue: 20.0/255.0 alpha: 1];
-                break;
-            case RZNotificationColorBlue:
-                colorStart = [UIColor colorWithRed: 110.0/255.0 green: 132.0/255.0 blue: 181.0/255.0 alpha: 1];
-                colorEnd   = [UIColor colorWithRed: 59.0/255.0 green: 89.0/255.0 blue: 153.0/255.0 alpha: 1];
-                break;
-            default:
-                colorStart = [UIColor colorWithRed: 162.0/255.0 green: 156.0/255.0 blue: 142.0/255.0 alpha: 1];
-                colorEnd   = [UIColor colorWithRed: 123.0/255.0 green: 117.0/255.0 blue: 104.0/255.0 alpha: 1];
-                break;
-        }
+    switch (_color) {
+        case RZNotificationColorGrey:
+            colorStart = [UIColor colorWithRed: 162.0/255.0 green: 156.0/255.0 blue: 142.0/255.0 alpha: 1];
+            colorEnd   = [UIColor colorWithRed: 123.0/255.0 green: 117.0/255.0 blue: 104.0/255.0 alpha: 1];
+            break;
+        case RZNotificationColorYellow:
+            colorStart = [UIColor colorWithRed: 255.0/255.0 green: 204.0/255.0 blue: 0.0/255.0 alpha: 1];
+            colorEnd   = [UIColor colorWithRed: 255.0/255.0 green: 174.0/255.0 blue: 0.0/255.0 alpha: 1];
+            break;
+        case RZNotificationColorRed:
+            colorStart = [UIColor colorWithRed: 227.0/255.0 green: 0.0/255.0 blue: 0.0/255.0 alpha: 1];
+            colorEnd   = [UIColor colorWithRed: 146.0/255.0 green: 20.0/255.0 blue: 20.0/255.0 alpha: 1];
+            break;
+        case RZNotificationColorBlue:
+            colorStart = [UIColor colorWithRed: 110.0/255.0 green: 132.0/255.0 blue: 181.0/255.0 alpha: 1];
+            colorEnd   = [UIColor colorWithRed: 59.0/255.0 green: 89.0/255.0 blue: 153.0/255.0 alpha: 1];
+            break;
+        default:
+            colorStart = [UIColor colorWithRed: 162.0/255.0 green: 156.0/255.0 blue: 142.0/255.0 alpha: 1];
+            colorEnd   = [UIColor colorWithRed: 123.0/255.0 green: 117.0/255.0 blue: 104.0/255.0 alpha: 1];
+            break;
     }
     
     //// Gradient Declarations
@@ -111,18 +94,20 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
     CGRect notificationFrame = rect;
     
     //// Subframes
-    _iconView.frame = CGRectMake(CGRectGetMinX(notificationFrame) + 8, CGRectGetMinY(notificationFrame) + floor((CGRectGetHeight(notificationFrame) - 19) * 0.53), 19, 19);
+    _iconView.frame = CGRectMake(CGRectGetMinX(notificationFrame) + 8, CGRectGetMinY(notificationFrame) + floor((CGRectGetHeight(notificationFrame) - 19) * 0.5), 19, 19);
     _textLabel.frame = CGRectMake(CGRectGetMinX(notificationFrame) + 35, CGRectGetMinY(notificationFrame) + floor(CGRectGetHeight(notificationFrame) * 0.14), CGRectGetWidth(notificationFrame) - 70, floor(CGRectGetHeight(notificationFrame) * 0.72));
-    CGRect _anchorFrame = CGRectMake(CGRectGetMinX(notificationFrame) + CGRectGetWidth(notificationFrame) - 27, CGRectGetMinY(notificationFrame) + floor((CGRectGetHeight(notificationFrame) - 19) * 0.53), 19, 19);
-    
+    CGRect _anchorFrame = CGRectMake(CGRectGetMinX(notificationFrame) + CGRectGetWidth(notificationFrame) - 27, CGRectGetMinY(notificationFrame) + floor((CGRectGetHeight(notificationFrame) - 19) * 0.5), 19, 19);
     
     //// NotificationZone Drawing
-    CGRect notificationZoneRect = CGRectMake(CGRectGetMinX(notificationFrame) + 0, CGRectGetMinY(notificationFrame) + 0, CGRectGetWidth(notificationFrame) - 0, CGRectGetHeight(notificationFrame) - 0);
+    CGRect notificationZoneRect = CGRectMake(CGRectGetMinX(notificationFrame) + 0, CGRectGetMinY(notificationFrame) + (_position == RZNotificationPositionTop ? 0 : outerShadowBlurRadius), CGRectGetWidth(notificationFrame) - 0, CGRectGetHeight(notificationFrame) - (_position == RZNotificationPositionTop ?outerShadowBlurRadius : 0));
+    CGRect notificationZoneRectExt = CGRectMake(CGRectGetMinX(notificationFrame) + 0, CGRectGetMinY(notificationFrame) + (_position == RZNotificationPositionTop ? 0 : -outerShadowBlurRadius), CGRectGetWidth(notificationFrame) - 0, CGRectGetHeight(notificationFrame) + (_position == RZNotificationPositionTop ? outerShadowBlurRadius : +outerShadowBlurRadius));
+
     UIBezierPath* notificationZonePath = [UIBezierPath bezierPathWithRect: notificationZoneRect];
+    UIBezierPath* notificationZonePathExt = [UIBezierPath bezierPathWithRect: notificationZoneRectExt];
     CGContextSaveGState(context);
     CGContextSetShadowWithColor(context, outerShadowOffset, outerShadowBlurRadius, outerShadow.CGColor);
     CGContextBeginTransparencyLayer(context, NULL);
-    [notificationZonePath addClip];
+    [notificationZonePathExt addClip];
     CGContextDrawLinearGradient(context, notificationBackgroundGradient,
                                 CGPointMake(CGRectGetMidX(notificationZoneRect), CGRectGetMinY(notificationZoneRect)),
                                 CGPointMake(CGRectGetMidX(notificationZoneRect), CGRectGetMaxY(notificationZoneRect)),
@@ -192,19 +177,20 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
 
 - (id) initWithMessage:(NSString*)message
 {
-    _message = message;
     if ([message isEqual:[NSNull null]] || [[NSString stringWithFormat:@"%@", message] isEqualToString:@"(null)"])
     {
         return nil;
     }
     
-    CGRect frame;
-    frame.origin.x = 0.0;
-    frame.size = CGSizeMake(WIDTH_SUPERVIEW, 90);
-    self = [super initWithFrame:frame];
+    CGRect frame = CGRectZero;
+    frame.size = CGSizeMake(WIDTH_SUPERVIEW, 40);
+    
+    self = [self initWithFrame:frame];
     
     if (self)
     {
+        _message = message;
+        
         self.autoresizingMask = UIViewAutoresizingFlexibleWidth;
        
         _iconView = [[UIImageView alloc] initWithFrame:CGRectZero];
@@ -213,14 +199,14 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
         
         _textLabel = [[UILabel alloc] initWithFrame:CGRectZero];
         _textLabel.numberOfLines = 4;
-        _textLabel.font = [UIFont fontWithName:@"Helvetica-Bold" size:18.0];
+        _textLabel.font = [UIFont fontWithName:@"Helvetica-Bold" size:12.0];
         _textLabel.backgroundColor = [UIColor clearColor];
-        _textLabel.textColor = [UIColor colorWithWhite:0.0 alpha:1.0];
-        _textLabel.shadowColor = [UIColor whiteColor];
+        _textLabel.textColor = [UIColor colorWithWhite:0.0 alpha:1];
+        _textLabel.shadowColor = [UIColor colorWithWhite:1.0 alpha:0.3];
         _textLabel.shadowOffset = CGSizeMake(0.0, 1.0);
         _textLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-        _textLabel.textAlignment = UITextAlignmentCenter;
-        
+        _textLabel.textAlignment = UITextAlignmentLeft;
+
         [self addSubview:_textLabel];
         _textLabel.text = message;
         
@@ -236,7 +222,6 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
 //    NSLog(@"%@", NSStringFromCGRect(controller.view.frame));
 //    NSLog(@"%@", NSStringFromCGRect(controller.view.bounds));
 //    NSLog(@"%@", NSStringFromCGRect(_iconView.frame));
-
     
     if (_position == RZNotificationPositionTop) {
         self.transform = CGAffineTransformMakeTranslation(0.0, -CGRectGetHeight(self.frame));
