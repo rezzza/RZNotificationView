@@ -111,7 +111,7 @@
 -(void) colorPopoverControllerDidSelectColor:(NSString *)hexColor{
     if (_currentBtn.tag == 1) {
         _topColorView.backgroundColor = [GzColors colorFromHex:hexColor];
-        _bottomColorView.tag = 10;
+        _topColorView.tag = 10;
     }
     else if (_currentBtn.tag == 2) {
         _bottomColorView.backgroundColor = [GzColors colorFromHex:hexColor];
