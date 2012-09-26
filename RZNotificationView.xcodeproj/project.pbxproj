@@ -52,6 +52,55 @@
 		8BB3D8EB1611B2590056B98F /* notif_warning.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BB3D8D41611B2590056B98F /* notif_warning.png */; };
 		8BB3D8EC1611B2590056B98F /* notif_warning@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BB3D8D51611B2590056B98F /* notif_warning@2x.png */; };
 		8BB3D8ED1611B2590056B98F /* notif_warning@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BB3D8D51611B2590056B98F /* notif_warning@2x.png */; };
+		8BB3D948161243670056B98F /* ColorButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BB3D927161243670056B98F /* ColorButton.m */; };
+		8BB3D949161243670056B98F /* ColorButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BB3D927161243670056B98F /* ColorButton.m */; };
+		8BB3D94A161243670056B98F /* ColorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BB3D929161243670056B98F /* ColorViewController.m */; };
+		8BB3D94B161243670056B98F /* ColorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BB3D929161243670056B98F /* ColorViewController.m */; };
+		8BB3D94C161243670056B98F /* GzColors.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BB3D92B161243670056B98F /* GzColors.m */; };
+		8BB3D94D161243670056B98F /* GzColors.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BB3D92B161243670056B98F /* GzColors.m */; };
+		8BB3D94E161243670056B98F /* UIBarButtonItem+WEPopover.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BB3D92E161243670056B98F /* UIBarButtonItem+WEPopover.m */; };
+		8BB3D94F161243670056B98F /* UIBarButtonItem+WEPopover.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BB3D92E161243670056B98F /* UIBarButtonItem+WEPopover.m */; };
+		8BB3D950161243670056B98F /* WEPopoverContainerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BB3D930161243670056B98F /* WEPopoverContainerView.m */; };
+		8BB3D951161243670056B98F /* WEPopoverContainerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BB3D930161243670056B98F /* WEPopoverContainerView.m */; };
+		8BB3D952161243680056B98F /* WEPopoverController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BB3D932161243670056B98F /* WEPopoverController.m */; };
+		8BB3D953161243680056B98F /* WEPopoverController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BB3D932161243670056B98F /* WEPopoverController.m */; };
+		8BB3D954161243680056B98F /* WETouchableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BB3D935161243670056B98F /* WETouchableView.m */; };
+		8BB3D955161243680056B98F /* WETouchableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BB3D935161243670056B98F /* WETouchableView.m */; };
+		8BB3D956161243680056B98F /* cache2.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BB3D937161243670056B98F /* cache2.png */; };
+		8BB3D957161243680056B98F /* cache2.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BB3D937161243670056B98F /* cache2.png */; };
+		8BB3D958161243680056B98F /* popoverArrowDown.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BB3D938161243670056B98F /* popoverArrowDown.png */; };
+		8BB3D959161243680056B98F /* popoverArrowDown.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BB3D938161243670056B98F /* popoverArrowDown.png */; };
+		8BB3D95A161243680056B98F /* popoverArrowDown@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BB3D939161243670056B98F /* popoverArrowDown@2x.png */; };
+		8BB3D95B161243680056B98F /* popoverArrowDown@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BB3D939161243670056B98F /* popoverArrowDown@2x.png */; };
+		8BB3D95C161243680056B98F /* popoverArrowDownSimple.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BB3D93A161243670056B98F /* popoverArrowDownSimple.png */; };
+		8BB3D95D161243680056B98F /* popoverArrowDownSimple.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BB3D93A161243670056B98F /* popoverArrowDownSimple.png */; };
+		8BB3D95E161243680056B98F /* popoverArrowLeft.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BB3D93B161243670056B98F /* popoverArrowLeft.png */; };
+		8BB3D95F161243680056B98F /* popoverArrowLeft.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BB3D93B161243670056B98F /* popoverArrowLeft.png */; };
+		8BB3D960161243680056B98F /* popoverArrowLeft@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BB3D93C161243670056B98F /* popoverArrowLeft@2x.png */; };
+		8BB3D961161243680056B98F /* popoverArrowLeft@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BB3D93C161243670056B98F /* popoverArrowLeft@2x.png */; };
+		8BB3D962161243680056B98F /* popoverArrowLeftSimple.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BB3D93D161243670056B98F /* popoverArrowLeftSimple.png */; };
+		8BB3D963161243680056B98F /* popoverArrowLeftSimple.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BB3D93D161243670056B98F /* popoverArrowLeftSimple.png */; };
+		8BB3D964161243680056B98F /* popoverArrowRight.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BB3D93E161243670056B98F /* popoverArrowRight.png */; };
+		8BB3D965161243680056B98F /* popoverArrowRight.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BB3D93E161243670056B98F /* popoverArrowRight.png */; };
+		8BB3D966161243680056B98F /* popoverArrowRight@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BB3D93F161243670056B98F /* popoverArrowRight@2x.png */; };
+		8BB3D967161243680056B98F /* popoverArrowRight@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BB3D93F161243670056B98F /* popoverArrowRight@2x.png */; };
+		8BB3D968161243680056B98F /* popoverArrowRightSimple.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BB3D940161243670056B98F /* popoverArrowRightSimple.png */; };
+		8BB3D969161243680056B98F /* popoverArrowRightSimple.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BB3D940161243670056B98F /* popoverArrowRightSimple.png */; };
+		8BB3D96A161243680056B98F /* popoverArrowUp.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BB3D941161243670056B98F /* popoverArrowUp.png */; };
+		8BB3D96B161243680056B98F /* popoverArrowUp.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BB3D941161243670056B98F /* popoverArrowUp.png */; };
+		8BB3D96C161243680056B98F /* popoverArrowUp@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BB3D942161243670056B98F /* popoverArrowUp@2x.png */; };
+		8BB3D96D161243680056B98F /* popoverArrowUp@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BB3D942161243670056B98F /* popoverArrowUp@2x.png */; };
+		8BB3D96E161243680056B98F /* popoverArrowUpSimple.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BB3D943161243670056B98F /* popoverArrowUpSimple.png */; };
+		8BB3D96F161243680056B98F /* popoverArrowUpSimple.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BB3D943161243670056B98F /* popoverArrowUpSimple.png */; };
+		8BB3D970161243680056B98F /* popoverBg.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BB3D944161243670056B98F /* popoverBg.png */; };
+		8BB3D971161243680056B98F /* popoverBg.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BB3D944161243670056B98F /* popoverBg.png */; };
+		8BB3D972161243680056B98F /* popoverBg@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BB3D945161243670056B98F /* popoverBg@2x.png */; };
+		8BB3D973161243680056B98F /* popoverBg@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BB3D945161243670056B98F /* popoverBg@2x.png */; };
+		8BB3D974161243680056B98F /* popoverBgSimple.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BB3D946161243670056B98F /* popoverBgSimple.png */; };
+		8BB3D975161243680056B98F /* popoverBgSimple.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BB3D946161243670056B98F /* popoverBgSimple.png */; };
+		8BB3D976161243680056B98F /* README in Resources */ = {isa = PBXBuildFile; fileRef = 8BB3D947161243670056B98F /* README */; };
+		8BB3D977161243680056B98F /* README in Resources */ = {isa = PBXBuildFile; fileRef = 8BB3D947161243670056B98F /* README */; };
+		8BB3D97E161245530056B98F /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BB3D97D161245530056B98F /* QuartzCore.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -101,6 +150,39 @@
 		8BB3D8D31611B2590056B98F /* notif_twitter@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "notif_twitter@2x.png"; sourceTree = "<group>"; };
 		8BB3D8D41611B2590056B98F /* notif_warning.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = notif_warning.png; sourceTree = "<group>"; };
 		8BB3D8D51611B2590056B98F /* notif_warning@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "notif_warning@2x.png"; sourceTree = "<group>"; };
+		8BB3D926161243670056B98F /* ColorButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ColorButton.h; sourceTree = "<group>"; };
+		8BB3D927161243670056B98F /* ColorButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ColorButton.m; sourceTree = "<group>"; };
+		8BB3D928161243670056B98F /* ColorViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ColorViewController.h; sourceTree = "<group>"; };
+		8BB3D929161243670056B98F /* ColorViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ColorViewController.m; sourceTree = "<group>"; };
+		8BB3D92A161243670056B98F /* GzColors.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GzColors.h; sourceTree = "<group>"; };
+		8BB3D92B161243670056B98F /* GzColors.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GzColors.m; sourceTree = "<group>"; };
+		8BB3D92D161243670056B98F /* UIBarButtonItem+WEPopover.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIBarButtonItem+WEPopover.h"; sourceTree = "<group>"; };
+		8BB3D92E161243670056B98F /* UIBarButtonItem+WEPopover.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIBarButtonItem+WEPopover.m"; sourceTree = "<group>"; };
+		8BB3D92F161243670056B98F /* WEPopoverContainerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WEPopoverContainerView.h; sourceTree = "<group>"; };
+		8BB3D930161243670056B98F /* WEPopoverContainerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WEPopoverContainerView.m; sourceTree = "<group>"; };
+		8BB3D931161243670056B98F /* WEPopoverController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WEPopoverController.h; sourceTree = "<group>"; };
+		8BB3D932161243670056B98F /* WEPopoverController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WEPopoverController.m; sourceTree = "<group>"; };
+		8BB3D933161243670056B98F /* WEPopoverParentView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WEPopoverParentView.h; sourceTree = "<group>"; };
+		8BB3D934161243670056B98F /* WETouchableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WETouchableView.h; sourceTree = "<group>"; };
+		8BB3D935161243670056B98F /* WETouchableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WETouchableView.m; sourceTree = "<group>"; };
+		8BB3D937161243670056B98F /* cache2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = cache2.png; sourceTree = "<group>"; };
+		8BB3D938161243670056B98F /* popoverArrowDown.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = popoverArrowDown.png; sourceTree = "<group>"; };
+		8BB3D939161243670056B98F /* popoverArrowDown@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "popoverArrowDown@2x.png"; sourceTree = "<group>"; };
+		8BB3D93A161243670056B98F /* popoverArrowDownSimple.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = popoverArrowDownSimple.png; sourceTree = "<group>"; };
+		8BB3D93B161243670056B98F /* popoverArrowLeft.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = popoverArrowLeft.png; sourceTree = "<group>"; };
+		8BB3D93C161243670056B98F /* popoverArrowLeft@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "popoverArrowLeft@2x.png"; sourceTree = "<group>"; };
+		8BB3D93D161243670056B98F /* popoverArrowLeftSimple.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = popoverArrowLeftSimple.png; sourceTree = "<group>"; };
+		8BB3D93E161243670056B98F /* popoverArrowRight.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = popoverArrowRight.png; sourceTree = "<group>"; };
+		8BB3D93F161243670056B98F /* popoverArrowRight@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "popoverArrowRight@2x.png"; sourceTree = "<group>"; };
+		8BB3D940161243670056B98F /* popoverArrowRightSimple.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = popoverArrowRightSimple.png; sourceTree = "<group>"; };
+		8BB3D941161243670056B98F /* popoverArrowUp.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = popoverArrowUp.png; sourceTree = "<group>"; };
+		8BB3D942161243670056B98F /* popoverArrowUp@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "popoverArrowUp@2x.png"; sourceTree = "<group>"; };
+		8BB3D943161243670056B98F /* popoverArrowUpSimple.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = popoverArrowUpSimple.png; sourceTree = "<group>"; };
+		8BB3D944161243670056B98F /* popoverBg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = popoverBg.png; sourceTree = "<group>"; };
+		8BB3D945161243670056B98F /* popoverBg@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "popoverBg@2x.png"; sourceTree = "<group>"; };
+		8BB3D946161243670056B98F /* popoverBgSimple.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = popoverBgSimple.png; sourceTree = "<group>"; };
+		8BB3D947161243670056B98F /* README */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README; sourceTree = "<group>"; };
+		8BB3D97D161245530056B98F /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -108,6 +190,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8BB3D97E161245530056B98F /* QuartzCore.framework in Frameworks */,
 				8BB3D85F16119CA60056B98F /* UIKit.framework in Frameworks */,
 				8BB3D86116119CA60056B98F /* Foundation.framework in Frameworks */,
 				8BB3D86316119CA70056B98F /* CoreGraphics.framework in Frameworks */,
@@ -149,6 +232,7 @@
 		8BB3D85D16119CA60056B98F /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				8BB3D97D161245530056B98F /* QuartzCore.framework */,
 				8BB3D85E16119CA60056B98F /* UIKit.framework */,
 				8BB3D86016119CA60056B98F /* Foundation.framework */,
 				8BB3D86216119CA60056B98F /* CoreGraphics.framework */,
@@ -160,6 +244,7 @@
 		8BB3D86416119CA70056B98F /* RZNotificationView */ = {
 			isa = PBXGroup;
 			children = (
+				8BB3D8FA161241CA0056B98F /* Third Party */,
 				8BB3D89E16119E3C0056B98F /* Sample */,
 				8BB3D89D16119E230056B98F /* RZNotificationView */,
 				8BB3D86516119CA70056B98F /* Supporting Files */,
@@ -239,6 +324,70 @@
 				8BB3D8D51611B2590056B98F /* notif_warning@2x.png */,
 			);
 			path = Icons;
+			sourceTree = "<group>";
+		};
+		8BB3D8FA161241CA0056B98F /* Third Party */ = {
+			isa = PBXGroup;
+			children = (
+				8BB3D925161243670056B98F /* ColorPopover */,
+			);
+			name = "Third Party";
+			sourceTree = "<group>";
+		};
+		8BB3D925161243670056B98F /* ColorPopover */ = {
+			isa = PBXGroup;
+			children = (
+				8BB3D926161243670056B98F /* ColorButton.h */,
+				8BB3D927161243670056B98F /* ColorButton.m */,
+				8BB3D928161243670056B98F /* ColorViewController.h */,
+				8BB3D929161243670056B98F /* ColorViewController.m */,
+				8BB3D92A161243670056B98F /* GzColors.h */,
+				8BB3D92B161243670056B98F /* GzColors.m */,
+				8BB3D92C161243670056B98F /* Popover */,
+				8BB3D936161243670056B98F /* popoverImages */,
+			);
+			name = ColorPopover;
+			path = vendor/ColorPopover/Colors/ColorPopover;
+			sourceTree = SOURCE_ROOT;
+		};
+		8BB3D92C161243670056B98F /* Popover */ = {
+			isa = PBXGroup;
+			children = (
+				8BB3D92D161243670056B98F /* UIBarButtonItem+WEPopover.h */,
+				8BB3D92E161243670056B98F /* UIBarButtonItem+WEPopover.m */,
+				8BB3D92F161243670056B98F /* WEPopoverContainerView.h */,
+				8BB3D930161243670056B98F /* WEPopoverContainerView.m */,
+				8BB3D931161243670056B98F /* WEPopoverController.h */,
+				8BB3D932161243670056B98F /* WEPopoverController.m */,
+				8BB3D933161243670056B98F /* WEPopoverParentView.h */,
+				8BB3D934161243670056B98F /* WETouchableView.h */,
+				8BB3D935161243670056B98F /* WETouchableView.m */,
+			);
+			path = Popover;
+			sourceTree = "<group>";
+		};
+		8BB3D936161243670056B98F /* popoverImages */ = {
+			isa = PBXGroup;
+			children = (
+				8BB3D937161243670056B98F /* cache2.png */,
+				8BB3D938161243670056B98F /* popoverArrowDown.png */,
+				8BB3D939161243670056B98F /* popoverArrowDown@2x.png */,
+				8BB3D93A161243670056B98F /* popoverArrowDownSimple.png */,
+				8BB3D93B161243670056B98F /* popoverArrowLeft.png */,
+				8BB3D93C161243670056B98F /* popoverArrowLeft@2x.png */,
+				8BB3D93D161243670056B98F /* popoverArrowLeftSimple.png */,
+				8BB3D93E161243670056B98F /* popoverArrowRight.png */,
+				8BB3D93F161243670056B98F /* popoverArrowRight@2x.png */,
+				8BB3D940161243670056B98F /* popoverArrowRightSimple.png */,
+				8BB3D941161243670056B98F /* popoverArrowUp.png */,
+				8BB3D942161243670056B98F /* popoverArrowUp@2x.png */,
+				8BB3D943161243670056B98F /* popoverArrowUpSimple.png */,
+				8BB3D944161243670056B98F /* popoverBg.png */,
+				8BB3D945161243670056B98F /* popoverBg@2x.png */,
+				8BB3D946161243670056B98F /* popoverBgSimple.png */,
+				8BB3D947161243670056B98F /* README */,
+			);
+			path = popoverImages;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -329,6 +478,23 @@
 				8BB3D8E81611B2590056B98F /* notif_twitter@2x.png in Resources */,
 				8BB3D8EA1611B2590056B98F /* notif_warning.png in Resources */,
 				8BB3D8EC1611B2590056B98F /* notif_warning@2x.png in Resources */,
+				8BB3D956161243680056B98F /* cache2.png in Resources */,
+				8BB3D958161243680056B98F /* popoverArrowDown.png in Resources */,
+				8BB3D95A161243680056B98F /* popoverArrowDown@2x.png in Resources */,
+				8BB3D95C161243680056B98F /* popoverArrowDownSimple.png in Resources */,
+				8BB3D95E161243680056B98F /* popoverArrowLeft.png in Resources */,
+				8BB3D960161243680056B98F /* popoverArrowLeft@2x.png in Resources */,
+				8BB3D962161243680056B98F /* popoverArrowLeftSimple.png in Resources */,
+				8BB3D964161243680056B98F /* popoverArrowRight.png in Resources */,
+				8BB3D966161243680056B98F /* popoverArrowRight@2x.png in Resources */,
+				8BB3D968161243680056B98F /* popoverArrowRightSimple.png in Resources */,
+				8BB3D96A161243680056B98F /* popoverArrowUp.png in Resources */,
+				8BB3D96C161243680056B98F /* popoverArrowUp@2x.png in Resources */,
+				8BB3D96E161243680056B98F /* popoverArrowUpSimple.png in Resources */,
+				8BB3D970161243680056B98F /* popoverBg.png in Resources */,
+				8BB3D972161243680056B98F /* popoverBg@2x.png in Resources */,
+				8BB3D974161243680056B98F /* popoverBgSimple.png in Resources */,
+				8BB3D976161243680056B98F /* README in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -350,6 +516,23 @@
 				8BB3D8E91611B2590056B98F /* notif_twitter@2x.png in Resources */,
 				8BB3D8EB1611B2590056B98F /* notif_warning.png in Resources */,
 				8BB3D8ED1611B2590056B98F /* notif_warning@2x.png in Resources */,
+				8BB3D957161243680056B98F /* cache2.png in Resources */,
+				8BB3D959161243680056B98F /* popoverArrowDown.png in Resources */,
+				8BB3D95B161243680056B98F /* popoverArrowDown@2x.png in Resources */,
+				8BB3D95D161243680056B98F /* popoverArrowDownSimple.png in Resources */,
+				8BB3D95F161243680056B98F /* popoverArrowLeft.png in Resources */,
+				8BB3D961161243680056B98F /* popoverArrowLeft@2x.png in Resources */,
+				8BB3D963161243680056B98F /* popoverArrowLeftSimple.png in Resources */,
+				8BB3D965161243680056B98F /* popoverArrowRight.png in Resources */,
+				8BB3D967161243680056B98F /* popoverArrowRight@2x.png in Resources */,
+				8BB3D969161243680056B98F /* popoverArrowRightSimple.png in Resources */,
+				8BB3D96B161243680056B98F /* popoverArrowUp.png in Resources */,
+				8BB3D96D161243680056B98F /* popoverArrowUp@2x.png in Resources */,
+				8BB3D96F161243680056B98F /* popoverArrowUpSimple.png in Resources */,
+				8BB3D971161243680056B98F /* popoverBg.png in Resources */,
+				8BB3D973161243680056B98F /* popoverBg@2x.png in Resources */,
+				8BB3D975161243680056B98F /* popoverBgSimple.png in Resources */,
+				8BB3D977161243680056B98F /* README in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -380,6 +563,13 @@
 				8BB3D8A116119E6A0056B98F /* AppDelegate.m in Sources */,
 				8BB3D8A516119EE50056B98F /* RZNotificationView.m in Sources */,
 				8BB3D8AA16119F150056B98F /* SampleViewController.m in Sources */,
+				8BB3D948161243670056B98F /* ColorButton.m in Sources */,
+				8BB3D94A161243670056B98F /* ColorViewController.m in Sources */,
+				8BB3D94C161243670056B98F /* GzColors.m in Sources */,
+				8BB3D94E161243670056B98F /* UIBarButtonItem+WEPopover.m in Sources */,
+				8BB3D950161243670056B98F /* WEPopoverContainerView.m in Sources */,
+				8BB3D952161243680056B98F /* WEPopoverController.m in Sources */,
+				8BB3D954161243680056B98F /* WETouchableView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -391,6 +581,13 @@
 				8BB3D8A216119E6A0056B98F /* AppDelegate.m in Sources */,
 				8BB3D8A616119EE50056B98F /* RZNotificationView.m in Sources */,
 				8BB3D8AB16119F150056B98F /* SampleViewController.m in Sources */,
+				8BB3D949161243670056B98F /* ColorButton.m in Sources */,
+				8BB3D94B161243670056B98F /* ColorViewController.m in Sources */,
+				8BB3D94D161243670056B98F /* GzColors.m in Sources */,
+				8BB3D94F161243670056B98F /* UIBarButtonItem+WEPopover.m in Sources */,
+				8BB3D951161243670056B98F /* WEPopoverContainerView.m in Sources */,
+				8BB3D953161243680056B98F /* WEPopoverController.m in Sources */,
+				8BB3D955161243680056B98F /* WETouchableView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -481,7 +678,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "RZNotificationView/RZNotificationView-Prefix.pch";
 				INFOPLIST_FILE = "RZNotificationView/RZNotificationView-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -493,7 +690,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "RZNotificationView/RZNotificationView-Prefix.pch";
 				INFOPLIST_FILE = "RZNotificationView/RZNotificationView-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};

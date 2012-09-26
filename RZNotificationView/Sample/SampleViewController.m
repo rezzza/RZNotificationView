@@ -8,12 +8,15 @@
 
 #import "SampleViewController.h"
 #import "RZNotificationView.h"
+#import "GzColors.h"
 
 @interface SampleViewController ()
 
 @end
 
 @implementation SampleViewController
+
+@synthesize popoverController;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -47,6 +50,10 @@
     notifView.delay = _delaySlider.value;
     notifView.position = RZNotificationPositionTop;
     notifView.delegate = self;
+    if(_topColorView.tag == 10)
+        notifView.customTopColor = _topColorView.backgroundColor;
+    if(_bottomColorView.tag == 10)
+        notifView.customBottomColor = _bottomColorView.backgroundColor;
     [notifView showFromController:self];
 }
 
@@ -58,6 +65,10 @@
     notifView.position = RZNotificationPositionBottom;
     notifView.color = RZNotificationColorBlue;
     notifView.delegate = self;
+    if(_topColorView.tag == 10)
+        notifView.customTopColor = _topColorView.backgroundColor;
+    if(_bottomColorView.tag == 10)
+        notifView.customBottomColor = _bottomColorView.backgroundColor;
     [notifView showFromController:self];
 }
 
@@ -74,6 +85,53 @@
 - (IBAction) sliderValueChanged:(id)sender
 {
     _delayLabel.text = [NSString stringWithFormat:@"delay : %.1f", _delaySlider.value];
+}
+
+- (IBAction) colorSelector:(UIButton*)sender
+{
+    _currentBtn = sender;
+    if (!self.popoverController) {
+        ColorViewController *contentViewController = [[ColorViewController alloc] init];
+        contentViewController.delegate = self;
+        self.popoverController = [[WEPopoverController alloc] initWithContentViewController:contentViewController];
+        self.popoverController.delegate = self;
+        self.popoverController.passthroughViews = [NSArray arrayWithObject:self.navigationController.navigationBar];
+        
+        [self.popoverController presentPopoverFromRect:sender.frame
+                                                inView:self.view
+                              permittedArrowDirections:(UIPopoverArrowDirectionUp|UIPopoverArrowDirectionDown)
+                                              animated:YES];
+        
+    } else {
+        [self.popoverController dismissPopoverAnimated:YES];
+        self.popoverController = nil;
+    }
+}
+
+-(void) colorPopoverControllerDidSelectColor:(NSString *)hexColor{
+    if (_currentBtn.tag == 1) {
+        _topColorView.backgroundColor = [GzColors colorFromHex:hexColor];
+        _bottomColorView.tag = 10;
+    }
+    else if (_currentBtn.tag == 2) {
+        _bottomColorView.backgroundColor = [GzColors colorFromHex:hexColor];
+        _bottomColorView.tag = 10;
+    }
+    [self.popoverController dismissPopoverAnimated:YES];
+    self.popoverController = nil;
+}
+
+#pragma mark -
+#pragma mark WEPopoverControllerDelegate implementation
+
+- (void)popoverControllerDidDismissPopover:(WEPopoverController *)thePopoverController {
+	//Safe to release the popover here
+	self.popoverController = nil;
+}
+
+- (BOOL)popoverControllerShouldDismissPopover:(WEPopoverController *)thePopoverController {
+	//The popover is automatically dismissed if you click outside it, unless you return NO here
+	return YES;
 }
 
 @end

@@ -8,12 +8,23 @@
 
 #import <UIKit/UIKit.h>
 #import "RZNotificationView.h"
+#import <QuartzCore/QuartzCore.h>
+#import "WEPopoverController.h"
+#import "ColorViewController.h"
 
-@interface SampleViewController : UIViewController <RZNotificationViewDelegate>
+@interface SampleViewController : UIViewController <RZNotificationViewDelegate, WEPopoverControllerDelegate, UIPopoverControllerDelegate, ColorViewControllerDelegate>
 {
     IBOutlet UISlider *_delaySlider;
     IBOutlet UILabel *_delayLabel;
+    
+    IBOutlet UIView *_topColorView;
+    IBOutlet UIView *_bottomColorView;
+    
+    UIButton *_currentBtn;
 }
+
+@property (nonatomic, strong) WEPopoverController *popoverController;
+
 - (IBAction) testButtonTop:(id)sender;
 - (IBAction) testButtonBottom:(id)sender;
 - (IBAction) navBarHidden:(id)sender;
