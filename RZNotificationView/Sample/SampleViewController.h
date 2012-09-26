@@ -7,11 +7,16 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "RZNotificationView.h"
 
-@interface SampleViewController : UIViewController
-
-- (IBAction)testButtonTop:(id)sender;
-- (IBAction)testButtonBottom:(id)sender;
-- (IBAction)navBarHidden:(id)sender;
+@interface SampleViewController : UIViewController <RZNotificationViewDelegate>
+{
+    IBOutlet UISlider *_delaySlider;
+    IBOutlet UILabel *_delayLabel;
+}
+- (IBAction) testButtonTop:(id)sender;
+- (IBAction) testButtonBottom:(id)sender;
+- (IBAction) navBarHidden:(id)sender;
+- (IBAction) sliderValueChanged:(id)sender;
 
 @end
