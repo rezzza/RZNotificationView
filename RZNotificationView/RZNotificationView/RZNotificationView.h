@@ -46,6 +46,8 @@ typedef enum {
 @property (nonatomic) float delay;
 @property (nonatomic) RZNotificationPosition position;
 @property (nonatomic) RZNotificationColor color;
+@property (nonatomic) UIColor *customTopColor;
+@property (nonatomic) UIColor *customBottomColor;
 @property (nonatomic, strong) NSString *sound;
 @property (nonatomic) BOOL vibrate;
 @property (nonatomic) RZNotificationIcon icon;

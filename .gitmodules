@@ -1,0 +1,3 @@
+[submodule "vendor/ColorPopover"]
+	path = vendor/ColorPopover
+	url = git@github.com:jeremylagrue/ColorPopover.git
