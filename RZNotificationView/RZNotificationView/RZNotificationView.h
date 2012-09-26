@@ -41,6 +41,7 @@ typedef enum {
 
 - (id) initWithMessage:(NSString*)message;
 - (void) showFromController:(UIViewController *)controller;
+- (void) close;
 
 @property (nonatomic, strong) NSString *message;
 @property (nonatomic) float delay;

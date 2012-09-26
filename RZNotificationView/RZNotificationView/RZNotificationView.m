@@ -187,6 +187,31 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
     }
 }
 
+- (void) setColor:(RZNotificationColor)color
+{
+    _color = color;
+    [self setNeedsDisplay];
+}
+
+- (void) setCustomTopColor:(UIColor *)customTopColor
+{
+    _customTopColor = customTopColor;
+    [self setNeedsDisplay];
+}
+
+- (void) setCustomBottomColor:(UIColor *)customBottomColor
+{
+    _customBottomColor = customBottomColor;
+    [self setNeedsDisplay];
+}
+
+- (void) setPosition:(RZNotificationPosition)position
+{
+    [self close];
+    _position = position;
+    [self setNeedsDisplay];
+}
+
 - (id) initWithMessage:(NSString*)message
 {
     if ([message isEqual:[NSNull null]] || [[NSString stringWithFormat:@"%@", message] isEqualToString:@"(null)"])
@@ -231,9 +256,8 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
 - (void) showFromController:(UIViewController *)controller
 {
 
-//    NSLog(@"%@", NSStringFromCGRect(controller.view.frame));
-//    NSLog(@"%@", NSStringFromCGRect(controller.view.bounds));
-//    NSLog(@"%@", NSStringFromCGRect(_iconView.frame));
+    NSLog(@"%@", NSStringFromCGRect(controller.view.frame));
+    NSLog(@"%@", NSStringFromCGRect(controller.view.bounds));
     
     if (_position == RZNotificationPositionTop) {
         self.transform = CGAffineTransformMakeTranslation(0.0, -CGRectGetHeight(self.frame));
@@ -243,21 +267,27 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
     }
     
     if (controller.navigationController) {
+        CGRect frame = self.frame;
         if (_position == RZNotificationPositionBottom) {
-            CGRect frame = self.frame;
             frame.origin.y = CGRectGetHeight(controller.view.frame);
-            self.frame = frame;
         }
+        else {
+            frame.origin.y = -CGRectGetHeight(self.frame);
+        }
+        self.frame = frame;
         [controller.view insertSubview:self belowSubview:controller.navigationController.navigationBar];
+        NSLog(@"%@", NSStringFromCGRect(self.frame));
     }
     else
     {
-
+        CGRect frame = self.frame;
         if (_position == RZNotificationPositionBottom) {
-            CGRect frame = self.frame;
             frame.origin.y = CGRectGetHeight(controller.view.frame);
-            self.frame = frame;
         }
+        else {
+            frame.origin.y = 0;
+        }
+        self.frame = frame;
         [controller.view addSubview:self];
     }
     
