@@ -299,13 +299,20 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
 
 // Handles the start of a touch
 -(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
-{
-    if(!_isTouch && _delay == 0.0){
-        [self close];
-    }
+{    
     if(!_isTouch){
-        if ([self.delegate respondsToSelector:@selector(notificationViewTouched:)])
-            [self.delegate notificationViewTouched:self];
+        if(_delay == 0.0){
+            if ([self.delegate respondsToSelector:@selector(notificationViewTouched:)]){
+                [self.delegate notificationViewTouched:self];
+                [self close];
+            }
+        }
+        else{
+            if ([self.delegate respondsToSelector:@selector(notificationViewTouched:)]){
+                [self.delegate notificationViewTouched:self];
+            }
+            [self close];
+        }
     }
     _isTouch = YES;
 }
