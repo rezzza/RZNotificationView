@@ -35,7 +35,7 @@ typedef enum {
 {
     UIImageView *_iconView;
     UILabel *_textLabel;
-    
+    UIViewController *_controller;
     BOOL _isTouch;
 }
 

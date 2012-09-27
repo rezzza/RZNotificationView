@@ -8,7 +8,6 @@
 
 #import "RZNotificationView.h"
 
-#define WIDTH_SUPERVIEW 320
 #define UIColorFromRGB(rgbValue) [UIColor \
 colorWithRed:((float)((rgbValue & 0xFF0000) >> 16))/255.0 \
 green:((float)((rgbValue & 0xFF00) >> 8))/255.0 \
@@ -171,7 +170,7 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
             _iconView.image = [UIImage imageNamed:@"notif_gift.png"];
             break;
         case RZNotificationIconInfo:
-            _iconView.image = [UIImage imageNamed:@"notif_info.png"];
+            _iconView.image = [UIImage imageNamed:@"notif_infos.png"];
             break;
         case RZNotificationIconSmiley:
             _iconView.image = [UIImage imageNamed:@"notif_smiley.png"];
@@ -220,7 +219,7 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
     }
     
     CGRect frame = CGRectZero;
-    frame.size = CGSizeMake(WIDTH_SUPERVIEW, 40);
+    frame.size = CGSizeMake(CGRectGetWidth([UIScreen mainScreen].applicationFrame), 40);
     
     self = [self initWithFrame:frame];
     
@@ -247,7 +246,7 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
         [self addSubview:_textLabel];
         _textLabel.text = message;
         
-//        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(deviceOrientationChanged) name:UIDeviceOrientationDidChangeNotification object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(deviceOrientationChanged) name:UIDeviceOrientationDidChangeNotification object:nil];
     }
     return self;
 }
@@ -256,8 +255,9 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
 - (void) showFromController:(UIViewController *)controller
 {
 
-    NSLog(@"%@", NSStringFromCGRect(controller.view.frame));
-    NSLog(@"%@", NSStringFromCGRect(controller.view.bounds));
+    _controller = controller;
+//    NSLog(@"%@", NSStringFromCGRect(controller.view.frame));
+//    NSLog(@"%@", NSStringFromCGRect(controller.view.bounds));
     
     if (_position == RZNotificationPositionTop) {
         self.transform = CGAffineTransformMakeTranslation(0.0, -CGRectGetHeight(self.frame));
@@ -266,7 +266,20 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
         self.transform = CGAffineTransformMakeTranslation(0.0, CGRectGetHeight(self.frame));
     }
     
-    if (controller.navigationController) {
+//    if (controller.navigationController) {
+//        CGRect frame = self.frame;
+//        if (_position == RZNotificationPositionBottom) {
+//            frame.origin.y = CGRectGetHeight(controller.view.frame);
+//        }
+//        else {
+//            frame.origin.y = -CGRectGetHeight(self.frame);
+//        }
+//        self.frame = frame;
+//        [controller.view insertSubview:self belowSubview:controller.navigationController.navigationBar];
+//        NSLog(@"%@", NSStringFromCGRect(self.frame));
+//    }
+//    else
+//    {
         CGRect frame = self.frame;
         if (_position == RZNotificationPositionBottom) {
             frame.origin.y = CGRectGetHeight(controller.view.frame);
@@ -275,21 +288,8 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
             frame.origin.y = -CGRectGetHeight(self.frame);
         }
         self.frame = frame;
-        [controller.view insertSubview:self belowSubview:controller.navigationController.navigationBar];
-        NSLog(@"%@", NSStringFromCGRect(self.frame));
-    }
-    else
-    {
-        CGRect frame = self.frame;
-        if (_position == RZNotificationPositionBottom) {
-            frame.origin.y = CGRectGetHeight(controller.view.frame);
-        }
-        else {
-            frame.origin.y = 0;
-        }
-        self.frame = frame;
         [controller.view addSubview:self];
-    }
+//    }
     
     [UIView animateWithDuration:0.4 animations:^{self.transform = CGAffineTransformIdentity;
     }];
@@ -299,6 +299,18 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
                withObject:nil
                afterDelay:_delay];
     }
+}
+
+- (void) deviceOrientationChanged
+{
+    CGRect frame = self.frame;
+    if (_position == RZNotificationPositionBottom) {
+        frame.origin.y = CGRectGetHeight(_controller.view.frame) - self.frame.size.height;
+    }
+    else {
+        frame.origin.y = 0.0;
+    }
+    self.frame = frame;
 }
 
 - (void) close
@@ -342,6 +354,11 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
         }
     }
     _isTouch = YES;
+}
+
+- (void) dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIDeviceOrientationDidChangeNotification object:nil];
 }
 
 @end

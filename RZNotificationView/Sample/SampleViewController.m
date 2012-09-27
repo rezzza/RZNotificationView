@@ -307,11 +307,11 @@
                 
                 NSArray *items = [NSArray arrayWithObjects:
                                   [UIImage imageNamed:@"notif_facebook.png"],
-                                  [UIImage imageNamed:@"notif_gift"],
-                                  [UIImage imageNamed:@"notif_infos"],
-                                  [UIImage imageNamed:@"notif_smiley"],
-                                  [UIImage imageNamed:@"notif_twitter"],
-                                  [UIImage imageNamed:@"notif_warning"],
+                                  [UIImage imageNamed:@"notif_gift.png"],
+                                  [UIImage imageNamed:@"notif_infos.png"],
+                                  [UIImage imageNamed:@"notif_smiley.png"],
+                                  [UIImage imageNamed:@"notif_twitter.png"],
+                                  [UIImage imageNamed:@"notif_warning.png"],
                                   nil];
                 MCSegmentedControl *segmentedControl = [[MCSegmentedControl alloc] initWithItems:items];
                 segmentedControl.tag = 4;
