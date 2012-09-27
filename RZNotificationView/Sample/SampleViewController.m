@@ -39,7 +39,7 @@
     self.tableView.dataSource = self;
     self.title = @"RZNotificationView Sample";
     self.navigationController.navigationBar.tintColor = [UIColor colorWithRed:0.6 green:0.0 blue:0.0 alpha:1];
-    _notifView = [[RZNotificationView alloc] initWithMessage:@"Test Message"];
+    _notifView = [[RZNotificationView alloc] initWithMessage:@"No Message"];
     _notifView.delay = 3.5;
     _notifView.delegate = self;
 }
@@ -110,6 +110,11 @@
     self.popoverController = nil;
 }
 
+- (void) switchChange:(UISwitch*)sender
+{
+    _notifView.vibrate = sender.on;
+}
+
 #pragma mark -
 #pragma mark WEPopoverControllerDelegate implementation
 
@@ -135,7 +140,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {    
-    return 8;
+    return 10;
 }
 
 -(CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -169,6 +174,22 @@
     
     static NSString *VibrateCellIdentifier = @"VibrateCellIdentifier";
     PrettyCustomViewTableViewCell *vibrateCell;
+    
+    static NSString *TextSampleCellIdentifier = @"TextSampleCellIdentifier";
+    PrettyCustomViewTableViewCell *textSampleCell;
+    
+    static NSString *TextStyleCellIdentifier = @"TextStyleCellIdentifier";
+    PrettyCustomViewTableViewCell *textStyleCell;
+    
+    PrettyCustomViewTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    if (cell == nil) {
+        cell = [[PrettyCustomViewTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+        cell.tableViewBackgroundColor = tableView.backgroundColor;
+    }
+    
+    // Configure the cell...
+    [cell prepareForTableView:tableView indexPath:indexPath];
+    cell.textLabel.textAlignment = UITextAlignmentCenter;
     
     switch (indexPath.row) {
         case 0:
@@ -217,7 +238,7 @@
             if (colorCell == nil) {
                 colorCell = [[PrettyCustomViewTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:ColorCellIdentifier];
                 
-                UILabel *positionLabel = [[UILabel alloc] initWithFrame:CGRectMake(20.0, 2.0, 280.0, 20.0)];
+                UILabel *positionLabel = [[UILabel alloc] initWithFrame:CGRectMake(20.0, 2.0, 260.0, 20.0)];
                 positionLabel.text = [NSString stringWithFormat:@"Or predefined colors :"];
                 positionLabel.numberOfLines = 1;
                 positionLabel.textAlignment = UITextAlignmentCenter;
@@ -355,6 +376,7 @@
                 switchView.center = CGPointMake(220.0, 22.0);
                 switchView.onTintColor = [UIColor colorWithRed:.6 green:.0 blue:.0 alpha:1.0];
                 switchView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
+                [switchView addTarget:self action:@selector(switchChange:) forControlEvents:UIControlEventValueChanged];
                 
                 UILabel *positionLabel = [[UILabel alloc] initWithFrame:CGRectMake(10.0, 0.0, 70.0, 44.0)];
                 positionLabel.text = [NSString stringWithFormat:@"Vibrate"];
@@ -368,42 +390,130 @@
             }
             [vibrateCell prepareForTableView:tableView indexPath:indexPath];
             vibrateCell.tableViewBackgroundColor = tableView.backgroundColor;
-            return vibrateCell;
-            
+            return vibrateCell;            
+        case 6:
+            cell.textLabel.text = @"Hidde/Show Navbar";
+            return cell;
+        case 7:
+            textSampleCell = [tableView dequeueReusableCellWithIdentifier:TextSampleCellIdentifier];
+            if (textSampleCell == nil) {
+                textSampleCell = [[PrettyCustomViewTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:TextSampleCellIdentifier];
+                
+                NSArray *items = [NSArray arrayWithObjects:
+                                  @"Short",
+                                  @"Medium",
+                                  @"Long",
+                                  nil];
+                MCSegmentedControl *segmentedControl = [[MCSegmentedControl alloc] initWithItems:items];
+                segmentedControl.tag = 7;
+                segmentedControl.font = [UIFont boldSystemFontOfSize:14.0f];
+                segmentedControl.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
+                
+                // set frame, add to view, set target and action for value change as usual
+                segmentedControl.frame = CGRectMake(140.0, 7.0, 175.0, 30.0);
+                [self.view addSubview:segmentedControl];
+                [segmentedControl addTarget:self action:@selector(segmentedControlDidChange:) forControlEvents:UIControlEventValueChanged];
+                
+                segmentedControl.selectedSegmentIndex = 0;
+                
+                // Set a tint color
+                segmentedControl.tintColor = [UIColor colorWithRed:.6 green:.0 blue:.0 alpha:1.0];
+                
+                // Customize font and items color
+                segmentedControl.selectedItemColor   = [UIColor whiteColor];
+                segmentedControl.unselectedItemColor = [UIColor darkGrayColor];
+                
+                UILabel *positionLabel = [[UILabel alloc] initWithFrame:CGRectMake(10.0, 0.0, 90.0, 44.0)];
+                positionLabel.text = [NSString stringWithFormat:@"Text Sample"];
+                positionLabel.backgroundColor = [UIColor clearColor];
+                positionLabel.font = [UIFont boldSystemFontOfSize:14.0];
+                
+                UIView *delayView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, 320, 44)];
+                [delayView addSubview:segmentedControl];
+                [delayView addSubview:positionLabel];
+                textSampleCell.customView = delayView;
+            }
+            [textSampleCell prepareForTableView:tableView indexPath:indexPath];
+            textSampleCell.tableViewBackgroundColor = tableView.backgroundColor;
+            return textSampleCell;
+        case 8:
+            textStyleCell = [tableView dequeueReusableCellWithIdentifier:TextStyleCellIdentifier];
+            if (textStyleCell == nil) {
+                textStyleCell = [[PrettyCustomViewTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:TextStyleCellIdentifier];
+                
+                NSArray *items = [NSArray arrayWithObjects:
+                                  @"Bright",
+                                  @"Dark",
+                                  nil];
+                MCSegmentedControl *segmentedControl = [[MCSegmentedControl alloc] initWithItems:items];
+                segmentedControl.tag = 8;
+                segmentedControl.font = [UIFont boldSystemFontOfSize:14.0f];
+                segmentedControl.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
+                
+                // set frame, add to view, set target and action for value change as usual
+                segmentedControl.frame = CGRectMake(140.0, 7.0, 175.0, 30.0);
+                [self.view addSubview:segmentedControl];
+                [segmentedControl addTarget:self action:@selector(segmentedControlDidChange:) forControlEvents:UIControlEventValueChanged];
+                
+                segmentedControl.selectedSegmentIndex = 0;
+                
+                // Set a tint color
+                segmentedControl.tintColor = [UIColor colorWithRed:.6 green:.0 blue:.0 alpha:1.0];
+                
+                // Customize font and items color
+                segmentedControl.selectedItemColor   = [UIColor whiteColor];
+                segmentedControl.unselectedItemColor = [UIColor darkGrayColor];
+                
+                UILabel *positionLabel = [[UILabel alloc] initWithFrame:CGRectMake(10.0, 0.0, 90.0, 44.0)];
+                positionLabel.text = [NSString stringWithFormat:@"Text style"];
+                positionLabel.backgroundColor = [UIColor clearColor];
+                positionLabel.font = [UIFont boldSystemFontOfSize:14.0];
+                
+                UIView *delayView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, 320, 44)];
+                [delayView addSubview:segmentedControl];
+                [delayView addSubview:positionLabel];
+                textStyleCell.customView = delayView;
+            }
+            [textStyleCell prepareForTableView:tableView indexPath:indexPath];
+            textStyleCell.tableViewBackgroundColor = tableView.backgroundColor;
+            return textStyleCell;
+        case 9:
+            cell.textLabel.text = @"Show notification";
+            return cell;
+        
         default:
-            
             break;
     }
 
-
-    PrettyCustomViewTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    if (cell == nil) {
-        cell = [[PrettyCustomViewTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
-        cell.tableViewBackgroundColor = tableView.backgroundColor;
-    }
-
-    // Configure the cell...
-    [cell prepareForTableView:tableView indexPath:indexPath];
-    if(indexPath.row == 6){
-        cell.textLabel.text = @"Hidde/Show Navbar";
-    }
-    else if(indexPath.row == 7){
-        cell.textLabel.text = @"Show notification";
-    }
-    cell.textLabel.textAlignment = UITextAlignmentCenter;
     return cell;
 }
 
 #pragma mark - Table view delegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    NSLog(@"%@", indexPath);
-    if(indexPath.row == 6){
-        [self navBarHidden:nil];
-    }
-    else if(indexPath.row == 7){
-        [_notifView showFromController:self];
+{    
+    switch (indexPath.row) {
+        case 6:
+            [self navBarHidden:nil];
+            break;
+        case 9:
+            switch (_sampleMessage) {
+                case SampleMessageShort:
+                    _notifView.message = @"Register now, for free";
+                    break;
+                case SampleMessageMedium:
+                    _notifView.message = @"You just save 10 €, thank you for trusting us and see you soon! :)";
+                    break;
+                case SampleMessageLong:
+                    _notifView.message = @"Votre ami <i>\"John Appleseed\"</i> vient tout juste de télécharger l'application... félicitations, <b>vous venez de gagner 10€<b/> de crédits utilisables pour vos prochains achats ! :)";
+                    break;
+                default:
+                    break;
+            }
+            [_notifView showFromController:self];
+            break;
+        default:
+            break;
     }
 }
 
@@ -428,7 +538,20 @@
         case 4:
             _notifView.icon = sender.selectedSegmentIndex;
             break;
-        default:
+        case 7:
+            [_notifView close];
+            _sampleMessage = sender.selectedSegmentIndex;
+            break;
+        case 8:
+            [_notifView close];
+            if(sender.selectedSegmentIndex == 0){
+                _notifView.textLabel.textColor = [UIColor whiteColor];
+                _notifView.textLabel.shadowColor = [UIColor blackColor];
+            }
+            else if(sender.selectedSegmentIndex == 1){
+                _notifView.textLabel.textColor = [UIColor blackColor];
+                _notifView.textLabel.shadowColor = [UIColor whiteColor];
+            }
             break;
     }
 }

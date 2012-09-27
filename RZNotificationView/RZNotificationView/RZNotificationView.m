@@ -7,11 +7,15 @@
 //
 
 #import "RZNotificationView.h"
+#import <AudioToolbox/AudioServices.h>
 
 #define UIColorFromRGB(rgbValue) [UIColor \
 colorWithRed:((float)((rgbValue & 0xFF0000) >> 16))/255.0 \
 green:((float)((rgbValue & 0xFF00) >> 8))/255.0 \
 blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
+
+#define MAX_MESSAGE_LENGHT 150
+#define MIN_HEIGHT 40
 
 @implementation RZNotificationView
 
@@ -106,7 +110,10 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
     
     //// Subframes
     _iconView.frame = CGRectMake(CGRectGetMinX(notificationFrame) + 8, CGRectGetMinY(notificationFrame) + floor((CGRectGetHeight(notificationFrame) - 19) * 0.5), 19, 19);
+    NSLog(@"** %@", NSStringFromCGRect(_textLabel.frame));
     _textLabel.frame = CGRectMake(CGRectGetMinX(notificationFrame) + 35, CGRectGetMinY(notificationFrame) + floor(CGRectGetHeight(notificationFrame) * 0.14), CGRectGetWidth(notificationFrame) - 70, floor(CGRectGetHeight(notificationFrame) * 0.72));
+    NSLog(@"*** %@", NSStringFromCGRect(_textLabel.frame));
+
     CGRect _anchorFrame = CGRectMake(CGRectGetMinX(notificationFrame) + CGRectGetWidth(notificationFrame) - 27, CGRectGetMinY(notificationFrame) + floor((CGRectGetHeight(notificationFrame) - 19) * 0.5), 19, 19);
     
     //// NotificationZone Drawing
@@ -211,6 +218,29 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
     [self setNeedsDisplay];
 }
 
+- (void) setMessage:(NSString *)message
+{
+    if(MAX_MESSAGE_LENGHT < [message length])
+        message = [message substringToIndex:MAX_MESSAGE_LENGHT];
+    _textLabel.text = message;
+    
+    CGRect frameL = self.frame;
+    frameL.size.width = CGRectGetWidth(_textLabel.frame) - 70;
+    _textLabel.frame = frameL;
+    [_textLabel sizeToFit];
+    
+    CGRect frame = self.frame;
+    if (MIN_HEIGHT < floor(CGRectGetHeight(_textLabel.frame) / 0.72)) {
+        frame.size.height = floor(CGRectGetHeight(_textLabel.frame) / 0.72);
+    }
+    else{
+        frame.size.height = MIN_HEIGHT;
+    }
+    self.frame = frame;
+    
+    [self setNeedsDisplay];
+}
+
 - (id) initWithMessage:(NSString*)message
 {
     if ([message isEqual:[NSNull null]] || [[NSString stringWithFormat:@"%@", message] isEqualToString:@"(null)"])
@@ -219,7 +249,7 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
     }
     
     CGRect frame = CGRectZero;
-    frame.size = CGSizeMake(CGRectGetWidth([UIScreen mainScreen].applicationFrame), 40);
+    frame.size = CGSizeMake(CGRectGetWidth([UIScreen mainScreen].applicationFrame), MIN_HEIGHT);
     
     self = [self initWithFrame:frame];
     
@@ -230,19 +260,19 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
         self.autoresizingMask = UIViewAutoresizingFlexibleWidth;
        
         _iconView = [[UIImageView alloc] initWithFrame:CGRectZero];
-        _iconView.contentMode = UIViewContentModeCenter;
+        _iconView.contentMode = UIViewContentModeCenter | UIViewAutoresizingFlexibleHeight;
         [self addSubview:_iconView];
         
-        _textLabel = [[UILabel alloc] initWithFrame:CGRectZero];
-        _textLabel.numberOfLines = 4;
+        _textLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(frame) - 70, 0)];
+        _textLabel.numberOfLines = 0;
         _textLabel.font = [UIFont fontWithName:@"Helvetica-Bold" size:12.0];
         _textLabel.backgroundColor = [UIColor clearColor];
         _textLabel.textColor = [UIColor colorWithWhite:0.0 alpha:1];
         _textLabel.shadowColor = [UIColor colorWithWhite:1.0 alpha:0.3];
         _textLabel.shadowOffset = CGSizeMake(0.0, 1.0);
-        _textLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+        _textLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
         _textLabel.textAlignment = UITextAlignmentLeft;
-
+        _textLabel.lineBreakMode = UILineBreakModeWordWrap;
         [self addSubview:_textLabel];
         _textLabel.text = message;
         
@@ -254,7 +284,6 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
 
 - (void) showFromController:(UIViewController *)controller
 {
-
     _controller = controller;
 //    NSLog(@"%@", NSStringFromCGRect(controller.view.frame));
 //    NSLog(@"%@", NSStringFromCGRect(controller.view.bounds));
@@ -291,6 +320,9 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
         [controller.view addSubview:self];
 //    }
     
+    if(_vibrate)
+        AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
+    
     [UIView animateWithDuration:0.4 animations:^{self.transform = CGAffineTransformIdentity;
     }];
     
@@ -310,11 +342,16 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
     else {
         frame.origin.y = 0.0;
     }
+    if (_controller.view.frame.size.width != 0)
+        frame.size.width = _controller.view.frame.size.width;
     self.frame = frame;
 }
 
 - (void) close
 {
+    
+    _isTouch = NO;
+    
     [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(close) object:nil];
     
     if (_position == RZNotificationPositionTop) {
@@ -340,6 +377,7 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
 -(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {    
     if(!_isTouch){
+        _isTouch = YES;
         if(_delay == 0.0){
             if ([self.delegate respondsToSelector:@selector(notificationViewTouched:)]){
                 [self.delegate notificationViewTouched:self];
@@ -353,7 +391,6 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
             [self close];
         }
     }
-    _isTouch = YES;
 }
 
 - (void) dealloc

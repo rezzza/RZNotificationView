@@ -43,6 +43,7 @@ typedef enum {
 - (void) showFromController:(UIViewController *)controller;
 - (void) close;
 
+@property (nonatomic, strong) UILabel *textLabel;
 @property (nonatomic, strong) NSString *message;
 @property (nonatomic) float delay;
 @property (nonatomic) RZNotificationPosition position;

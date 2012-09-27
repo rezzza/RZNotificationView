@@ -20,6 +20,7 @@
 		8B0AF9181612FFE000A31A05 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B0AF9171612FFE000A31A05 /* Accelerate.framework */; };
 		8B0AF9271613012D00A31A05 /* background.png in Resources */ = {isa = PBXBuildFile; fileRef = 8B0AF9251613012D00A31A05 /* background.png */; };
 		8B0AF9281613012D00A31A05 /* background@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8B0AF9261613012D00A31A05 /* background@2x.png */; };
+		8B75F27E1614AADE0084B685 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B75F27D1614AADE0084B685 /* AudioToolbox.framework */; };
 		8BB3D85F16119CA60056B98F /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BB3D85E16119CA60056B98F /* UIKit.framework */; };
 		8BB3D86116119CA60056B98F /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BB3D86016119CA60056B98F /* Foundation.framework */; };
 		8BB3D86316119CA70056B98F /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BB3D86216119CA60056B98F /* CoreGraphics.framework */; };
@@ -151,6 +152,7 @@
 		8B0AF9171612FFE000A31A05 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
 		8B0AF9251613012D00A31A05 /* background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = background.png; sourceTree = "<group>"; };
 		8B0AF9261613012D00A31A05 /* background@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "background@2x.png"; sourceTree = "<group>"; };
+		8B75F27D1614AADE0084B685 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		8BB3D85A16119CA60056B98F /* RZNotificationView.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RZNotificationView.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8BB3D85E16119CA60056B98F /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		8BB3D86016119CA60056B98F /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -227,6 +229,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8B75F27E1614AADE0084B685 /* AudioToolbox.framework in Frameworks */,
 				8B0AF9181612FFE000A31A05 /* Accelerate.framework in Frameworks */,
 				8BB3D97E161245530056B98F /* QuartzCore.framework in Frameworks */,
 				8BB3D85F16119CA60056B98F /* UIKit.framework in Frameworks */,
@@ -296,7 +299,7 @@
 		8BB3D84F16119CA60056B98F = {
 			isa = PBXGroup;
 			children = (
-				8B0AF9171612FFE000A31A05 /* Accelerate.framework */,
+				8B75F27D1614AADE0084B685 /* AudioToolbox.framework */,
 				8BB3D86416119CA70056B98F /* RZNotificationView */,
 				8BB3D88216119CA70056B98F /* RZNotificationViewTests */,
 				8BB3D85D16119CA60056B98F /* Frameworks */,
@@ -316,6 +319,7 @@
 		8BB3D85D16119CA60056B98F /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				8B0AF9171612FFE000A31A05 /* Accelerate.framework */,
 				8BB3D97D161245530056B98F /* QuartzCore.framework */,
 				8BB3D85E16119CA60056B98F /* UIKit.framework */,
 				8BB3D86016119CA60056B98F /* Foundation.framework */,

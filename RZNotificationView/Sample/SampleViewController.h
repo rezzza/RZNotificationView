@@ -12,6 +12,12 @@
 #import "WEPopoverController.h"
 #import "ColorViewController.h"
 
+typedef enum {
+    SampleMessageShort = 0,
+    SampleMessageMedium,
+    SampleMessageLong
+}SampleMessage;
+
 @class PrettyGridTableViewCell;
 
 @interface SampleViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, RZNotificationViewDelegate, WEPopoverControllerDelegate, UIPopoverControllerDelegate, ColorViewControllerDelegate>
@@ -27,6 +33,7 @@
     NSInteger _current;
     NSIndexPath *_indexPath;
     RZNotificationView *_notifView;
+    SampleMessage _sampleMessage;
 }
 
 @property (nonatomic, strong) WEPopoverController *popoverController;
@@ -36,5 +43,6 @@
 - (IBAction) testButtonBottom:(id)sender;
 - (IBAction) navBarHidden:(id)sender;
 - (IBAction) sliderValueChanged:(id)sender;
+- (void) switchChange:(UISwitch*)sender;
 
 @end
