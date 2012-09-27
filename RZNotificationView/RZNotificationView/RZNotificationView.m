@@ -7,12 +7,15 @@
 //
 
 #import "RZNotificationView.h"
+#import <AudioToolbox/AudioServices.h>
 
-#define WIDTH_SUPERVIEW 320
 #define UIColorFromRGB(rgbValue) [UIColor \
 colorWithRed:((float)((rgbValue & 0xFF0000) >> 16))/255.0 \
 green:((float)((rgbValue & 0xFF00) >> 8))/255.0 \
 blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
+
+#define MAX_MESSAGE_LENGHT 150
+#define MIN_HEIGHT 40
 
 @implementation RZNotificationView
 
@@ -107,7 +110,10 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
     
     //// Subframes
     _iconView.frame = CGRectMake(CGRectGetMinX(notificationFrame) + 8, CGRectGetMinY(notificationFrame) + floor((CGRectGetHeight(notificationFrame) - 19) * 0.5), 19, 19);
+    NSLog(@"** %@", NSStringFromCGRect(_textLabel.frame));
     _textLabel.frame = CGRectMake(CGRectGetMinX(notificationFrame) + 35, CGRectGetMinY(notificationFrame) + floor(CGRectGetHeight(notificationFrame) * 0.14), CGRectGetWidth(notificationFrame) - 70, floor(CGRectGetHeight(notificationFrame) * 0.72));
+    NSLog(@"*** %@", NSStringFromCGRect(_textLabel.frame));
+
     CGRect _anchorFrame = CGRectMake(CGRectGetMinX(notificationFrame) + CGRectGetWidth(notificationFrame) - 27, CGRectGetMinY(notificationFrame) + floor((CGRectGetHeight(notificationFrame) - 19) * 0.5), 19, 19);
     
     //// NotificationZone Drawing
@@ -171,7 +177,7 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
             _iconView.image = [UIImage imageNamed:@"notif_gift.png"];
             break;
         case RZNotificationIconInfo:
-            _iconView.image = [UIImage imageNamed:@"notif_info.png"];
+            _iconView.image = [UIImage imageNamed:@"notif_infos.png"];
             break;
         case RZNotificationIconSmiley:
             _iconView.image = [UIImage imageNamed:@"notif_smiley.png"];
@@ -187,6 +193,54 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
     }
 }
 
+- (void) setColor:(RZNotificationColor)color
+{
+    _color = color;
+    [self setNeedsDisplay];
+}
+
+- (void) setCustomTopColor:(UIColor *)customTopColor
+{
+    _customTopColor = customTopColor;
+    [self setNeedsDisplay];
+}
+
+- (void) setCustomBottomColor:(UIColor *)customBottomColor
+{
+    _customBottomColor = customBottomColor;
+    [self setNeedsDisplay];
+}
+
+- (void) setPosition:(RZNotificationPosition)position
+{
+    [self close];
+    _position = position;
+    [self setNeedsDisplay];
+}
+
+- (void) setMessage:(NSString *)message
+{
+    if(MAX_MESSAGE_LENGHT < [message length])
+        message = [message substringToIndex:MAX_MESSAGE_LENGHT];
+    _textLabel.text = message;
+    
+    CGRect frameL = self.frame;
+    frameL.size.width = CGRectGetWidth(_textLabel.frame) - 70;
+    _textLabel.frame = frameL;
+    [_textLabel sizeToFit];
+    
+    CGRect frame = self.frame;
+    if (MIN_HEIGHT < floor(CGRectGetHeight(_textLabel.frame) / 0.72)) {
+        frame.size.height = floor(CGRectGetHeight(_textLabel.frame) / 0.72);
+    }
+    else{
+        frame.size.height = MIN_HEIGHT;
+    }
+    self.frame = frame;
+    
+    [self setNeedsDisplay];
+}
+
 - (id) initWithMessage:(NSString*)message
 {
     if ([message isEqual:[NSNull null]] || [[NSString stringWithFormat:@"%@", message] isEqualToString:@"(null)"])
@@ -195,7 +249,7 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
     }
     
     CGRect frame = CGRectZero;
-    frame.size = CGSizeMake(WIDTH_SUPERVIEW, 40);
+    frame.size = CGSizeMake(CGRectGetWidth([UIScreen mainScreen].applicationFrame), MIN_HEIGHT);
     
     self = [self initWithFrame:frame];
     
@@ -206,23 +260,23 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
         self.autoresizingMask = UIViewAutoresizingFlexibleWidth;
        
         _iconView = [[UIImageView alloc] initWithFrame:CGRectZero];
-        _iconView.contentMode = UIViewContentModeCenter;
+        _iconView.contentMode = UIViewContentModeCenter | UIViewAutoresizingFlexibleHeight;
         [self addSubview:_iconView];
         
-        _textLabel = [[UILabel alloc] initWithFrame:CGRectZero];
-        _textLabel.numberOfLines = 4;
+        _textLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(frame) - 70, 0)];
+        _textLabel.numberOfLines = 0;
         _textLabel.font = [UIFont fontWithName:@"Helvetica-Bold" size:12.0];
         _textLabel.backgroundColor = [UIColor clearColor];
         _textLabel.textColor = [UIColor colorWithWhite:0.0 alpha:1];
         _textLabel.shadowColor = [UIColor colorWithWhite:1.0 alpha:0.3];
         _textLabel.shadowOffset = CGSizeMake(0.0, 1.0);
-        _textLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+        _textLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
         _textLabel.textAlignment = UITextAlignmentLeft;
-
+        _textLabel.lineBreakMode = UILineBreakModeWordWrap;
         [self addSubview:_textLabel];
         _textLabel.text = message;
         
-//        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(deviceOrientationChanged) name:UIDeviceOrientationDidChangeNotification object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(deviceOrientationChanged) name:UIDeviceOrientationDidChangeNotification object:nil];
     }
     return self;
 }
@@ -230,10 +284,9 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
 
 - (void) showFromController:(UIViewController *)controller
 {
-
+    _controller = controller;
 //    NSLog(@"%@", NSStringFromCGRect(controller.view.frame));
 //    NSLog(@"%@", NSStringFromCGRect(controller.view.bounds));
-//    NSLog(@"%@", NSStringFromCGRect(_iconView.frame));
     
     if (_position == RZNotificationPositionTop) {
         self.transform = CGAffineTransformMakeTranslation(0.0, -CGRectGetHeight(self.frame));
@@ -242,24 +295,33 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
         self.transform = CGAffineTransformMakeTranslation(0.0, CGRectGetHeight(self.frame));
     }
     
-    if (controller.navigationController) {
+//    if (controller.navigationController) {
+//        CGRect frame = self.frame;
+//        if (_position == RZNotificationPositionBottom) {
+//            frame.origin.y = CGRectGetHeight(controller.view.frame);
+//        }
+//        else {
+//            frame.origin.y = -CGRectGetHeight(self.frame);
+//        }
+//        self.frame = frame;
+//        [controller.view insertSubview:self belowSubview:controller.navigationController.navigationBar];
+//        NSLog(@"%@", NSStringFromCGRect(self.frame));
+//    }
+//    else
+//    {
+        CGRect frame = self.frame;
         if (_position == RZNotificationPositionBottom) {
-            CGRect frame = self.frame;
             frame.origin.y = CGRectGetHeight(controller.view.frame);
-            self.frame = frame;
         }
-        [controller.view insertSubview:self belowSubview:controller.navigationController.navigationBar];
-    }
-    else
-    {
-
-        if (_position == RZNotificationPositionBottom) {
-            CGRect frame = self.frame;
-            frame.origin.y = CGRectGetHeight(controller.view.frame);
-            self.frame = frame;
+        else {
+            frame.origin.y = -CGRectGetHeight(self.frame);
         }
+        self.frame = frame;
         [controller.view addSubview:self];
-    }
+//    }
+    
+    if(_vibrate)
+        AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
     
     [UIView animateWithDuration:0.4 animations:^{self.transform = CGAffineTransformIdentity;
     }];
@@ -271,8 +333,25 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
     }
 }
 
+- (void) deviceOrientationChanged
+{
+    CGRect frame = self.frame;
+    if (_position == RZNotificationPositionBottom) {
+        frame.origin.y = CGRectGetHeight(_controller.view.frame) - self.frame.size.height;
+    }
+    else {
+        frame.origin.y = 0.0;
+    }
+    if (_controller.view.frame.size.width != 0)
+        frame.size.width = _controller.view.frame.size.width;
+    self.frame = frame;
+}
+
 - (void) close
 {
+    
+    _isTouch = NO;
+    
     [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(close) object:nil];
     
     if (_position == RZNotificationPositionTop) {
@@ -298,6 +377,7 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
 -(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {    
     if(!_isTouch){
+        _isTouch = YES;
         if(_delay == 0.0){
             if ([self.delegate respondsToSelector:@selector(notificationViewTouched:)]){
                 [self.delegate notificationViewTouched:self];
@@ -311,7 +391,11 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
             [self close];
         }
     }
-    _isTouch = YES;
+}
+
+- (void) dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIDeviceOrientationDidChangeNotification object:nil];
 }
 
 @end
