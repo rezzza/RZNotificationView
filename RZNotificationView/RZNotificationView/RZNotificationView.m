@@ -310,6 +310,7 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
 //    else
 //    {
         CGRect frame = self.frame;
+        frame.size.width = CGRectGetWidth(controller.view.frame);
         if (_position == RZNotificationPositionBottom) {
             frame.origin.y = CGRectGetHeight(controller.view.frame);
         }
