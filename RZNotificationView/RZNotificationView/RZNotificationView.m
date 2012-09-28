@@ -19,7 +19,7 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
 
 @implementation RZNotificationView
 
-- (id)initWithFrame:(CGRect)frame
+- (id) initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
     if (self) {
@@ -31,7 +31,7 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
 
 // Only override drawRect: if you perform custom drawing.
 // An empty implementation adversely affects performance during animation.
-- (void)drawRect:(CGRect)rect
+- (void) drawRect:(CGRect)rect
 {
     //// General Declarations
     CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
@@ -110,11 +110,8 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
     
     //// Subframes
     _iconView.frame = CGRectMake(CGRectGetMinX(notificationFrame) + 8, CGRectGetMinY(notificationFrame) + floor((CGRectGetHeight(notificationFrame) - 19) * 0.5), 19, 19);
-    NSLog(@"** %@", NSStringFromCGRect(_textLabel.frame));
     _textLabel.frame = CGRectMake(CGRectGetMinX(notificationFrame) + 35, CGRectGetMinY(notificationFrame) + floor(CGRectGetHeight(notificationFrame) * 0.14), CGRectGetWidth(notificationFrame) - 70, floor(CGRectGetHeight(notificationFrame) * 0.72));
-    NSLog(@"*** %@", NSStringFromCGRect(_textLabel.frame));
-
-    CGRect _anchorFrame = CGRectMake(CGRectGetMinX(notificationFrame) + CGRectGetWidth(notificationFrame) - 27, CGRectGetMinY(notificationFrame) + floor((CGRectGetHeight(notificationFrame) - 19) * 0.5), 19, 19);
+    _anchorView.frame = CGRectMake(CGRectGetMinX(notificationFrame) + CGRectGetWidth(notificationFrame) - 27, CGRectGetMinY(notificationFrame) + floor((CGRectGetHeight(notificationFrame) - 19) * 0.5), 19, 19);
     
     //// NotificationZone Drawing
     CGRect notificationZoneRect = CGRectMake(CGRectGetMinX(notificationFrame) + 0, CGRectGetMinY(notificationFrame) + (_position == RZNotificationPositionTop ? 0 : outerShadowBlurRadius), CGRectGetWidth(notificationFrame) - 0, CGRectGetHeight(notificationFrame) - (_position == RZNotificationPositionTop ?outerShadowBlurRadius : 0));
@@ -220,12 +217,13 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
 
 - (void) setMessage:(NSString *)message
 {
+    _message = message;
     if(MAX_MESSAGE_LENGHT < [message length])
         message = [message substringToIndex:MAX_MESSAGE_LENGHT];
     _textLabel.text = message;
     
     CGRect frameL = self.frame;
-    frameL.size.width = CGRectGetWidth(_textLabel.frame) - 70;
+    frameL.size.width -= 70;
     _textLabel.frame = frameL;
     [_textLabel sizeToFit];
     
@@ -237,30 +235,23 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
         frame.size.height = MIN_HEIGHT;
     }
     self.frame = frame;
-    
     [self setNeedsDisplay];
 }
 
 - (id) initWithMessage:(NSString*)message
 {
-    if ([message isEqual:[NSNull null]] || [[NSString stringWithFormat:@"%@", message] isEqualToString:@"(null)"])
-    {
-        return nil;
-    }
-    
+    _message = message;
     CGRect frame = CGRectZero;
     frame.size = CGSizeMake(CGRectGetWidth([UIScreen mainScreen].applicationFrame), MIN_HEIGHT);
     
     self = [self initWithFrame:frame];
     
     if (self)
-    {
-        _message = message;
-        
+    {        
         self.autoresizingMask = UIViewAutoresizingFlexibleWidth;
        
         _iconView = [[UIImageView alloc] initWithFrame:CGRectZero];
-        _iconView.contentMode = UIViewContentModeCenter | UIViewAutoresizingFlexibleHeight;
+        _iconView.contentMode = UIViewContentModeCenter;
         [self addSubview:_iconView];
         
         _textLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(frame) - 70, 0)];
@@ -276,6 +267,11 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
         [self addSubview:_textLabel];
         _textLabel.text = message;
         
+        _anchorView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"ico-anchor-white.png"]];
+        _anchorView.contentMode = UIViewContentModeCenter;
+        _anchorView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
+        [self addSubview:_anchorView];
+        
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(deviceOrientationChanged) name:UIDeviceOrientationDidChangeNotification object:nil];
     }
     return self;
@@ -285,8 +281,6 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
 - (void) showFromController:(UIViewController *)controller
 {
     _controller = controller;
-//    NSLog(@"%@", NSStringFromCGRect(controller.view.frame));
-//    NSLog(@"%@", NSStringFromCGRect(controller.view.bounds));
     
     if (_position == RZNotificationPositionTop) {
         self.transform = CGAffineTransformMakeTranslation(0.0, -CGRectGetHeight(self.frame));
@@ -294,57 +288,44 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
     else{
         self.transform = CGAffineTransformMakeTranslation(0.0, CGRectGetHeight(self.frame));
     }
+
+    CGRect frame = self.frame;
+    frame.size.width = CGRectGetWidth(controller.view.frame);
+    if (_position == RZNotificationPositionBottom) {
+        frame.origin.y = CGRectGetHeight(controller.view.frame);
+    }
+    else {
+        frame.origin.y = -CGRectGetHeight(self.frame);
+    }
+    self.frame = frame;
+    self.message = _message;
     
-//    if (controller.navigationController) {
-//        CGRect frame = self.frame;
-//        if (_position == RZNotificationPositionBottom) {
-//            frame.origin.y = CGRectGetHeight(controller.view.frame);
-//        }
-//        else {
-//            frame.origin.y = -CGRectGetHeight(self.frame);
-//        }
-//        self.frame = frame;
-//        [controller.view insertSubview:self belowSubview:controller.navigationController.navigationBar];
-//        NSLog(@"%@", NSStringFromCGRect(self.frame));
-//    }
-//    else
-//    {
-        CGRect frame = self.frame;
-        if (_position == RZNotificationPositionBottom) {
-            frame.origin.y = CGRectGetHeight(controller.view.frame);
-        }
-        else {
-            frame.origin.y = -CGRectGetHeight(self.frame);
-        }
-        self.frame = frame;
-        [controller.view addSubview:self];
-//    }
+    [controller.view addSubview:self];
     
     if(_vibrate)
         AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
     
-    [UIView animateWithDuration:0.4 animations:^{self.transform = CGAffineTransformIdentity;
-    }];
+    [UIView animateWithDuration:0.4 animations:^{self.transform = CGAffineTransformIdentity;}];
     
-    if(0.0 < _delay){
-        [self performSelector:@selector(close)
-               withObject:nil
-               afterDelay:_delay];
-    }
+    if(0.0 < _delay)
+        [self performSelector:@selector(close) withObject:nil afterDelay:_delay];
 }
 
 - (void) deviceOrientationChanged
 {
-    CGRect frame = self.frame;
-    if (_position == RZNotificationPositionBottom) {
-        frame.origin.y = CGRectGetHeight(_controller.view.frame) - self.frame.size.height;
+    if(self.superview){
+        CGRect frame = self.frame;
+        if (_position == RZNotificationPositionBottom) {
+            frame.origin.y = CGRectGetHeight(_controller.view.frame) - self.frame.size.height;
+        }
+        else {
+            frame.origin.y = 0.0;
+        }
+        if (_controller.view.frame.size.width != 0)
+            frame.size.width = _controller.view.frame.size.width;
+        self.frame = frame;
+        self.message = _message;
     }
-    else {
-        frame.origin.y = 0.0;
-    }
-    if (_controller.view.frame.size.width != 0)
-        frame.size.width = _controller.view.frame.size.width;
-    self.frame = frame;
 }
 
 - (void) close
@@ -372,9 +353,7 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
     }
 }
 
-
-// Handles the start of a touch
--(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
+- (void) touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {    
     if(!_isTouch){
         _isTouch = YES;
