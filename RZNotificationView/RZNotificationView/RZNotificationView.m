@@ -19,7 +19,7 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
 
 @implementation RZNotificationView
 
-- (id)initWithFrame:(CGRect)frame
+- (id) initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
     if (self) {
@@ -31,7 +31,7 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
 
 // Only override drawRect: if you perform custom drawing.
 // An empty implementation adversely affects performance during animation.
-- (void)drawRect:(CGRect)rect
+- (void) drawRect:(CGRect)rect
 {
     //// General Declarations
     CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
@@ -235,7 +235,6 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
         frame.size.height = MIN_HEIGHT;
     }
     self.frame = frame;
-    
     [self setNeedsDisplay];
 }
 
@@ -320,7 +319,6 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
         if (_controller.view.frame.size.width != 0)
             frame.size.width = _controller.view.frame.size.width;
         self.frame = frame;
-        
         self.message = _message;
     }
 }
@@ -350,9 +348,7 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
     }
 }
 
-
-// Handles the start of a touch
--(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
+- (void) touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {    
     if(!_isTouch){
         _isTouch = YES;
