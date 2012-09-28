@@ -1,3 +1,9 @@
 [submodule "vendor/ColorPopover"]
 	path = vendor/ColorPopover
 	url = git@github.com:jeremylagrue/ColorPopover.git
+[submodule "vendor/PrettyKit"]
+	path = vendor/PrettyKit
+	url = git://github.com/vicpenap/PrettyKit.git
+[submodule "vendor/MCSegmentedControl"]
+	path = vendor/MCSegmentedControl
+	url = git://github.com/oettam/MCSegmentedControl.git
