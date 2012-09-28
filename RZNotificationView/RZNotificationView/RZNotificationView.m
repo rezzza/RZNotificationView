@@ -223,7 +223,7 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
     _textLabel.text = message;
     
     CGRect frameL = self.frame;
-    frameL.size.width = CGRectGetWidth(_textLabel.frame) - 70;
+    frameL.size.width -= 70;
     _textLabel.frame = frameL;
     [_textLabel sizeToFit];
     
