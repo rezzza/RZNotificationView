@@ -53,6 +53,7 @@ typedef enum {
 @property (nonatomic) UIColor *customBottomColor;
 @property (nonatomic, strong) NSString *sound;
 @property (nonatomic) BOOL vibrate;
+@property (nonatomic) BOOL darkAssets;
 @property (nonatomic) RZNotificationIcon icon;
 @property (nonatomic, strong) NSString *customIcon;
 @property (assign, nonatomic) id <RZNotificationViewDelegate> delegate;

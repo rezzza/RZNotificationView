@@ -545,12 +545,10 @@
         case 8:
             [_notifView close];
             if(sender.selectedSegmentIndex == 0){
-                _notifView.textLabel.textColor = [UIColor whiteColor];
-                _notifView.textLabel.shadowColor = [UIColor blackColor];
+                _notifView.darkAssets = NO;
             }
             else if(sender.selectedSegmentIndex == 1){
-                _notifView.textLabel.textColor = [UIColor blackColor];
-                _notifView.textLabel.shadowColor = [UIColor whiteColor];
+                _notifView.darkAssets = YES;
             }
             break;
     }
