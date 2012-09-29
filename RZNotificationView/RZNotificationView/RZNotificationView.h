@@ -29,6 +29,12 @@ typedef enum {
     RZNotificationColorBlue
 }RZNotificationColor;
 
+typedef enum {
+    RZNotificationAssetColorManual = 0,
+    RZNotificationAssetColorAutomaticLight,
+    RZNotificationAssetColorAutomaticDark
+}RZNotificationAssetColor;
+
 @protocol RZNotificationViewDelegate;
 
 @interface RZNotificationView : UIView
@@ -53,7 +59,7 @@ typedef enum {
 @property (nonatomic) UIColor *customBottomColor;
 @property (nonatomic, strong) NSString *sound;
 @property (nonatomic) BOOL vibrate;
-@property (nonatomic) BOOL darkAssets;
+@property (nonatomic) RZNotificationAssetColor assetColor;
 @property (nonatomic) RZNotificationIcon icon;
 @property (nonatomic, strong) NSString *customIcon;
 @property (assign, nonatomic) id <RZNotificationViewDelegate> delegate;

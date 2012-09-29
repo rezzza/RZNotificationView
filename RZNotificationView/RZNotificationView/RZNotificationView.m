@@ -31,10 +31,13 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
 
 - (UIColor*) adjustAssetsColor:(UIColor*)c
 {
-    if(_darkAssets)
+    if(_assetColor == RZNotificationAssetColorAutomaticDark)
         return [self darkerColorForColor:c];
-        
-    return [self lighterColorForColor:c];
+    
+    if(_assetColor == RZNotificationAssetColorAutomaticLight)
+        return [self lighterColorForColor:c];
+    
+    return c;
 }
 
 - (UIColor *)lighterColorForColor:(UIColor *)c
@@ -69,7 +72,6 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
     
     // get a reference to that context we created
     CGContextRef context = UIGraphicsGetCurrentContext();
-    
     
     // set the fill color
     [[self adjustAssetsColor:color] setFill];
@@ -230,7 +232,13 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
 
     _iconView.image = [self image:_iconView.image withColor:colorStart];
     _anchorView.image = [self image:_anchorView.image withColor:colorStart];
-    _textLabel.textColor = [self adjustAssetsColor:colorStart];
+    if (_assetColor != RZNotificationAssetColorManual) {
+        _textLabel.textColor = [self adjustAssetsColor:colorStart];
+        if(_assetColor == RZNotificationAssetColorAutomaticDark)
+            _textLabel.shadowColor = [UIColor whiteColor];
+        if(_assetColor == RZNotificationAssetColorAutomaticLight)
+            _textLabel.shadowColor = [UIColor blackColor];
+    }
 }
 
 - (void) setIcon:(RZNotificationIcon)icon
@@ -333,6 +341,8 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
         _textLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
         _textLabel.textAlignment = UITextAlignmentLeft;
         _textLabel.lineBreakMode = UILineBreakModeWordWrap;
+        _textLabel.textColor = [UIColor blackColor];
+        _textLabel.shadowColor = [UIColor whiteColor];
         [self addSubview:_textLabel];
         _textLabel.text = message;
         

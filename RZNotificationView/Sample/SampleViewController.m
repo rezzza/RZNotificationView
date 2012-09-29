@@ -442,7 +442,8 @@
                 textStyleCell = [[PrettyCustomViewTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:TextStyleCellIdentifier];
                 
                 NSArray *items = [NSArray arrayWithObjects:
-                                  @"Bright",
+                                  @"Manual",
+                                  @"Light",
                                   @"Dark",
                                   nil];
                 MCSegmentedControl *segmentedControl = [[MCSegmentedControl alloc] initWithItems:items];
@@ -465,7 +466,7 @@
                 segmentedControl.unselectedItemColor = [UIColor darkGrayColor];
                 
                 UILabel *positionLabel = [[UILabel alloc] initWithFrame:CGRectMake(10.0, 0.0, 90.0, 44.0)];
-                positionLabel.text = [NSString stringWithFormat:@"Text style"];
+                positionLabel.text = [NSString stringWithFormat:@"Text Color"];
                 positionLabel.backgroundColor = [UIColor clearColor];
                 positionLabel.font = [UIFont boldSystemFontOfSize:14.0];
                 
@@ -544,12 +545,7 @@
             break;
         case 8:
             [_notifView close];
-            if(sender.selectedSegmentIndex == 0){
-                _notifView.darkAssets = NO;
-            }
-            else if(sender.selectedSegmentIndex == 1){
-                _notifView.darkAssets = YES;
-            }
+            _notifView.assetColor = sender.selectedSegmentIndex;
             break;
     }
 }
