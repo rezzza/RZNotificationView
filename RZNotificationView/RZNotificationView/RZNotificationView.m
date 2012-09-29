@@ -29,6 +29,75 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
     return self;
 }
 
+- (UIColor*) adjustAssetsColor:(UIColor*)c
+{
+    if(_assetColor == RZNotificationAssetColorAutomaticDark)
+        return [self darkerColorForColor:c];
+    
+    if(_assetColor == RZNotificationAssetColorAutomaticLight)
+        return [self lighterColorForColor:c];
+    
+    return c;
+}
+
+- (UIColor *)lighterColorForColor:(UIColor *)c
+{
+    float r, g, b, a;
+    if ([c getRed:&r green:&g blue:&b alpha:&a])
+        return [UIColor colorWithRed:MIN(r + 0.3, 1.0)
+                               green:MIN(g + 0.3, 1.0)
+                                blue:MIN(b + 0.3, 1.0)
+                               alpha:a];
+    return nil;
+}
+
+- (UIColor *)darkerColorForColor:(UIColor *)c
+{
+    float r, g, b, a;
+    if ([c getRed:&r green:&g blue:&b alpha:&a])
+        return [UIColor colorWithRed:MAX(r - 0.3, 0.0)
+                               green:MAX(g - 0.3, 0.0)
+                                blue:MAX(b - 0.3, 0.0)
+                               alpha:a];
+    return nil;
+}
+
+- (UIImage *)image:(UIImage *)img withColor:(UIColor *)color
+{
+    
+    // begin a new image context, to draw our colored image onto
+    //UIGraphicsBeginImageContext(img.size);
+    
+    UIGraphicsBeginImageContextWithOptions(img.size, NO, 2.0);
+    
+    // get a reference to that context we created
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    
+    // set the fill color
+    [[self adjustAssetsColor:color] setFill];
+    
+    // translate/flip the graphics context (for transforming from CG* coords to UI* coords
+    CGContextTranslateCTM(context, 0, img.size.height);
+    CGContextScaleCTM(context, 1.0, -1.0);
+    
+    // set the blend mode to color burn, and the original image
+    CGContextSetBlendMode(context, kCGBlendModeMultiply);
+    CGRect rect = CGRectMake(0, 0, img.size.width, img.size.height);
+    CGContextDrawImage(context, rect, img.CGImage);
+    
+    // set a mask that matches the shape of the image, then draw (color burn) a colored rectangle
+    CGContextClipToMask(context, rect, img.CGImage);
+    CGContextAddRect(context, rect);
+    CGContextDrawPath(context,kCGPathFill);
+    
+    // generate a new UIImage from the graphics context we drew onto
+    UIImage *coloredImg = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    
+    //return the color-burned image
+    return coloredImg;
+}
+
 // Only override drawRect: if you perform custom drawing.
 // An empty implementation adversely affects performance during animation.
 - (void) drawRect:(CGRect)rect
@@ -156,11 +225,20 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
     CGContextRestoreGState(context);
     
     CGContextRestoreGState(context);
-    
-    
+
     //// Cleanup
     CGGradientRelease(notificationBackgroundGradient);
     CGColorSpaceRelease(colorSpace);
+
+    _iconView.image = [self image:_iconView.image withColor:colorStart];
+    _anchorView.image = [self image:_anchorView.image withColor:colorStart];
+    if (_assetColor != RZNotificationAssetColorManual) {
+        _textLabel.textColor = [self adjustAssetsColor:colorStart];
+        if(_assetColor == RZNotificationAssetColorAutomaticDark)
+            _textLabel.shadowColor = [UIColor whiteColor];
+        if(_assetColor == RZNotificationAssetColorAutomaticLight)
+            _textLabel.shadowColor = [UIColor blackColor];
+    }
 }
 
 - (void) setIcon:(RZNotificationIcon)icon
@@ -188,6 +266,7 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
         default:
             break;
     }
+    [self setNeedsDisplay];
 }
 
 - (void) setColor:(RZNotificationColor)color
@@ -258,12 +337,12 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
         _textLabel.numberOfLines = 0;
         _textLabel.font = [UIFont fontWithName:@"Helvetica-Bold" size:12.0];
         _textLabel.backgroundColor = [UIColor clearColor];
-        _textLabel.textColor = [UIColor colorWithWhite:0.0 alpha:1];
-        _textLabel.shadowColor = [UIColor colorWithWhite:1.0 alpha:0.3];
         _textLabel.shadowOffset = CGSizeMake(0.0, 1.0);
         _textLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
         _textLabel.textAlignment = UITextAlignmentLeft;
         _textLabel.lineBreakMode = UILineBreakModeWordWrap;
+        _textLabel.textColor = [UIColor blackColor];
+        _textLabel.shadowColor = [UIColor whiteColor];
         [self addSubview:_textLabel];
         _textLabel.text = message;
         
