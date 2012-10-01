@@ -498,20 +498,39 @@
             [self navBarHidden:nil];
             break;
         case 9:
+        {
+            _roundIndex ++;
+            NSArray *round ;
             switch (_sampleMessage) {
                 case SampleMessageShort:
-                    _notifView.message = @"Register now, for free";
+                {
+                    round = [NSArray arrayWithObjects:
+                                      NSLocalizedString(@"Register now, for free", nil),
+                                      NSLocalizedString(@"Refer this app to a friend and earn money !", nil),
+                                      nil];
+                }
                     break;
                 case SampleMessageMedium:
-                    _notifView.message = @"You just save 10 €, thank you for trusting us and see you soon! :)";
+                {
+                    round = [NSArray arrayWithObjects:
+                             NSLocalizedString(@"You just save 10 €, thank you for trusting us and see you soon! :)", nil),
+                             NSLocalizedString(@"Thank you for your registration, please tap here to proceed further steps.", nil),
+                             nil];
+                }
                     break;
                 case SampleMessageLong:
-                    _notifView.message = @"Votre ami <i>\"John Appleseed\"</i> vient tout juste de télécharger l'application... félicitations, <b>vous venez de gagner 10€<b/> de crédits utilisables pour vos prochains achats ! :)";
+                {
+                    round = [NSArray arrayWithObjects:
+                             NSLocalizedString(@"Your friend \"John Appleseed\" just download the application ... Congratulations, you just won € 10 credit that can be used for your next purchase! :)", nil),
+                             nil];
+                }
                     break;
                 default:
                     break;
             }
+            _notifView.message = [round objectAtIndex:_roundIndex%[round count]];
             [_notifView showFromController:self];
+        }
             break;
         default:
             break;

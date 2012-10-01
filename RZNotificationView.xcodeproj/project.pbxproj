@@ -20,6 +20,7 @@
 		8B0AF9181612FFE000A31A05 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B0AF9171612FFE000A31A05 /* Accelerate.framework */; };
 		8B0AF9271613012D00A31A05 /* background.png in Resources */ = {isa = PBXBuildFile; fileRef = 8B0AF9251613012D00A31A05 /* background.png */; };
 		8B0AF9281613012D00A31A05 /* background@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8B0AF9261613012D00A31A05 /* background@2x.png */; };
+		8B13A6891619E4920068A9F5 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 8B13A6871619E4920068A9F5 /* Localizable.strings */; };
 		8B23A1AE16160E0300DCEBC8 /* ico-anchor-white.png in Resources */ = {isa = PBXBuildFile; fileRef = 8B23A1AC16160E0300DCEBC8 /* ico-anchor-white.png */; };
 		8B23A1AF16160E0300DCEBC8 /* ico-anchor-white@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8B23A1AD16160E0300DCEBC8 /* ico-anchor-white@2x.png */; };
 		8B75F27E1614AADE0084B685 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B75F27D1614AADE0084B685 /* AudioToolbox.framework */; };
@@ -154,6 +155,8 @@
 		8B0AF9171612FFE000A31A05 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
 		8B0AF9251613012D00A31A05 /* background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = background.png; sourceTree = "<group>"; };
 		8B0AF9261613012D00A31A05 /* background@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "background@2x.png"; sourceTree = "<group>"; };
+		8B13A6881619E4920068A9F5 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
+		8B13A68A1619E4A30068A9F5 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		8B23A1AC16160E0300DCEBC8 /* ico-anchor-white.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ico-anchor-white.png"; sourceTree = "<group>"; };
 		8B23A1AD16160E0300DCEBC8 /* ico-anchor-white@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ico-anchor-white@2x.png"; sourceTree = "<group>"; };
 		8B75F27D1614AADE0084B685 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
@@ -347,6 +350,7 @@
 		8BB3D86516119CA70056B98F /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				8B13A6871619E4920068A9F5 /* Localizable.strings */,
 				8B0AF9251613012D00A31A05 /* background.png */,
 				8B0AF9261613012D00A31A05 /* background@2x.png */,
 				8BB3D8C91611B2590056B98F /* Icons */,
@@ -542,6 +546,7 @@
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
+				fr,
 			);
 			mainGroup = 8BB3D84F16119CA60056B98F;
 			productRefGroup = 8BB3D85B16119CA60056B98F /* Products */;
@@ -597,6 +602,7 @@
 				8B0AF9281613012D00A31A05 /* background@2x.png in Resources */,
 				8B23A1AE16160E0300DCEBC8 /* ico-anchor-white.png in Resources */,
 				8B23A1AF16160E0300DCEBC8 /* ico-anchor-white@2x.png in Resources */,
+				8B13A6891619E4920068A9F5 /* Localizable.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -714,6 +720,15 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
+		8B13A6871619E4920068A9F5 /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				8B13A6881619E4920068A9F5 /* fr */,
+				8B13A68A1619E4A30068A9F5 /* en */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
 		8BB3D86716119CA70056B98F /* InfoPlist.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
