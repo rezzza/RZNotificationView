@@ -371,10 +371,12 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
     CGRect frame = self.frame;
     frame.size.width = CGRectGetWidth(controller.view.frame);
     if (_position == RZNotificationPositionBottom) {
+        self.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
         frame.origin.y = CGRectGetHeight(controller.view.frame);
     }
     else {
         frame.origin.y = -CGRectGetHeight(self.frame);
+        self.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleBottomMargin;
     }
     self.frame = frame;
     self.message = _message;
@@ -384,7 +386,9 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
     if(_vibrate)
         AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
     
-    [UIView animateWithDuration:0.4 animations:^{self.transform = CGAffineTransformIdentity;}];
+    [UIView animateWithDuration:0.4
+                     animations:^{self.transform = CGAffineTransformIdentity;}
+     ];
     
     if(0.0 < _delay)
         [self performSelector:@selector(close) withObject:nil afterDelay:_delay];
