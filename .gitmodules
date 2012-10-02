@@ -7,3 +7,6 @@
 [submodule "vendor/MCSegmentedControl"]
 	path = vendor/MCSegmentedControl
 	url = git://github.com/oettam/MCSegmentedControl.git
+[submodule "vendor/TTTAttributedLabel"]
+	path = vendor/TTTAttributedLabel
+	url = git://github.com/mattt/TTTAttributedLabel.git

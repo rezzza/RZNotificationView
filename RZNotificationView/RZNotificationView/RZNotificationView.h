@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "RZNotificationLabelProtocol.h"
 
 typedef enum {
     RZNotificationIconFacebook = 0,
@@ -44,13 +45,16 @@ typedef enum {
     UIImageView *_anchorView;
     UIViewController *_controller;
     BOOL _isTouch;
+    id _actionParam;
 }
 
 - (id) initWithMessage:(NSString*)message;
 - (void) showFromController:(UIViewController *)controller;
+- (void) setActionToCall:(SEL)actionToCall withParam:(id)param;
 - (void) close;
 
-@property (nonatomic, strong) UILabel *textLabel;
+@property (nonatomic, strong) UILabel *_textLabel;
+@property (nonatomic, strong) id <RZNotificationLabelProtocol> customView;
 @property (nonatomic, strong) NSString *message;
 @property (nonatomic) float delay;
 @property (nonatomic) RZNotificationPosition position;
@@ -63,6 +67,8 @@ typedef enum {
 @property (nonatomic) RZNotificationIcon icon;
 @property (nonatomic, strong) NSString *customIcon;
 @property (assign, nonatomic) id <RZNotificationViewDelegate> delegate;
+@property (nonatomic) SEL actionToCall;
+@property (nonatomic, strong) NSURL *urlToOpen;
 
 @end
 
