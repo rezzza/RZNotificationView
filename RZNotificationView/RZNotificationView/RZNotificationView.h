@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "RZNotificationLabelProtocol.h"
 
 typedef enum {
     RZNotificationIconFacebook = 0,
@@ -52,7 +53,8 @@ typedef enum {
 - (void) setActionToCall:(SEL)actionToCall withParam:(id)param;
 - (void) close;
 
-@property (nonatomic, strong) UILabel *textLabel;
+@property (nonatomic, strong) UILabel *_textLabel;
+@property (nonatomic, strong) id <RZNotificationLabelProtocol> customView;
 @property (nonatomic, strong) NSString *message;
 @property (nonatomic) float delay;
 @property (nonatomic) RZNotificationPosition position;

@@ -11,6 +11,8 @@
 #import "GzColors.h"
 #import "PrettyKit.h"
 #import "MCSegmentedControl.h"
+#import "CustomLabel.h"
+#import "CustomImageView.h"
 
 @interface SampleViewController ()
 
@@ -39,7 +41,7 @@
     self.tableView.dataSource = self;
     self.title = @"RZNotificationView Sample";
     self.navigationController.navigationBar.tintColor = [UIColor colorWithRed:0.6 green:0.0 blue:0.0 alpha:1];
-    _notifView = [[RZNotificationView alloc] initWithMessage:@"No Message"];
+    _notifView = [[RZNotificationView alloc] initWithMessage:@""];
     _notifView.delay = 3.5;
     _notifView.delegate = self;
     [_notifView setActionToCall:@selector(clicNotificationView:) withParam:@"This could be a message"];
@@ -151,7 +153,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {    
-    return 10;
+    return 11;
 }
 
 -(CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -191,6 +193,9 @@
     
     static NSString *TextStyleCellIdentifier = @"TextStyleCellIdentifier";
     PrettyCustomViewTableViewCell *textStyleCell;
+    
+    static NSString *ContentStyleCellIdentifier = @"ContentStyleCellIdentifier";
+    PrettyCustomViewTableViewCell *contentStyleCell;
     
     PrettyCustomViewTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
@@ -490,6 +495,48 @@
             textStyleCell.tableViewBackgroundColor = tableView.backgroundColor;
             return textStyleCell;
         case 9:
+            contentStyleCell = [tableView dequeueReusableCellWithIdentifier:ContentStyleCellIdentifier];
+            if (contentStyleCell == nil) {
+                contentStyleCell = [[PrettyCustomViewTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:ContentStyleCellIdentifier];
+                
+                NSArray *items = [NSArray arrayWithObjects:
+                                  @"Label",
+                                  @"Attributed",
+                                  @"Image",
+                                  nil];
+                MCSegmentedControl *segmentedControl = [[MCSegmentedControl alloc] initWithItems:items];
+                segmentedControl.tag = 9;
+                segmentedControl.font = [UIFont boldSystemFontOfSize:14.0f];
+                segmentedControl.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
+                
+                // set frame, add to view, set target and action for value change as usual
+                segmentedControl.frame = CGRectMake(100.0, 7.0, 215.0, 30.0);
+                [self.view addSubview:segmentedControl];
+                [segmentedControl addTarget:self action:@selector(segmentedControlDidChange:) forControlEvents:UIControlEventValueChanged];
+                
+                segmentedControl.selectedSegmentIndex = 0;
+                
+                // Set a tint color
+                segmentedControl.tintColor = [UIColor colorWithRed:.6 green:.0 blue:.0 alpha:1.0];
+                
+                // Customize font and items color
+                segmentedControl.selectedItemColor   = [UIColor whiteColor];
+                segmentedControl.unselectedItemColor = [UIColor darkGrayColor];
+                
+                UILabel *positionLabel = [[UILabel alloc] initWithFrame:CGRectMake(10.0, 0.0, 90.0, 44.0)];
+                positionLabel.text = [NSString stringWithFormat:@"Content"];
+                positionLabel.backgroundColor = [UIColor clearColor];
+                positionLabel.font = [UIFont boldSystemFontOfSize:14.0];
+                
+                UIView *delayView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, 320, 44)];
+                [delayView addSubview:segmentedControl];
+                [delayView addSubview:positionLabel];
+                contentStyleCell.customView = delayView;
+            }
+            [contentStyleCell prepareForTableView:tableView indexPath:indexPath];
+            contentStyleCell.tableViewBackgroundColor = tableView.backgroundColor;
+            return contentStyleCell;
+        case 10:
             cell.textLabel.text = @"Show notification";
             return cell;
         
@@ -508,7 +555,7 @@
         case 6:
             [self navBarHidden:nil];
             break;
-        case 9:
+        case 10:
         {
             _roundIndex ++;
             NSArray *round ;
@@ -576,6 +623,50 @@
         case 8:
             [_notifView close];
             _notifView.assetColor = sender.selectedSegmentIndex;
+            break;
+        case 9:
+            [_notifView close];
+            switch (sender.selectedSegmentIndex) {
+                case 1:{
+                    CustomLabel *customLabel = [[CustomLabel alloc] initWithFrame:CGRectZero];
+                    customLabel.font = [UIFont fontWithName:@"Helvetica" size:12.0];
+                    customLabel.textColor = [UIColor darkGrayColor];
+                    customLabel.lineBreakMode = UILineBreakModeWordWrap;
+                    customLabel.numberOfLines = 0;
+                    customLabel.backgroundColor = [UIColor clearColor];
+                    customLabel.shadowOffset = CGSizeMake(0.0, 1.0);
+                    customLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+                    customLabel.textAlignment = UITextAlignmentLeft;
+                    customLabel.textColor = [UIColor blackColor];
+                    customLabel.shadowColor = [UIColor whiteColor];
+                    
+                    NSString *text = @"Your friend \"John Appleseed\" just download the application ... Congratulations, you just won € 10 credit that can be used for your next purchase! :)";
+                    [customLabel setText:text afterInheritingLabelAttributesAndConfiguringWithBlock:^ NSMutableAttributedString *(NSMutableAttributedString *mutableAttributedString) {
+                        NSRange boldRange = [[mutableAttributedString string] rangeOfString:@"you just won € 10 credit" options:NSCaseInsensitiveSearch];
+                        
+                        // Core Text APIs use C functions without a direct bridge to UIFont. See Apple's "Core Text Programming Guide" to learn how to configure string attributes.
+                        UIFont *boldSystemFont = [UIFont boldSystemFontOfSize:12];
+                        CTFontRef font = CTFontCreateWithName((__bridge CFStringRef)boldSystemFont.fontName, boldSystemFont.pointSize, NULL);
+                        if (font) {
+                            [mutableAttributedString addAttribute:(NSString *)kCTFontAttributeName value:(__bridge id)font range:boldRange];
+                            CFRelease(font);
+                        }
+                        
+                        return mutableAttributedString;
+                    }];
+                    _notifView.customView = customLabel;
+                }
+                    break;
+                case 2:{
+                    CustomImageView *customImageView = [[CustomImageView alloc] initWithImage:[UIImage imageNamed:@"340119_564053743608283_175259668_o.jpg"]];
+                    customImageView.contentMode = UIViewContentModeScaleAspectFit;
+                    _notifView.customView = customImageView;
+                }
+                    break;
+                default:
+                    _notifView.customView = nil;
+                    break;
+            }
             break;
     }
 }
