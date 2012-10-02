@@ -43,8 +43,7 @@
     _notifView.delay = 3.5;
     _notifView.delegate = self;
     [_notifView setActionToCall:@selector(clicNotificationView:) withParam:@"This could be a message"];
-    [_notifView setUrlToCall:[NSURL URLWithString:@"rz://sampleController?message=TheMessage"]];
-    
+    [_notifView setUrlToOpen:[NSURL URLWithString:@"rzn://OtherViewController?the%20awesome%20message"]];
 }
 
 - (void)didReceiveMemoryWarning

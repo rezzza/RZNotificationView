@@ -10,4 +10,6 @@
 
 @interface OtherViewController : UIViewController
 
+@property (nonatomic, strong) IBOutlet UILabel *message;
+
 @end
