@@ -21,6 +21,8 @@
 		8B0AF9271613012D00A31A05 /* background.png in Resources */ = {isa = PBXBuildFile; fileRef = 8B0AF9251613012D00A31A05 /* background.png */; };
 		8B0AF9281613012D00A31A05 /* background@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8B0AF9261613012D00A31A05 /* background@2x.png */; };
 		8B13A6891619E4920068A9F5 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 8B13A6871619E4920068A9F5 /* Localizable.strings */; };
+		8B13A692161AEC3D0068A9F5 /* OtherViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B13A690161AEC3D0068A9F5 /* OtherViewController.m */; };
+		8B13A693161AEC3D0068A9F5 /* OtherViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8B13A691161AEC3D0068A9F5 /* OtherViewController.xib */; };
 		8B23A1AE16160E0300DCEBC8 /* ico-anchor-white.png in Resources */ = {isa = PBXBuildFile; fileRef = 8B23A1AC16160E0300DCEBC8 /* ico-anchor-white.png */; };
 		8B23A1AF16160E0300DCEBC8 /* ico-anchor-white@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8B23A1AD16160E0300DCEBC8 /* ico-anchor-white@2x.png */; };
 		8B75F27E1614AADE0084B685 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B75F27D1614AADE0084B685 /* AudioToolbox.framework */; };
@@ -157,6 +159,9 @@
 		8B0AF9261613012D00A31A05 /* background@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "background@2x.png"; sourceTree = "<group>"; };
 		8B13A6881619E4920068A9F5 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
 		8B13A68A1619E4A30068A9F5 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		8B13A68F161AEC3D0068A9F5 /* OtherViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OtherViewController.h; sourceTree = "<group>"; };
+		8B13A690161AEC3D0068A9F5 /* OtherViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OtherViewController.m; sourceTree = "<group>"; };
+		8B13A691161AEC3D0068A9F5 /* OtherViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = OtherViewController.xib; sourceTree = "<group>"; };
 		8B23A1AC16160E0300DCEBC8 /* ico-anchor-white.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ico-anchor-white.png"; sourceTree = "<group>"; };
 		8B23A1AD16160E0300DCEBC8 /* ico-anchor-white@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ico-anchor-white@2x.png"; sourceTree = "<group>"; };
 		8B75F27D1614AADE0084B685 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
@@ -401,6 +406,9 @@
 				8BB3D8A716119F150056B98F /* SampleViewController.h */,
 				8BB3D8A816119F150056B98F /* SampleViewController.m */,
 				8BB3D8A916119F150056B98F /* SampleViewController.xib */,
+				8B13A68F161AEC3D0068A9F5 /* OtherViewController.h */,
+				8B13A690161AEC3D0068A9F5 /* OtherViewController.m */,
+				8B13A691161AEC3D0068A9F5 /* OtherViewController.xib */,
 			);
 			path = Sample;
 			sourceTree = "<group>";
@@ -603,6 +611,7 @@
 				8B23A1AE16160E0300DCEBC8 /* ico-anchor-white.png in Resources */,
 				8B23A1AF16160E0300DCEBC8 /* ico-anchor-white@2x.png in Resources */,
 				8B13A6891619E4920068A9F5 /* Localizable.strings in Resources */,
+				8B13A693161AEC3D0068A9F5 /* OtherViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -688,6 +697,7 @@
 				8B0AF9141612FEAB00A31A05 /* PrettyShadowPlainTableview.m in Sources */,
 				8B0AF9151612FEAB00A31A05 /* PrettyTabBar.m in Sources */,
 				8B0AF9161612FEAB00A31A05 /* PrettyToolbar.m in Sources */,
+				8B13A692161AEC3D0068A9F5 /* OtherViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
