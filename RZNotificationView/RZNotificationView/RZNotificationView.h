@@ -44,10 +44,12 @@ typedef enum {
     UIImageView *_anchorView;
     UIViewController *_controller;
     BOOL _isTouch;
+    id _actionParam;
 }
 
 - (id) initWithMessage:(NSString*)message;
 - (void) showFromController:(UIViewController *)controller;
+- (void) setActionToCall:(SEL)actionToCall withParam:(id)param;
 - (void) close;
 
 @property (nonatomic, strong) UILabel *textLabel;
@@ -63,6 +65,7 @@ typedef enum {
 @property (nonatomic) RZNotificationIcon icon;
 @property (nonatomic, strong) NSString *customIcon;
 @property (assign, nonatomic) id <RZNotificationViewDelegate> delegate;
+@property (nonatomic) SEL actionToCall;
 
 @end
 

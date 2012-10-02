@@ -317,6 +317,12 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
     [self setNeedsDisplay];
 }
 
+- (void) setActionToCall:(SEL)actionToCall withParam:(id)param
+{
+    _actionToCall = actionToCall;
+    _actionParam = param;
+}
+
 - (id) initWithMessage:(NSString*)message
 {
     _message = message;
@@ -453,8 +459,12 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
             [self close];
         }
     }
+    if([_controller respondsToSelector:_actionToCall]){
+        if(!_actionParam)
+            _actionParam = self;
+        [_controller performSelector:_actionToCall withObject:_actionParam];
+    }
 }
-
 - (void) dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIDeviceOrientationDidChangeNotification object:nil];

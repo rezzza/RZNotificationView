@@ -42,6 +42,7 @@
     _notifView = [[RZNotificationView alloc] initWithMessage:@"No Message"];
     _notifView.delay = 3.5;
     _notifView.delegate = self;
+    [_notifView setActionToCall:@selector(clicNotificationView:) withParam:@"rz://otherview"];
 }
 
 - (void)didReceiveMemoryWarning
@@ -51,6 +52,13 @@
 }
 
 #pragma mark - Button clic
+
+- (void) clicNotificationView:(id)param
+{
+    if([param isKindOfClass:[NSString class]]){
+        
+    }
+}
 
 - (void) notificationViewTouched:(RZNotificationView*)notificationView
 {
