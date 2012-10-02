@@ -66,6 +66,7 @@ typedef enum {
 @property (nonatomic, strong) NSString *customIcon;
 @property (assign, nonatomic) id <RZNotificationViewDelegate> delegate;
 @property (nonatomic) SEL actionToCall;
+@property (nonatomic, strong) NSURL *urlToCall;
 
 @end
 

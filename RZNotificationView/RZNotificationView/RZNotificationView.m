@@ -464,6 +464,9 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
             _actionParam = self;
         [_controller performSelector:_actionToCall withObject:_actionParam];
     }
+    if (_urlToCall) {
+        [[UIApplication sharedApplication] openURL:_urlToCall];
+    }
 }
 - (void) dealloc
 {

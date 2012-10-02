@@ -42,7 +42,9 @@
     _notifView = [[RZNotificationView alloc] initWithMessage:@"No Message"];
     _notifView.delay = 3.5;
     _notifView.delegate = self;
-    [_notifView setActionToCall:@selector(clicNotificationView:) withParam:@"rz://OtherViewController/"];
+    [_notifView setActionToCall:@selector(clicNotificationView:) withParam:@"This could be a message"];
+    [_notifView setUrlToCall:[NSURL URLWithString:@"rz://sampleController?message=TheMessage"]];
+    
 }
 
 - (void)didReceiveMemoryWarning
@@ -56,16 +58,9 @@
 - (void) clicNotificationView:(id)param
 {
     if([param isKindOfClass:[NSString class]]){
-        NSURL *url = [NSURL URLWithString:param];
-        if ([[url scheme] isEqualToString:@"rz"]) {
-            //Special Controller
-            Class screenClass = NSClassFromString([url host]);
-            UIViewController* newClass = [[screenClass alloc] initWithNibName:[url host] bundle:nil];
-            [self.navigationController pushViewController:(UIViewController*)newClass animated:YES];// newClass is an NSObject
-        }
-        else if ([[url scheme] isEqualToString:@"http"] || [[url scheme] isEqualToString:@"https"]) {
-            //Webview Controller
-        }
+        NSLog(@"%@", param);
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"message" message:param delegate:nil cancelButtonTitle:@"cool" otherButtonTitles: nil];
+        [alert show];
     }
 }
 
