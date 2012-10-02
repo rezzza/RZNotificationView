@@ -34,6 +34,7 @@ typedef enum {
     NSIndexPath *_indexPath;
     RZNotificationView *_notifView;
     SampleMessage _sampleMessage;
+    NSInteger _roundIndex;
 }
 
 @property (nonatomic, strong) WEPopoverController *popoverController;

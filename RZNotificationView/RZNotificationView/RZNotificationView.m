@@ -7,6 +7,7 @@
 //
 
 #import "RZNotificationView.h"
+
 #import <AudioToolbox/AudioServices.h>
 
 #define UIColorFromRGB(rgbValue) [UIColor \
@@ -179,7 +180,9 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
     
     //// Subframes
     _iconView.frame = CGRectMake(CGRectGetMinX(notificationFrame) + 8, CGRectGetMinY(notificationFrame) + floor((CGRectGetHeight(notificationFrame) - 19) * 0.5), 19, 19);
-    _textLabel.frame = CGRectMake(CGRectGetMinX(notificationFrame) + 35, CGRectGetMinY(notificationFrame) + floor(CGRectGetHeight(notificationFrame) * 0.14), CGRectGetWidth(notificationFrame) - 70, floor(CGRectGetHeight(notificationFrame) * 0.72));
+    CGRect contentFrame = CGRectMake(CGRectGetMinX(notificationFrame) + 35, CGRectGetMinY(notificationFrame) + floor(CGRectGetHeight(notificationFrame) * 0.14), CGRectGetWidth(notificationFrame) - 70, floor(CGRectGetHeight(notificationFrame) * 0.72));
+    _textLabel.frame = contentFrame;
+    [_customView setFrame:contentFrame];
     _anchorView.frame = CGRectMake(CGRectGetMinX(notificationFrame) + CGRectGetWidth(notificationFrame) - 27, CGRectGetMinY(notificationFrame) + floor((CGRectGetHeight(notificationFrame) - 19) * 0.5), 19, 19);
     
     //// NotificationZone Drawing
@@ -306,15 +309,52 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
     _textLabel.frame = frameL;
     [_textLabel sizeToFit];
     
+    [self adjustHeighAndRedraw:CGRectGetHeight(_textLabel.frame)];
+}
+
+- (void) adjustHeighAndRedraw:(CGFloat)height
+{
     CGRect frame = self.frame;
-    if (MIN_HEIGHT < floor(CGRectGetHeight(_textLabel.frame) / 0.72)) {
-        frame.size.height = floor(CGRectGetHeight(_textLabel.frame) / 0.72);
+    if (MIN_HEIGHT < floor(height / 0.72)) { //calculation given by paintcode
+        frame.size.height = floor(height / 0.72);
     }
     else{
         frame.size.height = MIN_HEIGHT;
     }
     self.frame = frame;
     [self setNeedsDisplay];
+}
+
+- (void) setCustomView:(id<RZNotificationLabelProtocol>)customView
+{
+    if(customView){
+        [_textLabel removeFromSuperview];
+        [_customView removeFromSuperview];
+        _customView = customView;
+        _textLabel = nil;
+        [self addSubview:_customView];
+    }
+    else{
+        [_customView removeFromSuperview];
+        _textLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth([_customView frame]) - 70, 0)];
+        _textLabel.numberOfLines = 0;
+        _textLabel.font = [UIFont fontWithName:@"Helvetica-Bold" size:12.0];
+        _textLabel.backgroundColor = [UIColor clearColor];
+        _textLabel.shadowOffset = CGSizeMake(0.0, 1.0);
+        _textLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+        _textLabel.textAlignment = UITextAlignmentLeft;
+        _textLabel.lineBreakMode = UILineBreakModeWordWrap;
+        _textLabel.textColor = [UIColor blackColor];
+        _textLabel.shadowColor = [UIColor whiteColor];
+        [self addSubview:_textLabel];
+        _textLabel.text = _message;
+    }
+}
+
+- (void) setActionToCall:(SEL)actionToCall withParam:(id)param
+{
+    _actionToCall = actionToCall;
+    _actionParam = param;
 }
 
 - (id) initWithMessage:(NSString*)message
@@ -371,20 +411,32 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
     CGRect frame = self.frame;
     frame.size.width = CGRectGetWidth(controller.view.frame);
     if (_position == RZNotificationPositionBottom) {
+        self.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
         frame.origin.y = CGRectGetHeight(controller.view.frame);
     }
     else {
         frame.origin.y = -CGRectGetHeight(self.frame);
+        self.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleBottomMargin;
     }
     self.frame = frame;
-    self.message = _message;
+    
+    if(_textLabel){
+        self.message = _message;
+    }
+    else{
+        CGFloat height = [_customView resizeForWidth:CGRectGetWidth(self.frame)-70.0];
+        NSLog(@"%f", height);
+        [self adjustHeighAndRedraw:height];
+    }
     
     [controller.view addSubview:self];
     
     if(_vibrate)
         AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
     
-    [UIView animateWithDuration:0.4 animations:^{self.transform = CGAffineTransformIdentity;}];
+    [UIView animateWithDuration:0.4
+                     animations:^{self.transform = CGAffineTransformIdentity;}
+     ];
     
     if(0.0 < _delay)
         [self performSelector:@selector(close) withObject:nil afterDelay:_delay];
@@ -403,7 +455,15 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
         if (_controller.view.frame.size.width != 0)
             frame.size.width = _controller.view.frame.size.width;
         self.frame = frame;
-        self.message = _message;
+        
+        if(_textLabel){
+            self.message = _message;
+        }
+        else{
+            CGFloat height = [_customView resizeForWidth:CGRectGetWidth(self.frame)-70.0];
+            NSLog(@"%f", height);
+            [self adjustHeighAndRedraw:height];
+        }
     }
 }
 
@@ -449,8 +509,17 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
             [self close];
         }
     }
+    if([_controller respondsToSelector:_actionToCall]){
+        if(!_actionParam)
+            _actionParam = self;
+        [_controller performSelector:_actionToCall withObject:_actionParam];
+    }
+    if (_urlToOpen) {
+        if ([[UIApplication sharedApplication] canOpenURL:_urlToOpen]) {
+            [[UIApplication sharedApplication] openURL:_urlToOpen];
+        }
+    }
 }
-
 - (void) dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIDeviceOrientationDidChangeNotification object:nil];

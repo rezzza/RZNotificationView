@@ -8,6 +8,7 @@
 
 #import "AppDelegate.h"
 #import "SampleViewController.h"
+#import "OtherViewController.h"
 
 @implementation AppDelegate
 
@@ -22,6 +23,17 @@
     [self.window setRootViewController:n];
     
     [self.window makeKeyAndVisible];
+    return YES;
+}
+
+- (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url {
+    NSLog(@"%@", url.query);
+    if ([[url host] isEqualToString:@"OtherViewController"]) {
+        OtherViewController *s = [[OtherViewController alloc] initWithNibName:@"OtherViewController" bundle:nil];
+        UINavigationController *n = (UINavigationController*)self.window.rootViewController;
+        [n pushViewController:s animated:YES];
+        s.message.text = [url.query stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    }
     return YES;
 }
 
