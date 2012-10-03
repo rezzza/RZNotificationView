@@ -336,7 +336,7 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
         [_customView removeFromSuperview];
         _customView = customView;
         _textLabel = nil;
-        [self addSubview:_customView];
+        [self addSubview:(UIView*)_customView];
     }
     else{
         [_customView removeFromSuperview];
@@ -346,8 +346,20 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
         _textLabel.backgroundColor = [UIColor clearColor];
         _textLabel.shadowOffset = CGSizeMake(0.0, 1.0);
         _textLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-        _textLabel.textAlignment = UITextAlignmentLeft;
-        _textLabel.lineBreakMode = UILineBreakModeWordWrap;
+        
+        if (RZSystemVersionGreaterOrEqualThan(6.0))
+        {
+            _textLabel.textAlignment = NSTextAlignmentLeft;
+            _textLabel.lineBreakMode = NSLineBreakByWordWrapping;
+        }
+        else
+        {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+            _textLabel.textAlignment = UITextAlignmentLeft;
+            _textLabel.lineBreakMode = UILineBreakModeWordWrap;
+#pragma clang diagnostic pop
+        }
         _textLabel.textColor = [UIColor blackColor];
         _textLabel.shadowColor = [UIColor whiteColor];
         [self addSubview:_textLabel];
@@ -382,8 +394,19 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
         _textLabel.backgroundColor = [UIColor clearColor];
         _textLabel.shadowOffset = CGSizeMake(0.0, 1.0);
         _textLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-        _textLabel.textAlignment = UITextAlignmentLeft;
-        _textLabel.lineBreakMode = UILineBreakModeWordWrap;
+        if (RZSystemVersionGreaterOrEqualThan(6.0))
+        {
+            _textLabel.textAlignment = NSTextAlignmentLeft;
+            _textLabel.lineBreakMode = NSLineBreakByWordWrapping;
+        }
+        else
+        {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+            _textLabel.textAlignment = UITextAlignmentLeft;
+            _textLabel.lineBreakMode = UILineBreakModeWordWrap;
+#pragma clang diagnostic pop
+        }
         _textLabel.textColor = [UIColor blackColor];
         _textLabel.shadowColor = [UIColor whiteColor];
         [self addSubview:_textLabel];
@@ -518,7 +541,11 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
     if([_controller respondsToSelector:_actionToCall]){
         if(!_actionParam)
             _actionParam = self;
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
         [_controller performSelector:_actionToCall withObject:_actionParam];
+#pragma clang diagnostic pop
+
     }
     if (_urlToOpen) {
         if ([[UIApplication sharedApplication] canOpenURL:_urlToOpen]) {

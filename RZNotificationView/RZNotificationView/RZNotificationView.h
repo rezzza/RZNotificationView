@@ -10,6 +10,8 @@
 #import "RZNotificationLabelProtocol.h"
 #include <AudioToolbox/AudioToolbox.h>
 
+#define RZSystemVersionGreaterOrEqualThan(version) ([[[UIDevice currentDevice] systemVersion] floatValue] >= version)
+
 typedef enum {
     RZNotificationIconFacebook = 0,
     RZNotificationIconGift,
@@ -42,7 +44,6 @@ typedef enum {
 @interface RZNotificationView : UIView
 {
     UIImageView *_iconView;
-    UILabel *_textLabel;
     UIImageView *_anchorView;
     UIViewController *_controller;
     BOOL _isTouch;
@@ -58,7 +59,7 @@ typedef enum {
 - (void) setActionToCall:(SEL)actionToCall withParam:(id)param;
 - (void) close;
 
-@property (nonatomic, strong) UILabel *_textLabel;
+@property (nonatomic, strong) UILabel *textLabel;
 @property (nonatomic, strong) id <RZNotificationLabelProtocol> customView;
 @property (nonatomic, strong) NSString *message;
 @property (nonatomic) float delay;

@@ -218,7 +218,17 @@
     
     // Configure the cell...
     [cell prepareForTableView:tableView indexPath:indexPath];
-    cell.textLabel.textAlignment = UITextAlignmentCenter;
+    if (RZSystemVersionGreaterOrEqualThan(6.0))
+    {
+        cell.textLabel.textAlignment = NSTextAlignmentCenter;
+    }
+    else
+    {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+        cell.textLabel.textAlignment = UITextAlignmentCenter;
+#pragma clang diagnostic pop
+    }
     
     switch (indexPath.row) {
         case 0:
@@ -270,8 +280,17 @@
                 UILabel *positionLabel = [[UILabel alloc] initWithFrame:CGRectMake(20.0, 2.0, 260.0, 20.0)];
                 positionLabel.text = [NSString stringWithFormat:@"Or predefined colors :"];
                 positionLabel.numberOfLines = 1;
-                positionLabel.textAlignment = UITextAlignmentCenter;
-                positionLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+                if (RZSystemVersionGreaterOrEqualThan(6.0))
+                {
+                    positionLabel.textAlignment = NSTextAlignmentCenter;
+                }
+                else
+                {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+                    positionLabel.textAlignment = UITextAlignmentCenter;
+#pragma clang diagnostic pop
+                }                positionLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
                 positionLabel.backgroundColor = [UIColor clearColor];
                 positionLabel.font = [UIFont boldSystemFontOfSize:14.0];
                 
@@ -668,12 +687,23 @@
                     CustomLabel *customLabel = [[CustomLabel alloc] initWithFrame:CGRectZero];
                     customLabel.font = [UIFont fontWithName:@"Helvetica" size:12.0];
                     customLabel.textColor = [UIColor darkGrayColor];
-                    customLabel.lineBreakMode = UILineBreakModeWordWrap;
                     customLabel.numberOfLines = 0;
                     customLabel.backgroundColor = [UIColor clearColor];
                     customLabel.shadowOffset = CGSizeMake(0.0, 1.0);
                     customLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-                    customLabel.textAlignment = UITextAlignmentLeft;
+                    if (RZSystemVersionGreaterOrEqualThan(6.0))
+                    {
+                        customLabel.textAlignment = NSTextAlignmentCenter;
+                        customLabel.lineBreakMode = NSLineBreakByWordWrapping;
+                    }
+                    else
+                    {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+                        customLabel.textAlignment = UITextAlignmentCenter;
+                        customLabel.lineBreakMode = UILineBreakModeWordWrap;
+#pragma clang diagnostic pop
+                    }
                     customLabel.textColor = [UIColor blackColor];
                     customLabel.shadowColor = [UIColor whiteColor];
                     
