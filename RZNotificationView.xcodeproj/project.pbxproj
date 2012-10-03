@@ -31,6 +31,7 @@
 		8B76CF8D161B322F00004F2A /* TTTAttributedLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B76CF8C161B322F00004F2A /* TTTAttributedLabel.m */; };
 		8B76CF92161B326C00004F2A /* CustomLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B76CF91161B326C00004F2A /* CustomLabel.m */; };
 		8B76CF94161B34C400004F2A /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B76CF93161B34C400004F2A /* CoreText.framework */; };
+		8BAAA406161C79580017B0DB /* DoorBell-SoundBible.com-1986366504.wav in Resources */ = {isa = PBXBuildFile; fileRef = 8BAAA405161C79580017B0DB /* DoorBell-SoundBible.com-1986366504.wav */; };
 		8BB3D85F16119CA60056B98F /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BB3D85E16119CA60056B98F /* UIKit.framework */; };
 		8BB3D86116119CA60056B98F /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BB3D86016119CA60056B98F /* Foundation.framework */; };
 		8BB3D86316119CA70056B98F /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BB3D86216119CA60056B98F /* CoreGraphics.framework */; };
@@ -179,6 +180,7 @@
 		8B76CF90161B326C00004F2A /* CustomLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomLabel.h; sourceTree = "<group>"; };
 		8B76CF91161B326C00004F2A /* CustomLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomLabel.m; sourceTree = "<group>"; };
 		8B76CF93161B34C400004F2A /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
+		8BAAA405161C79580017B0DB /* DoorBell-SoundBible.com-1986366504.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "DoorBell-SoundBible.com-1986366504.wav"; sourceTree = "<group>"; };
 		8BB3D85A16119CA60056B98F /* RZNotificationView.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RZNotificationView.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8BB3D85E16119CA60056B98F /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		8BB3D86016119CA60056B98F /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -380,6 +382,7 @@
 		8BB3D86516119CA70056B98F /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				8BAAA405161C79580017B0DB /* DoorBell-SoundBible.com-1986366504.wav */,
 				8B13A6871619E4920068A9F5 /* Localizable.strings */,
 				8B0AF9251613012D00A31A05 /* background.png */,
 				8B0AF9261613012D00A31A05 /* background@2x.png */,
@@ -645,6 +648,7 @@
 				8B13A6891619E4920068A9F5 /* Localizable.strings in Resources */,
 				8B13A693161AEC3D0068A9F5 /* OtherViewController.xib in Resources */,
 				8B759957161B445600BDA083 /* 340119_564053743608283_175259668_o.jpg in Resources */,
+				8BAAA406161C79580017B0DB /* DoorBell-SoundBible.com-1986366504.wav in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

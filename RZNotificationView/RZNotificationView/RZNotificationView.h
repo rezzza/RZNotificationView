@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "RZNotificationLabelProtocol.h"
+#include <AudioToolbox/AudioToolbox.h>
 
 typedef enum {
     RZNotificationIconFacebook = 0,
@@ -46,6 +47,10 @@ typedef enum {
     UIViewController *_controller;
     BOOL _isTouch;
     id _actionParam;
+    
+    NSURL *_soundFileURLRef;
+    SystemSoundID	soundFileObject;
+
 }
 
 - (id) initWithMessage:(NSString*)message;
