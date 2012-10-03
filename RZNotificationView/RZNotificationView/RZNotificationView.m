@@ -20,16 +20,6 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
 
 @implementation RZNotificationView
 
-- (id) initWithFrame:(CGRect)frame
-{
-    self = [super initWithFrame:frame];
-    if (self) {
-        // Initialization code
-        self.backgroundColor = [UIColor clearColor];
-    }
-    return self;
-}
-
 - (UIColor*) adjustAssetsColor:(UIColor*)c
 {
     if(_assetColor == RZNotificationAssetColorAutomaticDark)
@@ -371,16 +361,15 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
     _actionParam = param;
 }
 
-- (id) initWithMessage:(NSString*)message
+- (id) initWithFrame:(CGRect)frame
 {
-    _message = message;
-    CGRect frame = CGRectZero;
-    frame.size = CGSizeMake(CGRectGetWidth([UIScreen mainScreen].applicationFrame), MIN_HEIGHT);
-    
-    self = [self initWithFrame:frame];
-    
+    CGRect mFrame = frame;
+    mFrame.size.height = MAX(CGRectGetHeight(frame), MIN_HEIGHT);
+
+    self = [super initWithFrame:mFrame];
     if (self)
-    {        
+    {
+        self.backgroundColor = [UIColor clearColor];
         self.autoresizingMask = UIViewAutoresizingFlexibleWidth;
        
         _iconView = [[UIImageView alloc] initWithFrame:CGRectZero];
@@ -398,7 +387,6 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
         _textLabel.textColor = [UIColor blackColor];
         _textLabel.shadowColor = [UIColor whiteColor];
         [self addSubview:_textLabel];
-        _textLabel.text = message;
         
         _anchorView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"ico-anchor-white.png"]];
         _anchorView.contentMode = UIViewContentModeCenter;
