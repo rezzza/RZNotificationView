@@ -13,7 +13,6 @@
 #import "MCSegmentedControl.h"
 #import "CustomLabel.h"
 #import "CustomImageView.h"
-#import "MOOMaskedIconView.h"
 
 @interface SampleViewController ()
 
@@ -499,13 +498,12 @@
                 segmentedControl.tag = 8;
                 segmentedControl.font = [UIFont boldSystemFontOfSize:14.0f];
                 segmentedControl.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
-                
                 // set frame, add to view, set target and action for value change as usual
                 segmentedControl.frame = CGRectMake(140.0, 7.0, 175.0, 30.0);
                 [self.view addSubview:segmentedControl];
                 [segmentedControl addTarget:self action:@selector(segmentedControlDidChange:) forControlEvents:UIControlEventValueChanged];
                 
-                segmentedControl.selectedSegmentIndex = 0;
+                segmentedControl.selectedSegmentIndex = 1;
                 
                 // Set a tint color
                 segmentedControl.tintColor = [UIColor colorWithRed:.6 green:.0 blue:.0 alpha:1.0];

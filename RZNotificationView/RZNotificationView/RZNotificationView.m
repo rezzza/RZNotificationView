@@ -7,6 +7,8 @@
 //
 
 #import "RZNotificationView.h"
+#import "MOOMaskedIconView.h"
+#import "MOOStyleTrait.h"
 
 #import <AudioToolbox/AudioServices.h>
 
@@ -31,62 +33,66 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
     return c;
 }
 
-- (UIColor *)lighterColorForColor:(UIColor *)c
+- (UIColor *)lighterColorForColor:(UIColor *)c withOffset:(CGFloat)o
 {
     float r, g, b, a;
     if ([c getRed:&r green:&g blue:&b alpha:&a])
-        return [UIColor colorWithRed:MIN(r + 0.3, 1.0)
-                               green:MIN(g + 0.3, 1.0)
-                                blue:MIN(b + 0.3, 1.0)
+        return [UIColor colorWithRed:MIN(r + o, 1.0)
+                               green:MIN(g + o, 1.0)
+                                blue:MIN(b + o, 1.0)
+                               alpha:a];
+    return nil;
+}
+- (UIColor *)lighterColorForColor:(UIColor *)c
+{
+    return [self lighterColorForColor:c withOffset:0.3f];
+}
+
+- (UIColor *)darkerColorForColor:(UIColor *)c withOffset:(CGFloat)o
+{
+    float r, g, b, a;
+    if ([c getRed:&r green:&g blue:&b alpha:&a])
+        return [UIColor colorWithRed:MAX(r - o, 0.0)
+                               green:MAX(g - o, 0.0)
+                                blue:MAX(b - o, 0.0)
                                alpha:a];
     return nil;
 }
 
 - (UIColor *)darkerColorForColor:(UIColor *)c
 {
-    float r, g, b, a;
-    if ([c getRed:&r green:&g blue:&b alpha:&a])
-        return [UIColor colorWithRed:MAX(r - 0.3, 0.0)
-                               green:MAX(g - 0.3, 0.0)
-                                blue:MAX(b - 0.3, 0.0)
-                               alpha:a];
-    return nil;
+    return [self darkerColorForColor:c withOffset:0.3f];
 }
 
 - (UIImage *)image:(UIImage *)img withColor:(UIColor *)color
 {
+    MOOStyleTrait *iconTrait = [MOOStyleTrait trait];
     
-    // begin a new image context, to draw our colored image onto
-    //UIGraphicsBeginImageContext(img.size);
-    
-    UIGraphicsBeginImageContextWithOptions(img.size, NO, 2.0);
-    
-    // get a reference to that context we created
-    CGContextRef context = UIGraphicsGetCurrentContext();
-    
-    // set the fill color
-    [[self adjustAssetsColor:color] setFill];
-    
-    // translate/flip the graphics context (for transforming from CG* coords to UI* coords
-    CGContextTranslateCTM(context, 0, img.size.height);
-    CGContextScaleCTM(context, 1.0, -1.0);
-    
-    // set the blend mode to color burn, and the original image
-    CGContextSetBlendMode(context, kCGBlendModeMultiply);
-    CGRect rect = CGRectMake(0, 0, img.size.width, img.size.height);
-    CGContextDrawImage(context, rect, img.CGImage);
-    
-    // set a mask that matches the shape of the image, then draw (color burn) a colored rectangle
-    CGContextClipToMask(context, rect, img.CGImage);
-    CGContextAddRect(context, rect);
-    CGContextDrawPath(context,kCGPathFill);
-    
-    // generate a new UIImage from the graphics context we drew onto
-    UIImage *coloredImg = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
-    
-    //return the color-burned image
-    return coloredImg;
+    if (_assetColor == RZNotificationAssetColorAutomaticLight)
+    {
+        iconTrait.gradientColors = [NSArray arrayWithObjects:
+                                [self lighterColorForColor:color withOffset:0.2],
+                                [self lighterColorForColor:color withOffset:0.1], nil];
+        iconTrait.shadowColor = [UIColor colorWithWhite:0.0f alpha:1.0f];
+        iconTrait.innerShadowColor = [self darkerColorForColor:color];
+        iconTrait.shadowOffset = CGSizeMake(0.0f, -1.0f);
+        iconTrait.innerShadowOffset = CGSizeMake(0.0f, -1.0f);
+    }
+    else if (_assetColor == RZNotificationAssetColorAutomaticDark)
+    {
+        iconTrait.gradientColors = [NSArray arrayWithObjects:
+                                    [self darkerColorForColor:color withOffset:0.2],
+                                    [self darkerColorForColor:color withOffset:0.1], nil];
+        iconTrait.shadowColor = [UIColor colorWithWhite:1.0f alpha:1.0f];
+        iconTrait.innerShadowColor = [self lighterColorForColor:color];
+        iconTrait.shadowOffset = CGSizeMake(0.0f, 1.0f);
+        iconTrait.innerShadowOffset = CGSizeMake(0.0f, 1.0f);
+    }
+
+    MOOMaskedIconView *iconView = [MOOMaskedIconView iconWithImage:img];
+    [iconView mixInTrait:iconTrait];
+
+    return [iconView renderImage];
 }
 
 // Only override drawRect: if you perform custom drawing.
@@ -223,8 +229,8 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
     CGGradientRelease(notificationBackgroundGradient);
     CGColorSpaceRelease(colorSpace);
 
-    _iconView.image = [self image:_iconView.image withColor:colorStart];
-    _anchorView.image = [self image:_anchorView.image withColor:colorStart];
+    _iconView.image = [self image:[self getImageForIcon:_icon] withColor:colorStart];
+    _anchorView.image = [self image:[UIImage imageNamed:@"ico-anchor-white.png"] withColor:colorStart];
     if (_assetColor != RZNotificationAssetColorManual) {
         _textLabel.textColor = [self adjustAssetsColor:colorStart];
         if(_assetColor == RZNotificationAssetColorAutomaticDark)
@@ -234,32 +240,32 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
     }
 }
 
-- (void) setIcon:(RZNotificationIcon)icon
+- (UIImage *) getImageForIcon:(RZNotificationIcon)icon
 {
-    _icon = icon;
+    UIImage *image = nil;
     switch (_icon) {
         case RZNotificationIconFacebook:
-            _iconView.image = [UIImage imageNamed:@"notif_facebook.png"];
+            image = [UIImage imageNamed:@"notif_facebook.png"];
             break;
         case RZNotificationIconGift:
-            _iconView.image = [UIImage imageNamed:@"notif_gift.png"];
+            image = [UIImage imageNamed:@"notif_gift.png"];
             break;
         case RZNotificationIconInfo:
-            _iconView.image = [UIImage imageNamed:@"notif_infos.png"];
+            image = [UIImage imageNamed:@"notif_infos.png"];
             break;
         case RZNotificationIconSmiley:
-            _iconView.image = [UIImage imageNamed:@"notif_smiley.png"];
+            image = [UIImage imageNamed:@"notif_smiley.png"];
             break;
         case RZNotificationIconTwitter:
-            _iconView.image = [UIImage imageNamed:@"notif_twitter.png"];
+            image = [UIImage imageNamed:@"notif_twitter.png"];
             break;
         case RZNotificationIconWarning:
-            _iconView.image = [UIImage imageNamed:@"notif_warning.png"];
+            image = [UIImage imageNamed:@"notif_warning.png"];
             break;
         default:
             break;
     }
-    [self setNeedsDisplay];
+    return image;
 }
 
 - (void) setColor:(RZNotificationColor)color
