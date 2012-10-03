@@ -41,7 +41,7 @@
     self.tableView.dataSource = self;
     self.title = @"RZNotificationView Sample";
     self.navigationController.navigationBar.tintColor = [UIColor colorWithRed:0.6 green:0.0 blue:0.0 alpha:1];
-    _notifView = [[RZNotificationView alloc] initWithMessage:@""];
+    _notifView = [[RZNotificationView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 35)];
     _notifView.delay = 3.5;
     _notifView.delegate = self;
     [_notifView setActionToCall:@selector(clicNotificationView:) withParam:@"This could be a message"];
