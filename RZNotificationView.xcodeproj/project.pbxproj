@@ -126,6 +126,10 @@
 		8BB3D976161243680056B98F /* README in Resources */ = {isa = PBXBuildFile; fileRef = 8BB3D947161243670056B98F /* README */; };
 		8BB3D977161243680056B98F /* README in Resources */ = {isa = PBXBuildFile; fileRef = 8BB3D947161243670056B98F /* README */; };
 		8BB3D97E161245530056B98F /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BB3D97D161245530056B98F /* QuartzCore.framework */; };
+		E04CD652161CC30C00B74BA7 /* MOOCGImageWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = E04CD64B161CC30C00B74BA7 /* MOOCGImageWrapper.m */; };
+		E04CD653161CC30C00B74BA7 /* MOOMaskedIconView.m in Sources */ = {isa = PBXBuildFile; fileRef = E04CD64D161CC30C00B74BA7 /* MOOMaskedIconView.m */; };
+		E04CD654161CC30C00B74BA7 /* MOOResourceList.m in Sources */ = {isa = PBXBuildFile; fileRef = E04CD64F161CC30C00B74BA7 /* MOOResourceList.m */; };
+		E04CD655161CC30C00B74BA7 /* MOOStyleTrait.m in Sources */ = {isa = PBXBuildFile; fileRef = E04CD651161CC30C00B74BA7 /* MOOStyleTrait.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -250,6 +254,15 @@
 		8BB3D946161243670056B98F /* popoverBgSimple.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = popoverBgSimple.png; sourceTree = "<group>"; };
 		8BB3D947161243670056B98F /* README */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README; sourceTree = "<group>"; };
 		8BB3D97D161245530056B98F /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		E04CD649161CC30C00B74BA7 /* AHHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AHHelper.h; sourceTree = "<group>"; };
+		E04CD64A161CC30C00B74BA7 /* MOOCGImageWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MOOCGImageWrapper.h; sourceTree = "<group>"; };
+		E04CD64B161CC30C00B74BA7 /* MOOCGImageWrapper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MOOCGImageWrapper.m; sourceTree = "<group>"; };
+		E04CD64C161CC30C00B74BA7 /* MOOMaskedIconView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MOOMaskedIconView.h; sourceTree = "<group>"; };
+		E04CD64D161CC30C00B74BA7 /* MOOMaskedIconView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MOOMaskedIconView.m; sourceTree = "<group>"; };
+		E04CD64E161CC30C00B74BA7 /* MOOResourceList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MOOResourceList.h; sourceTree = "<group>"; };
+		E04CD64F161CC30C00B74BA7 /* MOOResourceList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MOOResourceList.m; sourceTree = "<group>"; };
+		E04CD650161CC30C00B74BA7 /* MOOStyleTrait.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MOOStyleTrait.h; sourceTree = "<group>"; };
+		E04CD651161CC30C00B74BA7 /* MOOStyleTrait.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MOOStyleTrait.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -337,8 +350,6 @@
 		8BB3D84F16119CA60056B98F = {
 			isa = PBXGroup;
 			children = (
-				8B76CF93161B34C400004F2A /* CoreText.framework */,
-				8B75F27D1614AADE0084B685 /* AudioToolbox.framework */,
 				8BB3D86416119CA70056B98F /* RZNotificationView */,
 				8BB3D88216119CA70056B98F /* RZNotificationViewTests */,
 				8BB3D85D16119CA60056B98F /* Frameworks */,
@@ -371,6 +382,8 @@
 		8BB3D86416119CA70056B98F /* RZNotificationView */ = {
 			isa = PBXGroup;
 			children = (
+				8B76CF93161B34C400004F2A /* CoreText.framework */,
+				8B75F27D1614AADE0084B685 /* AudioToolbox.framework */,
 				8BB3D8FA161241CA0056B98F /* Third Party */,
 				8BB3D89E16119E3C0056B98F /* Sample */,
 				8BB3D89D16119E230056B98F /* RZNotificationView */,
@@ -471,6 +484,7 @@
 		8BB3D8FA161241CA0056B98F /* Third Party */ = {
 			isa = PBXGroup;
 			children = (
+				E04CD648161CC30C00B74BA7 /* MOOMaskedIconView */,
 				8B76CF8A161B321C00004F2A /* TTTAttributedLabel */,
 				8B0AF8F91612FEAB00A31A05 /* PrettyKit */,
 				8B0AF8801612FCDF00A31A05 /* MCSegmentedControl */,
@@ -534,6 +548,23 @@
 			);
 			path = popoverImages;
 			sourceTree = "<group>";
+		};
+		E04CD648161CC30C00B74BA7 /* MOOMaskedIconView */ = {
+			isa = PBXGroup;
+			children = (
+				E04CD649161CC30C00B74BA7 /* AHHelper.h */,
+				E04CD64A161CC30C00B74BA7 /* MOOCGImageWrapper.h */,
+				E04CD64B161CC30C00B74BA7 /* MOOCGImageWrapper.m */,
+				E04CD64C161CC30C00B74BA7 /* MOOMaskedIconView.h */,
+				E04CD64D161CC30C00B74BA7 /* MOOMaskedIconView.m */,
+				E04CD64E161CC30C00B74BA7 /* MOOResourceList.h */,
+				E04CD64F161CC30C00B74BA7 /* MOOResourceList.m */,
+				E04CD650161CC30C00B74BA7 /* MOOStyleTrait.h */,
+				E04CD651161CC30C00B74BA7 /* MOOStyleTrait.m */,
+			);
+			name = MOOMaskedIconView;
+			path = vendor/MOOMaskedIconView/MOOMaskedIconView;
+			sourceTree = SOURCE_ROOT;
 		};
 /* End PBXGroup section */
 
@@ -738,6 +769,10 @@
 				8B76CF8D161B322F00004F2A /* TTTAttributedLabel.m in Sources */,
 				8B76CF92161B326C00004F2A /* CustomLabel.m in Sources */,
 				8B759954161B429500BDA083 /* CustomImageView.m in Sources */,
+				E04CD652161CC30C00B74BA7 /* MOOCGImageWrapper.m in Sources */,
+				E04CD653161CC30C00B74BA7 /* MOOMaskedIconView.m in Sources */,
+				E04CD654161CC30C00B74BA7 /* MOOResourceList.m in Sources */,
+				E04CD655161CC30C00B74BA7 /* MOOStyleTrait.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

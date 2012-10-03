@@ -13,6 +13,7 @@
 #import "MCSegmentedControl.h"
 #import "CustomLabel.h"
 #import "CustomImageView.h"
+#import "MOOMaskedIconView.h"
 
 @interface SampleViewController ()
 
