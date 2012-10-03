@@ -312,6 +312,20 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
     [self adjustHeighAndRedraw:CGRectGetHeight(_textLabel.frame)];
 }
 
+- (void) setSound:(NSString *)sound
+{
+    _sound = sound;
+    //NSString *test = [sound ]
+    NSURL *soundURL   = [[NSBundle mainBundle] URLForResource: [_sound stringByDeletingPathExtension]
+                                                withExtension: [_sound pathExtension]];
+
+    // Create a system sound object representing the sound file.
+    AudioServicesCreateSystemSoundID (
+                                      (__bridge CFURLRef)(soundURL),
+                                      &soundFileObject
+                                      );
+}
+
 - (void) adjustHeighAndRedraw:(CGFloat)height
 {
     CGRect frame = self.frame;
@@ -433,6 +447,10 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
     
     if(_vibrate)
         AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
+    
+    if(_sound)
+        AudioServicesPlaySystemSound (soundFileObject);
+
     
     [UIView animateWithDuration:0.4
                      animations:^{self.transform = CGAffineTransformIdentity;}

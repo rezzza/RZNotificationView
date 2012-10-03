@@ -128,6 +128,16 @@
     _notifView.vibrate = sender.on;
 }
 
+- (void) switchChangeSound:(UISwitch*)sender
+{
+    if (sender.on){
+        _notifView.sound = @"DoorBell-SoundBible.com-1986366504.wav";
+    }
+    else{
+        _notifView.sound = nil;
+    }
+}
+
 #pragma mark -
 #pragma mark WEPopoverControllerDelegate implementation
 
@@ -153,7 +163,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {    
-    return 11;
+    return 12;
 }
 
 -(CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -196,6 +206,9 @@
     
     static NSString *ContentStyleCellIdentifier = @"ContentStyleCellIdentifier";
     PrettyCustomViewTableViewCell *contentStyleCell;
+    
+    static NSString *SoundCellIdentifier = @"SoundCellIdentifier";
+    PrettyCustomViewTableViewCell *soundCell;
     
     PrettyCustomViewTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
@@ -537,6 +550,30 @@
             contentStyleCell.tableViewBackgroundColor = tableView.backgroundColor;
             return contentStyleCell;
         case 10:
+            soundCell = [tableView dequeueReusableCellWithIdentifier:SoundCellIdentifier];
+            if (soundCell == nil) {
+                soundCell = [[PrettyCustomViewTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:SoundCellIdentifier];
+                
+                UISwitch *switchView = [[UISwitch alloc] initWithFrame:CGRectZero];
+                switchView.center = CGPointMake(220.0, 22.0);
+                switchView.onTintColor = [UIColor colorWithRed:.6 green:.0 blue:.0 alpha:1.0];
+                switchView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
+                [switchView addTarget:self action:@selector(switchChangeSound:) forControlEvents:UIControlEventValueChanged];
+                
+                UILabel *positionLabel = [[UILabel alloc] initWithFrame:CGRectMake(10.0, 0.0, 70.0, 44.0)];
+                positionLabel.text = [NSString stringWithFormat:@"Sound"];
+                positionLabel.backgroundColor = [UIColor clearColor];
+                positionLabel.font = [UIFont boldSystemFontOfSize:14.0];
+                
+                UIView *delayView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, 320, 44)];
+                [delayView addSubview:switchView];
+                [delayView addSubview:positionLabel];
+                soundCell.customView = delayView;
+            }
+            [soundCell prepareForTableView:tableView indexPath:indexPath];
+            soundCell.tableViewBackgroundColor = tableView.backgroundColor;
+            return soundCell;
+        case 11:
             cell.textLabel.text = @"Show notification";
             return cell;
         
@@ -555,7 +592,7 @@
         case 6:
             [self navBarHidden:nil];
             break;
-        case 10:
+        case 11:
         {
             _roundIndex ++;
             NSArray *round ;
