@@ -32,6 +32,11 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
 #define DEFAULT_ICON RZNotificationIconFacebook
 
 @interface RZNotificationView ()
+{
+    BOOL _isShowing;
+    BOOL _hasPlayedSound;
+    BOOL _hasVibrate;
+}
 @property (nonatomic, strong) UIViewController *controller;
 @end
 
@@ -391,6 +396,23 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
                                       (__bridge CFURLRef)(soundURL),
                                       &soundFileObject
                                       );
+    
+    if (_isShowing && !_hasPlayedSound && sound) {
+        // Then we play the sound for the first time
+        // This happens when you use [RZNotificationView showNotification ...]
+        AudioServicesPlaySystemSound (soundFileObject);
+        _hasPlayedSound = YES;
+    }
+}
+
+- (void) setVibrate:(BOOL)vibrate
+{
+    _vibrate = vibrate;
+    
+    if (_isShowing && !_hasVibrate && vibrate) {
+        AudioServicesPlaySystemSound (kSystemSoundID_Vibrate);
+        _hasVibrate = YES;
+    }
 }
 
 - (void) adjustHeighAndRedraw:(CGFloat)height
@@ -637,6 +659,8 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
 {
     [self placeToOrigin];
     
+    _isShowing = YES;
+    
     if (_position == RZNotificationPositionTop) {
         self.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleBottomMargin;
     }
@@ -647,10 +671,16 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
     [_controller.view addSubview:self];
     
     if(_vibrate)
+    {
+        _hasVibrate = YES;
         AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
+    }
     
     if(_sound)
+    {
+        _hasPlayedSound = YES;
         AudioServicesPlaySystemSound (soundFileObject);
+    }
     
     
     [UIView animateWithDuration:0.4
@@ -674,6 +704,7 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
                      }
                      completion:^(BOOL finished) {
                          [self removeFromSuperview];
+                         _isShowing = NO;
                      }];
 }
 
