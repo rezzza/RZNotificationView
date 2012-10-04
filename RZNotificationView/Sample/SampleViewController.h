@@ -32,9 +32,20 @@ typedef enum {
 
     NSInteger _current;
     NSIndexPath *_indexPath;
-    RZNotificationView *_notifView;
     SampleMessage _sampleMessage;
     NSInteger _roundIndex;
+    
+    BOOL _vibrate;
+    NSString *_sound;
+    
+    UIColor *_customTopColor, *_customBottomColor;
+    
+    RZNotificationColor _color;
+    RZNotificationPosition _position;
+    RZNotificationIcon _icon;
+    RZNotificationAssetColor _assetColor;
+    
+    id<RZNotificationLabelProtocol> _customView;
 }
 
 @property (nonatomic, strong) WEPopoverController *popoverController;

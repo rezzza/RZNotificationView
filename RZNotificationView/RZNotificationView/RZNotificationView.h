@@ -8,6 +8,9 @@
 
 #import <UIKit/UIKit.h>
 #import "RZNotificationLabelProtocol.h"
+#include <AudioToolbox/AudioToolbox.h>
+
+#define RZSystemVersionGreaterOrEqualThan(version) ([[[UIDevice currentDevice] systemVersion] floatValue] >= version)
 
 typedef enum {
     RZNotificationIconFacebook = 0,
@@ -38,25 +41,37 @@ typedef enum {
 
 @protocol RZNotificationViewDelegate;
 
-@interface RZNotificationView : UIView
+@interface RZNotificationView : UIControl
 {
     UIImageView *_iconView;
-    UILabel *_textLabel;
     UIImageView *_anchorView;
-    UIViewController *_controller;
     BOOL _isTouch;
-    id _actionParam;
+    
+    NSURL *_soundFileURLRef;
+    SystemSoundID	soundFileObject;
+    
 }
 
-- (id) initWithMessage:(NSString*)message;
-- (void) showFromController:(UIViewController *)controller;
-- (void) setActionToCall:(SEL)actionToCall withParam:(id)param;
-- (void) close;
++ (RZNotificationView*) showNotificationWithMessage:(NSString*)message icon:(RZNotificationIcon)icon position:(RZNotificationPosition)position color:(RZNotificationColor)color assetColor:(RZNotificationAssetColor)assetColor addedToController:(UIViewController*)controller;
++ (RZNotificationView*) showNotificationWithMessage:(NSString*)message icon:(RZNotificationIcon)icon position:(RZNotificationPosition)position color:(RZNotificationColor)color assetColor:(RZNotificationAssetColor)assetColor delay:(NSTimeInterval)delay addedToController:(UIViewController*)controller;
 
-@property (nonatomic, strong) UILabel *_textLabel;
++ (BOOL) hideNotificationForController:(UIViewController*)controller;
++ (NSUInteger) hideAllNotificationsForController:(UIViewController*)controller;
+
++ (RZNotificationView*) notificationForController:(UIViewController*)controller;
++ (NSArray*) allNotificationsForController:(UIViewController*)controller;
+
+- (id) initWithController:(UIViewController*)controller;
+- (id) initWithController:(UIViewController*)controller icon:(RZNotificationIcon)icon position:(RZNotificationPosition)position color:(RZNotificationColor)color assetColor:(RZNotificationAssetColor)assetColor delay:(NSTimeInterval)delay;
+
+- (void) show;
+- (void) hide;
+- (void) hideAfterDelay:(NSTimeInterval)delay;
+
+@property (nonatomic, readonly) UILabel *textLabel;
 @property (nonatomic, strong) id <RZNotificationLabelProtocol> customView;
 @property (nonatomic, strong) NSString *message;
-@property (nonatomic) float delay;
+@property (nonatomic) NSTimeInterval delay;
 @property (nonatomic) RZNotificationPosition position;
 @property (nonatomic) RZNotificationColor color;
 @property (nonatomic) UIColor *customTopColor;
@@ -67,11 +82,13 @@ typedef enum {
 @property (nonatomic) RZNotificationIcon icon;
 @property (nonatomic, strong) NSString *customIcon;
 @property (assign, nonatomic) id <RZNotificationViewDelegate> delegate;
-@property (nonatomic) SEL actionToCall;
+@property (nonatomic, strong) id paramOnAction;
+
 @property (nonatomic, strong) NSURL *urlToOpen;
 
 @end
 
 @protocol RZNotificationViewDelegate <NSObject>
+// FIXME: Is it relevant now ?
 - (void) notificationViewTouched:(RZNotificationView*)notificationView;
 @end
