@@ -43,7 +43,7 @@
     NSLog(@"%@", url.query);
     if ([[url host] isEqualToString:@"OtherViewController"]) {
         OtherViewController *s = [[OtherViewController alloc] initWithNibName:@"OtherViewController" bundle:nil];
-        UINavigationController *n = (UINavigationController*)self.window.rootViewController;
+        UINavigationController *n = (UINavigationController*)[[self.tabBarController viewControllers] objectAtIndex:0];
         [n pushViewController:s animated:YES];
         s.message.text = [url.query stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
     }
