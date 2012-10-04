@@ -68,7 +68,7 @@ typedef enum {
 - (void) hide;
 - (void) hideAfterDelay:(NSTimeInterval)delay;
 
-@property (nonatomic, strong) UILabel *textLabel;
+@property (nonatomic, readonly) UILabel *textLabel;
 @property (nonatomic, strong) id <RZNotificationLabelProtocol> customView;
 @property (nonatomic, strong) NSString *message;
 @property (nonatomic) NSTimeInterval delay;
@@ -89,5 +89,6 @@ typedef enum {
 @end
 
 @protocol RZNotificationViewDelegate <NSObject>
+// FIXME: Is it relevant now ?
 - (void) notificationViewTouched:(RZNotificationView*)notificationView;
 @end
