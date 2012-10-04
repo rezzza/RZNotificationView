@@ -41,11 +41,8 @@
     self.tableView.dataSource = self;
     self.title = @"RZNotificationView Sample";
     self.navigationController.navigationBar.tintColor = [UIColor colorWithRed:0.6 green:0.0 blue:0.0 alpha:1];
-    _notifView = [[RZNotificationView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 35)];
-    _notifView.delay = 3.5;
-    _notifView.delegate = self;
-    [_notifView setActionToCall:@selector(clicNotificationView:) withParam:@"This could be a message"];
-    [_notifView setUrlToOpen:[NSURL URLWithString:@"rzn://OtherViewController?the%20awesome%20message"]];
+    
+    _assetColor = RZNotificationAssetColorAutomaticLight; // == 1
 }
 
 - (void)didReceiveMemoryWarning
@@ -78,7 +75,6 @@
 - (IBAction) sliderValueChanged:(id)sender
 {
     _delayLabel.text = [NSString stringWithFormat:@"Delay : %.1f", _delaySlider.value];
-    _notifView.delay = _delaySlider.value;
 }
 
 - (IBAction) colorSelector:(NSIndexPath*)indexPath index:(NSInteger)index
@@ -105,18 +101,19 @@
 }
 
 -(void) colorPopoverControllerDidSelectColor:(NSString *)hexColor{
+    // TODO
     PrettyGridTableViewCell *cell = (PrettyGridTableViewCell*) [self.tableView cellForRowAtIndexPath:_indexPath];
     if (_current == 0) {
         cell.gradientStartColor = [GzColors colorFromHex:hexColor];
+        _customTopColor = [GzColors colorFromHex:hexColor];
         if(!cell.gradientEndColor)
             cell.gradientEndColor = [GzColors colorFromHex:hexColor];
-        _notifView.customTopColor = [GzColors colorFromHex:hexColor];
     }
     else if (_current == 1) {
         if(!cell.gradientStartColor)
             cell.gradientStartColor = [GzColors colorFromHex:hexColor];
         cell.gradientEndColor = [GzColors colorFromHex:hexColor];
-        _notifView.customBottomColor = [GzColors colorFromHex:hexColor];
+        _customBottomColor = [GzColors colorFromHex:hexColor];
     }
     [cell deselectAnimated:YES];
     [self.popoverController dismissPopoverAnimated:YES];
@@ -125,16 +122,16 @@
 
 - (void) switchChange:(UISwitch*)sender
 {
-    _notifView.vibrate = sender.on;
+    _vibrate = sender.on;
 }
 
 - (void) switchChangeSound:(UISwitch*)sender
 {
     if (sender.on){
-        _notifView.sound = @"DoorBell-SoundBible.com-1986366504.wav";
+        _sound = @"DoorBell-SoundBible.com-1986366504.wav";
     }
     else{
-        _notifView.sound = nil;
+        _sound = nil;
     }
 }
 
@@ -506,7 +503,7 @@
                 [self.view addSubview:segmentedControl];
                 [segmentedControl addTarget:self action:@selector(segmentedControlDidChange:) forControlEvents:UIControlEventValueChanged];
                 
-                segmentedControl.selectedSegmentIndex = 1;
+                segmentedControl.selectedSegmentIndex = _assetColor;
                 
                 // Set a tint color
                 segmentedControl.tintColor = [UIColor colorWithRed:.6 green:.0 blue:.0 alpha:1.0];
@@ -637,8 +634,29 @@
                 default:
                     break;
             }
-            _notifView.message = [round objectAtIndex:_roundIndex%[round count]];
-            [_notifView showFromController:self];
+            
+            RZNotificationView *notif = [[RZNotificationView alloc] initWithController:self
+                                                                                  icon:_icon
+                                                                              position:_position
+                                                                                 color:_color
+                                                                            assetColor:_assetColor
+                                                                                 delay:_delaySlider.value];
+            [notif setMessage:[round objectAtIndex:_roundIndex%[round count]]];
+            
+            notif.delegate = self;
+            [notif setActionToCall:@selector(clicNotificationView:) withParam:@"This could be a message"];
+            [notif setUrlToOpen:[NSURL URLWithString:@"rzn://OtherViewController?the%20awesome%20message"]];
+            
+            [notif setVibrate:_vibrate];
+            [notif setSound:_sound];
+            [notif setAssetColor:_assetColor];
+            [notif setCustomView:_customView];
+            
+            notif.customTopColor = _customTopColor;
+            notif.customBottomColor = _customBottomColor;
+            
+            [notif show];
+
         }
             break;
         case 7:
@@ -654,32 +672,32 @@
     switch (sender.tag) {
         case 2:
         {
-            _notifView.color = sender.selectedSegmentIndex;
-            _notifView.customBottomColor = nil;
-            _notifView.customTopColor = nil;
+            _color = sender.selectedSegmentIndex;
             PrettyGridTableViewCell *cell = (PrettyGridTableViewCell*) [self.tableView cellForRowAtIndexPath:_indexPath];
             cell.gradientEndColor = nil;
             cell.gradientStartColor = nil;
+            _customBottomColor = nil;
+            _customTopColor = nil;
             if(_indexPath)
                 [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:_indexPath] withRowAnimation:UITableViewRowAnimationFade];
         }
             break;
         case 3:
-            _notifView.position = sender.selectedSegmentIndex;
+            _position = sender.selectedSegmentIndex;
             break;
         case 4:
-            _notifView.icon = sender.selectedSegmentIndex;
+            _icon = sender.selectedSegmentIndex;
             break;
         case 7:
-            [_notifView close];
+            [RZNotificationView hideNotificationForController:self];
             _sampleMessage = sender.selectedSegmentIndex;
             break;
         case 8:
-            [_notifView close];
-            _notifView.assetColor = sender.selectedSegmentIndex;
+            [RZNotificationView hideNotificationForController:self];
+            _assetColor = sender.selectedSegmentIndex;
             break;
         case 9:
-            [_notifView close];
+            [RZNotificationView hideNotificationForController:self];
             switch (sender.selectedSegmentIndex) {
                 case 1:{
                     CustomLabel *customLabel = [[CustomLabel alloc] initWithFrame:CGRectZero];
@@ -719,17 +737,17 @@
                         
                         return mutableAttributedString;
                     }];
-                    _notifView.customView = customLabel;
+                    _customView = customLabel;
                 }
                     break;
                 case 2:{
                     CustomImageView *customImageView = [[CustomImageView alloc] initWithImage:[UIImage imageNamed:@"340119_564053743608283_175259668_o.jpg"]];
                     customImageView.contentMode = UIViewContentModeScaleAspectFit;
-                    _notifView.customView = customImageView;
+                    _customView = customImageView;
                 }
                     break;
                 default:
-                    _notifView.customView = nil;
+                    _customView = nil;
                     break;
             }
             break;

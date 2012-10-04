@@ -126,6 +126,9 @@
 		8BB3D976161243680056B98F /* README in Resources */ = {isa = PBXBuildFile; fileRef = 8BB3D947161243670056B98F /* README */; };
 		8BB3D977161243680056B98F /* README in Resources */ = {isa = PBXBuildFile; fileRef = 8BB3D947161243670056B98F /* README */; };
 		8BB3D97E161245530056B98F /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BB3D97D161245530056B98F /* QuartzCore.framework */; };
+		E041A446161D978B008D46F5 /* UIView+Frame.m in Sources */ = {isa = PBXBuildFile; fileRef = E041A445161D978B008D46F5 /* UIView+Frame.m */; };
+		E041A44A161DC2DB008D46F5 /* SimpleSampleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E041A448161DC2DB008D46F5 /* SimpleSampleViewController.m */; };
+		E041A44B161DC2DB008D46F5 /* SimpleSampleViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E041A449161DC2DB008D46F5 /* SimpleSampleViewController.xib */; };
 		E04CD652161CC30C00B74BA7 /* MOOCGImageWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = E04CD64B161CC30C00B74BA7 /* MOOCGImageWrapper.m */; };
 		E04CD653161CC30C00B74BA7 /* MOOMaskedIconView.m in Sources */ = {isa = PBXBuildFile; fileRef = E04CD64D161CC30C00B74BA7 /* MOOMaskedIconView.m */; };
 		E04CD654161CC30C00B74BA7 /* MOOResourceList.m in Sources */ = {isa = PBXBuildFile; fileRef = E04CD64F161CC30C00B74BA7 /* MOOResourceList.m */; };
@@ -254,6 +257,11 @@
 		8BB3D946161243670056B98F /* popoverBgSimple.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = popoverBgSimple.png; sourceTree = "<group>"; };
 		8BB3D947161243670056B98F /* README */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README; sourceTree = "<group>"; };
 		8BB3D97D161245530056B98F /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		E041A444161D978B008D46F5 /* UIView+Frame.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+Frame.h"; sourceTree = "<group>"; };
+		E041A445161D978B008D46F5 /* UIView+Frame.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+Frame.m"; sourceTree = "<group>"; };
+		E041A447161DC2DA008D46F5 /* SimpleSampleViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SimpleSampleViewController.h; sourceTree = "<group>"; };
+		E041A448161DC2DB008D46F5 /* SimpleSampleViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SimpleSampleViewController.m; sourceTree = "<group>"; };
+		E041A449161DC2DB008D46F5 /* SimpleSampleViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SimpleSampleViewController.xib; sourceTree = "<group>"; };
 		E04CD649161CC30C00B74BA7 /* AHHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AHHelper.h; sourceTree = "<group>"; };
 		E04CD64A161CC30C00B74BA7 /* MOOCGImageWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MOOCGImageWrapper.h; sourceTree = "<group>"; };
 		E04CD64B161CC30C00B74BA7 /* MOOCGImageWrapper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MOOCGImageWrapper.m; sourceTree = "<group>"; };
@@ -437,6 +445,8 @@
 				8BB3D8A316119EE50056B98F /* RZNotificationView.h */,
 				8BB3D8A416119EE50056B98F /* RZNotificationView.m */,
 				8B76CF81161B1D7700004F2A /* RZNotificationLabelProtocol.h */,
+				E041A444161D978B008D46F5 /* UIView+Frame.h */,
+				E041A445161D978B008D46F5 /* UIView+Frame.m */,
 			);
 			path = RZNotificationView;
 			sourceTree = "<group>";
@@ -449,6 +459,9 @@
 				8BB3D8A716119F150056B98F /* SampleViewController.h */,
 				8BB3D8A816119F150056B98F /* SampleViewController.m */,
 				8BB3D8A916119F150056B98F /* SampleViewController.xib */,
+				E041A447161DC2DA008D46F5 /* SimpleSampleViewController.h */,
+				E041A448161DC2DB008D46F5 /* SimpleSampleViewController.m */,
+				E041A449161DC2DB008D46F5 /* SimpleSampleViewController.xib */,
 				8B13A68F161AEC3D0068A9F5 /* OtherViewController.h */,
 				8B13A690161AEC3D0068A9F5 /* OtherViewController.m */,
 				8B13A691161AEC3D0068A9F5 /* OtherViewController.xib */,
@@ -680,6 +693,7 @@
 				8B13A693161AEC3D0068A9F5 /* OtherViewController.xib in Resources */,
 				8B759957161B445600BDA083 /* 340119_564053743608283_175259668_o.jpg in Resources */,
 				8BAAA406161C79580017B0DB /* DoorBell-SoundBible.com-1986366504.wav in Resources */,
+				E041A44B161DC2DB008D46F5 /* SimpleSampleViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -773,6 +787,8 @@
 				E04CD653161CC30C00B74BA7 /* MOOMaskedIconView.m in Sources */,
 				E04CD654161CC30C00B74BA7 /* MOOResourceList.m in Sources */,
 				E04CD655161CC30C00B74BA7 /* MOOStyleTrait.m in Sources */,
+				E041A446161D978B008D46F5 /* UIView+Frame.m in Sources */,
+				E041A44A161DC2DB008D46F5 /* SimpleSampleViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

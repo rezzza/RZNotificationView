@@ -8,6 +8,8 @@
 
 #import "AppDelegate.h"
 #import "SampleViewController.h"
+#import "SimpleSampleViewController.h"
+
 #import "OtherViewController.h"
 
 @implementation AppDelegate
@@ -20,7 +22,18 @@
     
     SampleViewController *s = [[SampleViewController alloc] initWithNibName:@"SampleViewController" bundle:nil];
     UINavigationController *n = [[UINavigationController alloc] initWithRootViewController:s];
-    [self.window setRootViewController:n];
+    UITabBarItem *tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Custom" image:nil tag:0];
+    n.tabBarItem = tabBarItem;
+    
+    SimpleSampleViewController *simple = [[SimpleSampleViewController alloc] initWithNibName:@"SimpleSampleViewController" bundle:nil];
+    UINavigationController *nSimple = [[UINavigationController alloc] initWithRootViewController:simple];
+    tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Easy" image:nil tag:0];
+    nSimple.tabBarItem = tabBarItem;
+    
+    self.tabBarController = [[UITabBarController alloc] init];
+    [self.tabBarController setViewControllers:[NSArray arrayWithObjects:n, nSimple, nil]];
+    
+    [self.window setRootViewController:self.tabBarController];
     
     [self.window makeKeyAndVisible];
     return YES;

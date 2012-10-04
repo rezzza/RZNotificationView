@@ -45,24 +45,36 @@ typedef enum {
 {
     UIImageView *_iconView;
     UIImageView *_anchorView;
-    UIViewController *_controller;
     BOOL _isTouch;
     id _actionParam;
     
     NSURL *_soundFileURLRef;
     SystemSoundID	soundFileObject;
-
+    
 }
 
-- (id) initWithMessage:(NSString*)message;
-- (void) showFromController:(UIViewController *)controller;
++ (RZNotificationView*) showNotificationWithMessage:(NSString*)message icon:(RZNotificationIcon)icon position:(RZNotificationPosition)position color:(RZNotificationColor)color assetColor:(RZNotificationAssetColor)assetColor addedToController:(UIViewController*)controller;
++ (RZNotificationView*) showNotificationWithMessage:(NSString*)message icon:(RZNotificationIcon)icon position:(RZNotificationPosition)position color:(RZNotificationColor)color assetColor:(RZNotificationAssetColor)assetColor delay:(NSTimeInterval)delay addedToController:(UIViewController*)controller;
+
++ (BOOL) hideNotificationForController:(UIViewController*)controller;
++ (NSUInteger) hideAllNotificationsForController:(UIViewController*)controller;
+
++ (RZNotificationView*) notificationForController:(UIViewController*)controller;
++ (NSArray*) allNotificationsForController:(UIViewController*)controller;
+
+- (id) initWithController:(UIViewController*)controller;
+- (id) initWithController:(UIViewController*)controller icon:(RZNotificationIcon)icon position:(RZNotificationPosition)position color:(RZNotificationColor)color assetColor:(RZNotificationAssetColor)assetColor delay:(NSTimeInterval)delay;
+
+- (void) show;
+- (void) hide;
+- (void) hideAfterDelay:(NSTimeInterval)delay;
+
 - (void) setActionToCall:(SEL)actionToCall withParam:(id)param;
-- (void) close;
 
 @property (nonatomic, strong) UILabel *textLabel;
 @property (nonatomic, strong) id <RZNotificationLabelProtocol> customView;
 @property (nonatomic, strong) NSString *message;
-@property (nonatomic) float delay;
+@property (nonatomic) NSTimeInterval delay;
 @property (nonatomic) RZNotificationPosition position;
 @property (nonatomic) RZNotificationColor color;
 @property (nonatomic) UIColor *customTopColor;
