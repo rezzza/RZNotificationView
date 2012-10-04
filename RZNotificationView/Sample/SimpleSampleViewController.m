@@ -68,4 +68,12 @@
                                   addedToController:self]
      setUrlToOpen:[NSURL URLWithString:@"fb://"]];
 }
+
+- (IBAction)hideAllNotifications:(id)sender
+{
+    [RZNotificationView hideAllNotificationsForController:self];
+}
+- (void)viewDidUnload {
+    [super viewDidUnload];
+}
 @end

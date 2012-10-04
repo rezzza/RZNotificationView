@@ -639,6 +639,9 @@
                     break;
             }
             
+            // We don't want to stack the notifications, so hide before presenting a new one
+            [RZNotificationView hideNotificationForController:self];
+            
             RZNotificationView *notif = [[RZNotificationView alloc] initWithController:self
                                                                                   icon:_icon
                                                                               position:_position
