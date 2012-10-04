@@ -743,7 +743,7 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
         if (_controller.view.frame.size.width != 0)
             frame.size.width = _controller.view.frame.size.width;
         self.frame = frame;
-        _highlightedView.frame = CGRectOffset(CGRectInset(self.bounds, 0.0, 1.5), 0.0, -3.0);
+        _highlightedView.frame = CGRectOffset(CGRectInset(self.bounds, 0.0, 1.5), 0.0, _position == RZNotificationPositionTop ? -3.0 : 3.0);
     }
 }
 
@@ -789,7 +789,7 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
                 _highlightedView = [[UIView alloc] init];
                 [_highlightedView setBackgroundColor:[UIColor colorWithWhite:0.3 alpha:0.3]];
             }
-            _highlightedView.frame = CGRectOffset(CGRectInset(self.bounds, 0.0, 1.5), 0.0, -3.0);
+            _highlightedView.frame = CGRectOffset(CGRectInset(self.bounds, 0.0, 1.5), 0.0, _position == RZNotificationPositionTop ? -3.0 : 3.0);
             [self addSubview:_highlightedView];
         }
         else
