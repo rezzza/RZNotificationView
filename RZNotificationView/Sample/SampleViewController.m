@@ -53,11 +53,15 @@
 
 #pragma mark - Button clic
 
-- (void) clicNotificationView:(id)param
+- (void) clicNotificationView:(RZNotificationView*)sender
 {
-    if([param isKindOfClass:[NSString class]]){
-        NSLog(@"%@", param);
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"message" message:param delegate:nil cancelButtonTitle:@"cool" otherButtonTitles: nil];
+    if([sender.paramOnAction isKindOfClass:[NSString class]]){
+        NSLog(@"%@", sender.paramOnAction);
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Message"
+                                                        message:sender.paramOnAction
+                                                       delegate:nil
+                                              cancelButtonTitle:@"That's cool man"
+                                              otherButtonTitles:nil];
         [alert show];
     }
 }
@@ -644,7 +648,14 @@
             [notif setMessage:[round objectAtIndex:_roundIndex%[round count]]];
             
             notif.delegate = self;
-            [notif setActionToCall:@selector(clicNotificationView:) withParam:@"This could be a message"];
+            
+            // Add Action on touch
+            [notif addTarget:self
+                      action:@selector(clicNotificationView:)
+            forControlEvents:UIControlEventTouchUpInside];
+            [notif setParamOnAction:@"This could be a message"];
+            
+            // Add an URL to define custom action in you app
             [notif setUrlToOpen:[NSURL URLWithString:@"rzn://OtherViewController?the%20awesome%20message"]];
             
             [notif setVibrate:_vibrate];

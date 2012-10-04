@@ -41,12 +41,11 @@ typedef enum {
 
 @protocol RZNotificationViewDelegate;
 
-@interface RZNotificationView : UIView
+@interface RZNotificationView : UIControl
 {
     UIImageView *_iconView;
     UIImageView *_anchorView;
     BOOL _isTouch;
-    id _actionParam;
     
     NSURL *_soundFileURLRef;
     SystemSoundID	soundFileObject;
@@ -69,8 +68,6 @@ typedef enum {
 - (void) hide;
 - (void) hideAfterDelay:(NSTimeInterval)delay;
 
-- (void) setActionToCall:(SEL)actionToCall withParam:(id)param;
-
 @property (nonatomic, strong) UILabel *textLabel;
 @property (nonatomic, strong) id <RZNotificationLabelProtocol> customView;
 @property (nonatomic, strong) NSString *message;
@@ -85,7 +82,8 @@ typedef enum {
 @property (nonatomic) RZNotificationIcon icon;
 @property (nonatomic, strong) NSString *customIcon;
 @property (assign, nonatomic) id <RZNotificationViewDelegate> delegate;
-@property (nonatomic) SEL actionToCall;
+@property (nonatomic, strong) id paramOnAction;
+
 @property (nonatomic, strong) NSURL *urlToOpen;
 
 @end

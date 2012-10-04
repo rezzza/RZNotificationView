@@ -36,6 +36,8 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
     BOOL _isShowing;
     BOOL _hasPlayedSound;
     BOOL _hasVibrate;
+    
+    UIView *_highlightedView;
 }
 @property (nonatomic, strong) UIViewController *controller;
 @end
@@ -446,12 +448,6 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
     }
 }
 
-- (void) setActionToCall:(SEL)actionToCall withParam:(id)param
-{
-    _actionToCall = actionToCall;
-    _actionParam = param;
-}
-
 #pragma mark - Subviews build
 
 - (void) addTextLabelIfNeeded
@@ -521,6 +517,12 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
         
         // Observe device orientation changes
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(deviceOrientationDidChange:) name:UIDeviceOrientationDidChangeNotification object:nil];
+        
+        // Handle touch
+        [self addTarget:self
+                 action:@selector(handleTouch)
+       forControlEvents:UIControlEventTouchUpInside];
+        
     }
     return self;
  
@@ -635,6 +637,7 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
 	return [NSArray arrayWithArray:notifications];
 }
 
+#pragma mark - Show hide methods
 - (void) placeToOrigin
 {
     if (_position == RZNotificationPositionTop) {
@@ -717,6 +720,8 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
     }
 }
 
+#pragma mark - Rotation handling
+
 - (void) deviceOrientationDidChange:(NSNotification*)notification
 {
     if(self.superview){
@@ -738,13 +743,18 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
         if (_controller.view.frame.size.width != 0)
             frame.size.width = _controller.view.frame.size.width;
         self.frame = frame;
+        _highlightedView.frame = CGRectOffset(CGRectInset(self.bounds, 0.0, 1.5), 0.0, -3.0);
     }
 }
 
-- (void) touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
+#pragma mark - Touches
+- (void) handleTouch
 {
     if(!_isTouch){
         _isTouch = YES;
+        
+        [self sendActionsForControlEvents:UIControlEventTouchDown];
+        
         if(_delay == 0.0){
             if ([self.delegate respondsToSelector:@selector(notificationViewTouched:)]){
                 [self.delegate notificationViewTouched:self];
@@ -758,21 +768,35 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
             [self hide];
         }
     }
-    if([_controller respondsToSelector:_actionToCall]){
-        if(!_actionParam)
-            _actionParam = self;
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
-        [_controller performSelector:_actionToCall withObject:_actionParam];
-#pragma clang diagnostic pop
-        
-    }
+    
     if (_urlToOpen) {
         if ([[UIApplication sharedApplication] canOpenURL:_urlToOpen]) {
             [[UIApplication sharedApplication] openURL:_urlToOpen];
         }
     }
 }
+
+#pragma mark - UIControl methods
+
+- (void) setHighlighted:(BOOL)highlighted
+{
+    if (highlighted != self.highlighted) { // Avoid to redraw if this is not necessary
+        [super setHighlighted:highlighted];
+        // We could use Coregraphics to draw different backgrounds, but it means updating the text color etc.
+        // So we place a transparent overlay view on top
+        if (highlighted) {
+            if (!_highlightedView) {
+                _highlightedView = [[UIView alloc] init];
+                [_highlightedView setBackgroundColor:[UIColor colorWithWhite:0.3 alpha:0.3]];
+            }
+            _highlightedView.frame = CGRectOffset(CGRectInset(self.bounds, 0.0, 1.5), 0.0, -3.0);
+            [self addSubview:_highlightedView];
+        }
+        else
+            [_highlightedView removeFromSuperview];
+    }
+}
+
 - (void) dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIDeviceOrientationDidChangeNotification object:nil];
