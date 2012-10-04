@@ -60,11 +60,12 @@
 
 - (IBAction)showFacebook:(id)sender
 {
-    [RZNotificationView showNotificationWithMessage:@"Tell your friends that RZNotificationView is awesome."
+    [[RZNotificationView showNotificationWithMessage:@"Tell your friends that RZNotificationView is awesome."
                                                icon:RZNotificationIconFacebook
                                            position:RZNotificationPositionBottom
                                               color:RZNotificationColorBlue
                                          assetColor:RZNotificationAssetColorAutomaticLight
-                                  addedToController:self];
+                                  addedToController:self]
+     setUrlToOpen:[NSURL URLWithString:@"fb://"]];
 }
 @end
