@@ -168,7 +168,7 @@
 
 -(CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (indexPath.row == 2) {
+    if (indexPath.row == 3) {
         return tableView.rowHeight + [PrettyTableViewCell
                                       tableView:tableView neededHeightForIndexPath:indexPath] + 20.0;
     }
@@ -232,6 +232,9 @@
     
     switch (indexPath.row) {
         case 0:
+            cell.textLabel.text = @"Show notification";
+            return cell;
+        case 1:
             delayCell = [tableView dequeueReusableCellWithIdentifier:DelayCellIdentifier];
             if (delayCell == nil) {
                 delayCell = [[PrettyCustomViewTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:DelayCellIdentifier];
@@ -257,7 +260,7 @@
             [delayCell prepareForTableView:tableView indexPath:indexPath];
             delayCell.tableViewBackgroundColor = tableView.backgroundColor;
             return delayCell;
-        case 1:
+        case 2:
             bgCell = [tableView dequeueReusableCellWithIdentifier:BgCellIdentifier];
             if (bgCell == nil) {
                 bgCell = [[PrettyGridTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:BgCellIdentifier];
@@ -272,7 +275,7 @@
             [bgCell setText:@"Bottom Color" atIndex:1];
 
             return bgCell;
-        case 2:
+        case 3:
             colorCell = [tableView dequeueReusableCellWithIdentifier:ColorCellIdentifier];
             if (colorCell == nil) {
                 colorCell = [[PrettyCustomViewTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:ColorCellIdentifier];
@@ -327,7 +330,7 @@
             [colorCell prepareForTableView:tableView indexPath:indexPath];
             colorCell.tableViewBackgroundColor = tableView.backgroundColor;
             return colorCell;
-        case 3:
+        case 4:
             positionCell = [tableView dequeueReusableCellWithIdentifier:PositionCellIdentifier];
             if (positionCell == nil) {
                 positionCell = [[PrettyCustomViewTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:PositionCellIdentifier];
@@ -369,7 +372,7 @@
             positionCell.tableViewBackgroundColor = tableView.backgroundColor;
             return positionCell;
             
-        case 4:
+        case 5:
             iconCell = [tableView dequeueReusableCellWithIdentifier:IconCellIdentifier];
             if (iconCell == nil) {
                 iconCell = [[PrettyCustomViewTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:IconCellIdentifier];
@@ -415,7 +418,7 @@
             iconCell.tableViewBackgroundColor = tableView.backgroundColor;
             return iconCell;
         
-        case 5:
+        case 6:
             vibrateCell = [tableView dequeueReusableCellWithIdentifier:VibrateCellIdentifier];
             if (vibrateCell == nil) {
                 vibrateCell = [[PrettyCustomViewTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:VibrateCellIdentifier];
@@ -439,10 +442,10 @@
             [vibrateCell prepareForTableView:tableView indexPath:indexPath];
             vibrateCell.tableViewBackgroundColor = tableView.backgroundColor;
             return vibrateCell;            
-        case 6:
+        case 7:
             cell.textLabel.text = @"Hidde/Show Navbar";
             return cell;
-        case 7:
+        case 8:
             textSampleCell = [tableView dequeueReusableCellWithIdentifier:TextSampleCellIdentifier];
             if (textSampleCell == nil) {
                 textSampleCell = [[PrettyCustomViewTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:TextSampleCellIdentifier];
@@ -484,7 +487,7 @@
             [textSampleCell prepareForTableView:tableView indexPath:indexPath];
             textSampleCell.tableViewBackgroundColor = tableView.backgroundColor;
             return textSampleCell;
-        case 8:
+        case 9:
             textStyleCell = [tableView dequeueReusableCellWithIdentifier:TextStyleCellIdentifier];
             if (textStyleCell == nil) {
                 textStyleCell = [[PrettyCustomViewTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:TextStyleCellIdentifier];
@@ -525,7 +528,7 @@
             [textStyleCell prepareForTableView:tableView indexPath:indexPath];
             textStyleCell.tableViewBackgroundColor = tableView.backgroundColor;
             return textStyleCell;
-        case 9:
+        case 10:
             contentStyleCell = [tableView dequeueReusableCellWithIdentifier:ContentStyleCellIdentifier];
             if (contentStyleCell == nil) {
                 contentStyleCell = [[PrettyCustomViewTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:ContentStyleCellIdentifier];
@@ -567,7 +570,7 @@
             [contentStyleCell prepareForTableView:tableView indexPath:indexPath];
             contentStyleCell.tableViewBackgroundColor = tableView.backgroundColor;
             return contentStyleCell;
-        case 10:
+        case 11:
             soundCell = [tableView dequeueReusableCellWithIdentifier:SoundCellIdentifier];
             if (soundCell == nil) {
                 soundCell = [[PrettyCustomViewTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:SoundCellIdentifier];
@@ -591,10 +594,6 @@
             [soundCell prepareForTableView:tableView indexPath:indexPath];
             soundCell.tableViewBackgroundColor = tableView.backgroundColor;
             return soundCell;
-        case 11:
-            cell.textLabel.text = @"Show notification";
-            return cell;
-        
         default:
             break;
     }
@@ -607,10 +606,7 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {    
     switch (indexPath.row) {
-        case 6:
-            [self navBarHidden:nil];
-            break;
-        case 11:
+        case 0:
         {
             _roundIndex ++;
             NSArray *round ;
@@ -618,9 +614,9 @@
                 case SampleMessageShort:
                 {
                     round = [NSArray arrayWithObjects:
-                                      NSLocalizedString(@"Register now, for free", nil),
-                                      NSLocalizedString(@"Refer this app to a friend and earn money !", nil),
-                                      nil];
+                             NSLocalizedString(@"Register now, for free", nil),
+                             NSLocalizedString(@"Refer this app to a friend and earn money !", nil),
+                             nil];
                 }
                     break;
                 case SampleMessageMedium:
@@ -644,6 +640,9 @@
             _notifView.message = [round objectAtIndex:_roundIndex%[round count]];
             [_notifView showFromController:self];
         }
+            break;
+        case 7:
+            [self navBarHidden:nil];
             break;
         default:
             break;
