@@ -287,7 +287,7 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
     CGColorSpaceRelease(colorSpace);
     
     _iconView.image = [self image:[self getImageForIcon:_icon] withColor:colorStart];
-    _anchorView.image = [self image:[UIImage imageNamed:@"ico-anchor-white.png"] withColor:colorStart];
+    _anchorView.image = [self image:[UIImage imageNamed:@"notif_anchor.png"] withColor:colorStart];
     if (_assetColor != RZNotificationAssetColorManual) {
         _textLabel.textColor = [self adjustAssetsColor:colorStart];
         if(_assetColor == RZNotificationAssetColorAutomaticDark)
@@ -489,7 +489,7 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
         [self addSubview:_iconView];
         
         // Add Anchor view
-        _anchorView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"ico-anchor-white.png"]];
+        _anchorView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"notif_anchor.png"]];
         _anchorView.contentMode = UIViewContentModeCenter;
         _anchorView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
         [self addSubview:_anchorView];
