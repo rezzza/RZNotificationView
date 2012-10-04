@@ -675,6 +675,11 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
 
 - (void) show
 {
+    if (_customView) {
+        CGFloat height = [_customView resizeForWidth:CGRectGetWidth(self.frame)-2*OFFSET_X];
+        [self adjustHeightAndRedraw:height];
+    }
+    
     [self placeToOrigin];
     
     _isShowing = YES;
