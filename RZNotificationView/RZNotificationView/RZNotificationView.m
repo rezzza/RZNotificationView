@@ -604,15 +604,6 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
         self.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
     }
     
-//    if(_textLabel){
-//        self.message = _message;
-//    }
-//    else{
-//        CGFloat height = [_customView resizeForWidth:CGRectGetWidth(self.frame)-2*OFFSET_X];
-//        NSLog(@"%f", height);
-//        [self adjustHeighAndRedraw:height];
-//    }
-    
     [_controller.view addSubview:self];
     
     if(_vibrate)
@@ -658,6 +649,14 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
 - (void) deviceOrientationDidChange:(NSNotification*)notification
 {
     if(self.superview){
+        if(_textLabel){
+            self.message = _message;
+        }
+        else{
+            CGFloat height = [_customView resizeForWidth:CGRectGetWidth(self.frame)-2*OFFSET_X];
+            [self adjustHeighAndRedraw:height];
+        }
+        
         CGRect frame = self.frame;
         if (_position == RZNotificationPositionBottom) {
             frame.origin.y = CGRectGetHeight(_controller.view.frame) - self.frame.size.height;
@@ -668,14 +667,6 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
         if (_controller.view.frame.size.width != 0)
             frame.size.width = _controller.view.frame.size.width;
         self.frame = frame;
-        
-        if(_textLabel){
-            self.message = _message;
-        }
-        else{
-            CGFloat height = [_customView resizeForWidth:CGRectGetWidth(self.frame)-2*OFFSET_X];
-            [self adjustHeighAndRedraw:height];
-        }
     }
 }
 
