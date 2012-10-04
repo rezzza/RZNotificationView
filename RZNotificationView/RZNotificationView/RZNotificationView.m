@@ -50,30 +50,70 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
     return c;
 }
 
-- (UIColor *)lighterColorForColor:(UIColor *)c withOffset:(CGFloat)o
+// From BButton
+- (UIColor *)lighterColorForColor:(UIColor *)oldColor withOffset:(CGFloat)value
 {
-    float r, g, b, a;
-    if ([c getRed:&r green:&g blue:&b alpha:&a])
-        return [UIColor colorWithRed:MIN(r + o, 1.0)
-                               green:MIN(g + o, 1.0)
-                                blue:MIN(b + o, 1.0)
-                               alpha:a];
-    return nil;
+    int   totalComponents = CGColorGetNumberOfComponents(oldColor.CGColor);
+    bool  isGreyscale     = totalComponents == 2 ? YES : NO;
+    
+    CGFloat* oldComponents = (CGFloat *)CGColorGetComponents(oldColor.CGColor);
+    CGFloat newComponents[4];
+    
+    if (isGreyscale) {
+        newComponents[0] = oldComponents[0]+value > 1.0 ? 1.0 : oldComponents[0]+value;
+        newComponents[1] = oldComponents[0]+value > 1.0 ? 1.0 : oldComponents[0]+value;
+        newComponents[2] = oldComponents[0]+value > 1.0 ? 1.0 : oldComponents[0]+value;
+        newComponents[3] = oldComponents[1];
+    } else {
+        newComponents[0] = oldComponents[0]+value > 1.0 ? 1.0 : oldComponents[0]+value;
+        newComponents[1] = oldComponents[1]+value > 1.0 ? 1.0 : oldComponents[1]+value;
+        newComponents[2] = oldComponents[2]+value > 1.0 ? 1.0 : oldComponents[2]+value;
+        newComponents[3] = oldComponents[3];
+    }
+    
+    CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
+	CGColorRef newColor = CGColorCreate(colorSpace, newComponents);
+	CGColorSpaceRelease(colorSpace);
+    
+	UIColor *retColor = [UIColor colorWithCGColor:newColor];
+	CGColorRelease(newColor);
+    
+    return retColor;
 }
 - (UIColor *)lighterColorForColor:(UIColor *)c
 {
-    return [self lighterColorForColor:c withOffset:0.3f];
+    return [self lighterColorForColor:c withOffset:0.6f];
 }
 
-- (UIColor *)darkerColorForColor:(UIColor *)c withOffset:(CGFloat)o
+- (UIColor *)darkerColorForColor:(UIColor *)oldColor withOffset:(float)value
 {
-    float r, g, b, a;
-    if ([c getRed:&r green:&g blue:&b alpha:&a])
-        return [UIColor colorWithRed:MAX(r - o, 0.0)
-                               green:MAX(g - o, 0.0)
-                                blue:MAX(b - o, 0.0)
-                               alpha:a];
-    return nil;
+    int   totalComponents = CGColorGetNumberOfComponents(oldColor.CGColor);
+    bool  isGreyscale     = totalComponents == 2 ? YES : NO;
+    
+    CGFloat* oldComponents = (CGFloat *)CGColorGetComponents(oldColor.CGColor);
+    CGFloat newComponents[4];
+    
+    if (isGreyscale) {
+        newComponents[0] = oldComponents[0]-value < 0.0 ? 0.0 : oldComponents[0]-value;
+        newComponents[1] = oldComponents[0]-value < 0.0 ? 0.0 : oldComponents[0]-value;
+        newComponents[2] = oldComponents[0]-value < 0.0 ? 0.0 : oldComponents[0]-value;
+        newComponents[3] = oldComponents[1];
+    } else {
+        newComponents[0] = oldComponents[0]-value < 0.0 ? 0.0 : oldComponents[0]-value;
+        newComponents[1] = oldComponents[1]-value < 0.0 ? 0.0 : oldComponents[1]-value;
+        newComponents[2] = oldComponents[2]-value < 0.0 ? 0.0 : oldComponents[2]-value;
+        newComponents[3] = oldComponents[3];
+    }
+    
+    CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
+	CGColorRef newColor = CGColorCreate(colorSpace, newComponents);
+	CGColorSpaceRelease(colorSpace);
+    
+	UIColor *retColor = [UIColor colorWithCGColor:newColor];
+	CGColorRelease(newColor);
+    
+    return retColor;
+
 }
 
 - (UIColor *)darkerColorForColor:(UIColor *)c
@@ -90,9 +130,9 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
     if (_assetColor == RZNotificationAssetColorAutomaticLight)
     {
         iconTrait.gradientColors = [NSArray arrayWithObjects:
-                                    [self lighterColorForColor:color withOffset:0.2],
-                                    [self lighterColorForColor:color withOffset:0.1], nil];
-        iconTrait.shadowColor = [UIColor colorWithWhite:0.0f alpha:1.0f];
+                                    [self lighterColorForColor:color withOffset:0.8],
+                                    [self lighterColorForColor:color withOffset:0.7], nil];
+        iconTrait.shadowColor = [self darkerColorForColor:color withOffset:0.8];
         iconTrait.innerShadowColor = [self darkerColorForColor:color];
         iconTrait.shadowOffset = CGSizeMake(0.0f, -1.0f);
         iconTrait.innerShadowOffset = CGSizeMake(0.0f, -1.0f);
@@ -100,10 +140,10 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
     else if (_assetColor == RZNotificationAssetColorAutomaticDark)
     {
         iconTrait.gradientColors = [NSArray arrayWithObjects:
-                                    [self darkerColorForColor:color withOffset:0.2],
-                                    [self darkerColorForColor:color withOffset:0.1], nil];
-        iconTrait.shadowColor = [UIColor colorWithWhite:1.0f alpha:1.0f];
-        iconTrait.innerShadowColor = [self lighterColorForColor:color];
+                                    [self darkerColorForColor:color withOffset:0.3],
+                                    [self darkerColorForColor:color withOffset:0.2], nil];
+        iconTrait.shadowColor = [self lighterColorForColor:color withOffset:0.4];
+        iconTrait.innerShadowColor = [self lighterColorForColor:color withOffset:0.8];
         iconTrait.shadowOffset = CGSizeMake(0.0f, 1.0f);
         iconTrait.innerShadowOffset = CGSizeMake(0.0f, 1.0f);
     }
@@ -251,9 +291,9 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
     if (_assetColor != RZNotificationAssetColorManual) {
         _textLabel.textColor = [self adjustAssetsColor:colorStart];
         if(_assetColor == RZNotificationAssetColorAutomaticDark)
-            _textLabel.shadowColor = [UIColor whiteColor];
+            _textLabel.shadowColor = [self lighterColorForColor:colorStart withOffset:0.2];
         if(_assetColor == RZNotificationAssetColorAutomaticLight)
-            _textLabel.shadowColor = [UIColor blackColor];
+            _textLabel.shadowColor = [self darkerColorForColor:colorStart withOffset:0.8];
     }
 }
 
