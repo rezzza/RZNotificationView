@@ -134,25 +134,40 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
 {
     MOOStyleTrait *iconTrait = [MOOStyleTrait trait];
     
-    if (_assetColor == RZNotificationAssetColorAutomaticLight)
+    switch(_assetColor)
     {
-        iconTrait.gradientColors = [NSArray arrayWithObjects:
-                                    [self lighterColorForColor:color withOffset:0.8],
-                                    [self lighterColorForColor:color withOffset:0.7], nil];
-        iconTrait.shadowColor = [self darkerColorForColor:color withOffset:0.8];
-        iconTrait.innerShadowColor = [self darkerColorForColor:color];
-        iconTrait.shadowOffset = CGSizeMake(0.0f, -1.0f);
-        iconTrait.innerShadowOffset = CGSizeMake(0.0f, -1.0f);
-    }
-    else if (_assetColor == RZNotificationAssetColorAutomaticDark)
-    {
-        iconTrait.gradientColors = [NSArray arrayWithObjects:
-                                    [self darkerColorForColor:color withOffset:0.3],
-                                    [self darkerColorForColor:color withOffset:0.2], nil];
-        iconTrait.shadowColor = [self lighterColorForColor:color withOffset:0.4];
-        iconTrait.innerShadowColor = [self lighterColorForColor:color withOffset:0.8];
-        iconTrait.shadowOffset = CGSizeMake(0.0f, 1.0f);
-        iconTrait.innerShadowOffset = CGSizeMake(0.0f, 1.0f);
+        case RZNotificationAssetColorAutomaticLight:
+        {
+            iconTrait.gradientColors = [NSArray arrayWithObjects:
+                                        [self lighterColorForColor:color withOffset:0.8],
+                                        [self lighterColorForColor:color withOffset:0.7], nil];
+            iconTrait.shadowColor = [self darkerColorForColor:color withOffset:0.8];
+            iconTrait.innerShadowColor = [self darkerColorForColor:color];
+            iconTrait.shadowOffset = CGSizeMake(0.0f, -1.0f);
+            iconTrait.innerShadowOffset = CGSizeMake(0.0f, -1.0f);
+        }
+            break;
+        case RZNotificationAssetColorAutomaticDark:
+        {
+            iconTrait.gradientColors = [NSArray arrayWithObjects:
+                                        [self darkerColorForColor:color withOffset:0.3],
+                                        [self darkerColorForColor:color withOffset:0.2], nil];
+            iconTrait.shadowColor = [self lighterColorForColor:color withOffset:0.4];
+            iconTrait.innerShadowColor = [self lighterColorForColor:color withOffset:0.8];
+            iconTrait.shadowOffset = CGSizeMake(0.0f, 1.0f);
+            iconTrait.innerShadowOffset = CGSizeMake(0.0f, 1.0f);
+        }
+            break;
+        case RZNotificationAssetColorManual:
+        {
+            iconTrait.gradientColors = [NSArray arrayWithObjects:
+                                        _textLabel.textColor, nil];
+            iconTrait.shadowColor = _textLabel.shadowColor;
+            iconTrait.innerShadowColor = [self lighterColorForColor:_textLabel.textColor withOffset:0.8];
+            iconTrait.shadowOffset = CGSizeMake(0.0f, 1.0f);
+            iconTrait.innerShadowOffset = CGSizeMake(0.0f, 1.0f);
+        }
+            break;
     }
     
     MOOMaskedIconView *iconView = [MOOMaskedIconView iconWithImage:img];

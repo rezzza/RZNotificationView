@@ -647,6 +647,11 @@
                                                                                  delay:_delaySlider.value];
             [notif setMessage:[round objectAtIndex:_roundIndex%[round count]]];
             
+            if (_assetColor == RZNotificationAssetColorManual) {
+                notif.textLabel.textColor = [UIColor greenColor];
+                notif.textLabel.shadowColor = [UIColor redColor];
+            }
+            
             notif.delegate = self;
             
             // Add Action on touch
