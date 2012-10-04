@@ -398,7 +398,7 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
     _textLabel.frame = frameL;
     [_textLabel sizeToFit];
     
-    [self adjustHeighAndRedraw:CGRectGetHeight(_textLabel.frame)];
+    [self adjustHeightAndRedraw:CGRectGetHeight(_textLabel.frame)];
 }
 
 - (void) setSound:(NSString *)sound
@@ -432,7 +432,7 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
     }
 }
 
-- (void) adjustHeighAndRedraw:(CGFloat)height
+- (void) adjustHeightAndRedraw:(CGFloat)height
 {
     CGRect frame = self.frame;
     if (MIN_HEIGHT < floor(height / 0.72)) { //calculation given by paintcode
@@ -745,7 +745,7 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
         }
         else{
             CGFloat height = [_customView resizeForWidth:CGRectGetWidth(self.frame)-2*OFFSET_X];
-            [self adjustHeighAndRedraw:height];
+            [self adjustHeightAndRedraw:height];
         }
         
         CGRect frame = self.frame;
