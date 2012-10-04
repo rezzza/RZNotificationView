@@ -10,3 +10,6 @@
 [submodule "vendor/TTTAttributedLabel"]
 	path = vendor/TTTAttributedLabel
 	url = git://github.com/mattt/TTTAttributedLabel.git
+[submodule "vendor/MOOMaskedIconView"]
+	path = vendor/MOOMaskedIconView
+	url = https://github.com/peyton/MOOMaskedIconView.git
