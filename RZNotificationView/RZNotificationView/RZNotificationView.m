@@ -415,8 +415,9 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
 
 + (UIViewController*) topMostController
 {
-    UIViewController *topController = [UIApplication sharedApplication].keyWindow.rootViewController;
-    topController = [self getModalViewControllerOfControllerIfExists:topController]; // TODO: this need to be checked
+    UIViewController *topController = ((UIWindow*)[[UIApplication sharedApplication].windows objectAtIndex:0]).rootViewController;
+
+    topController = [self getModalViewControllerOfControllerIfExists:topController];
     
     while ([topController conformsToProtocol:@protocol(RZNotificationContainerControllerProtocol)])
     {
