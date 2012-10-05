@@ -7,6 +7,9 @@
 //
 
 #import "SimpleSampleViewController.h"
+
+#import "ModalViewController.h"
+
 #import "RZNotificationView.h"
 
 @interface SimpleSampleViewController ()
@@ -78,6 +81,14 @@
 {
     [RZNotificationView hideAllNotificationsForController:self];
 }
+
+- (IBAction)presentModalView:(id)sender
+{
+    ModalViewController *modal = [[ModalViewController alloc] initWithNibName:@"ModalViewController" bundle:nil];
+    UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:modal];
+    [self presentModalViewController:nav animated:YES];
+}
+
 - (void)viewDidUnload {
     [super viewDidUnload];
 }

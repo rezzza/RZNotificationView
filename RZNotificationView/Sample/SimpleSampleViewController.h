@@ -14,4 +14,6 @@
 - (IBAction)showWarning:(id)sender;
 - (IBAction)showFacebook:(id)sender;
 - (IBAction)hideAllNotifications:(id)sender;
+- (IBAction)presentModalView:(id)sender;
+
 @end
