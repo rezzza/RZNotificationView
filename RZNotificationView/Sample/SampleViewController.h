@@ -44,6 +44,7 @@ typedef enum {
     RZNotificationPosition _position;
     RZNotificationIcon _icon;
     RZNotificationAssetColor _assetColor;
+    RZNotificationAssetColor _textColor;
     
     id<RZNotificationLabelProtocol> _customView;
 }
