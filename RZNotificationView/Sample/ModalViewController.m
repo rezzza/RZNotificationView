@@ -49,9 +49,8 @@
                                               color:RZNotificationColorYellow
                                          assetColor:RZNotificationAssetColorAutomaticLight
                                           textColor:RZNotificationTextColorAutomaticDark
-                                  addedToController:self withCompletion:^(BOOL touched) {
-                                      
-                                  }];
+                                  addedToController:self
+                                     withCompletion:nil];
     
     
 }

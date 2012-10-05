@@ -51,9 +51,7 @@
                                                                  color:RZNotificationColorYellow
                                                             assetColor:RZNotificationAssetColorAutomaticLight
                                                              textColor:RZNotificationTextColorAutomaticDark
-                                                                 withCompletion:^(BOOL touched) {
-                                                                     
-                                                                 }];
+                                                                 withCompletion:nil];
 }
 
 - (IBAction)showWarning:(id)sender
@@ -65,9 +63,7 @@
                                                                      assetColor:RZNotificationAssetColorAutomaticDark
                                                                       textColor:RZNotificationTextColorAutomaticLight
                                                               addedToController:self
-                                                                 withCompletion:^(BOOL touched) {
-                                                                     
-                                                                 }];
+                                                                 withCompletion:nil];
     [notif setSound:@"DoorBell-SoundBible.com-1986366504.wav"];
     [notif setVibrate:YES];
 }
@@ -82,12 +78,14 @@
                                           textColor:RZNotificationTextColorAutomaticLight
                                   addedToController:self
                                      withCompletion:^(BOOL touched) {
-                                         NSURL *fbURL = [NSURL URLWithString:@"fb://"];
-                                         if ([[UIApplication sharedApplication] canOpenURL:fbURL]) {
-                                             [[UIApplication sharedApplication] openURL:fbURL];
+                                         if (touched) {
+                                             NSURL *fbURL = [NSURL URLWithString:@"fb://"];
+                                             if ([[UIApplication sharedApplication] canOpenURL:fbURL]) {
+                                                 [[UIApplication sharedApplication] openURL:fbURL];
+                                             }
+                                             else
+                                                 [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://www.facebook.com"]];
                                          }
-                                         else
-                                             [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://www.facebook.com"]];
                                      }];
 }
 

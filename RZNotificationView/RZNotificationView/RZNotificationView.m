@@ -399,6 +399,22 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
     }
 }
 
+- (void) setCompletionBlock:(RZNotificationCompletion)completionBlock
+{
+    if (completionBlock == nil) {
+        [_anchorView removeFromSuperview];
+    }
+    else
+    {
+        if (!_anchorView.superview) {
+            [self insertSubview:_anchorView aboveSubview:_textLabel];
+        }
+    }
+    
+    RZ_RELEASE(_completionBlock);
+    _completionBlock = RZ_RETAIN(completionBlock);
+}
+
 + (UIViewController*) getModalViewControllerOfControllerIfExists:(UIViewController*)controller
 {
     UIViewController *toReturn = nil;
@@ -741,7 +757,8 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
 
 - (void) hide
 {
-    _completionBlock(_isTouch);
+    if (_completionBlock)
+        _completionBlock(_isTouch);
     
     _isTouch = NO;
     
@@ -814,7 +831,8 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
 
 - (void) setHighlighted:(BOOL)highlighted
 {
-    if (highlighted != self.highlighted) { // Avoid to redraw if this is not necessary
+    // Do nothing if no completion block
+    if (highlighted != self.highlighted && _completionBlock) { // Avoid to redraw if this is not necessary
         [super setHighlighted:highlighted];
         // We could use Coregraphics to draw different backgrounds, but it means updating the text color etc.
         // So we place a transparent overlay view on top
@@ -851,7 +869,8 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
     RZ_RELEASE(_customBottomColor);
     RZ_RELEASE(_sound);
     RZ_RELEASE(_customIcon);
-    RZ_RELEASE(_completionBlock);
+    if (_completionBlock)
+        RZ_RELEASE(_completionBlock);
     
 #if !RZ_ARC_ENABLED
     [super dealloc];
