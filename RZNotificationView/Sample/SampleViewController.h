@@ -25,9 +25,6 @@ typedef enum {
     UISlider *_delaySlider;
     UILabel *_delayLabel;
     
-    IBOutlet UIView *_topColorView;
-    IBOutlet UIView *_bottomColorView;
-    
     IBOutlet UITableView *_tableView;
 
     NSInteger _current;
@@ -52,8 +49,6 @@ typedef enum {
 @property (nonatomic, strong) WEPopoverController *popoverController;
 @property (nonatomic, strong) IBOutlet UITableView *tableView;
 
-- (IBAction) testButtonTop:(id)sender;
-- (IBAction) testButtonBottom:(id)sender;
 - (IBAction) navBarHidden:(id)sender;
 - (IBAction) sliderValueChanged:(id)sender;
 - (void) switchChange:(UISwitch*)sender;
