@@ -105,7 +105,7 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
     CGContextRef context = UIGraphicsGetCurrentContext();
     
     //// Color Declarations
-    UIColor* outerShadowColor = [UIColor colorWithRed: 0 green: 0 blue: 0 alpha: 1];
+    UIColor* outerShadowColor = [UIColor colorWithRed: 0 green: 0 blue: 0 alpha: 0.75];
     UIColor* innerShadowColor = [UIColor colorWithRed: 1 green: 1 blue: 1 alpha: 0.5];
     
     UIColor* colorStart;
@@ -176,11 +176,11 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
     CGRect notificationFrame = rect;
     
     //// Subframes
-    _iconView.frame = CGRectMake(CGRectGetMinX(notificationFrame) + 7, CGRectGetMinY(notificationFrame) + floor((CGRectGetHeight(notificationFrame) - 22) * 0.5), 21, 22);
+    _iconView.frame = CGRectMake(CGRectGetMinX(notificationFrame) + 7, CGRectGetMinY(notificationFrame) + floor((CGRectGetHeight(notificationFrame) - 22) * 0.5) - ceil((_position == RZNotificationPositionTop ? NOTIFICATION_SHADOW_BLUR_RADIUS : -NOTIFICATION_SHADOW_BLUR_RADIUS)/2), 21, 22);
     CGRect contentFrame = CGRectMake(CGRectGetMinX(notificationFrame) + OFFSET_X, CGRectGetMinY(notificationFrame) + CGRectGetMinY(notificationFrame) + CONTENT_MARGIN_HEIGHT + (_position == RZNotificationPositionTop ? 0 : NOTIFICATION_SHADOW_BLUR_RADIUS), CGRectGetWidth(notificationFrame) - 2*OFFSET_X, CGRectGetHeight(notificationFrame) - 2*CONTENT_MARGIN_HEIGHT - NOTIFICATION_SHADOW_BLUR_RADIUS);
     _textLabel.frame = contentFrame;
     [_customView setFrame:contentFrame];
-    _anchorView.frame = CGRectMake(CGRectGetMinX(notificationFrame) + CGRectGetWidth(notificationFrame) - 26, CGRectGetMinY(notificationFrame) + floor((CGRectGetHeight(notificationFrame) - 22) * 0.5), 21, 22);
+    _anchorView.frame = CGRectMake(CGRectGetMinX(notificationFrame) + CGRectGetWidth(notificationFrame) - 26, CGRectGetMinY(notificationFrame) + floor((CGRectGetHeight(notificationFrame) - 22) * 0.5) - ceil((_position == RZNotificationPositionTop ? NOTIFICATION_SHADOW_BLUR_RADIUS : -NOTIFICATION_SHADOW_BLUR_RADIUS)/2), 21, 22);
     
     //// NotificationZone Drawing
     CGRect notificationZoneRect = CGRectMake(CGRectGetMinX(notificationFrame) + 0, CGRectGetMinY(notificationFrame) + (_position == RZNotificationPositionTop ? 0 : outerShadowBlurRadius), CGRectGetWidth(notificationFrame) - 0, CGRectGetHeight(notificationFrame) - (_position == RZNotificationPositionTop ?outerShadowBlurRadius : 0));
