@@ -10,8 +10,6 @@
 #import "RZNotificationLabelProtocol.h"
 #include <AudioToolbox/AudioToolbox.h>
 
-#define RZSystemVersionGreaterOrEqualThan(version) ([[[UIDevice currentDevice] systemVersion] floatValue] >= version)
-
 typedef enum {
     RZNotificationIconFacebook = 0,
     RZNotificationIconGift,
@@ -52,8 +50,7 @@ typedef enum {
     UIImageView *_anchorView;
     BOOL _isTouch;
     
-    NSURL *_soundFileURLRef;
-    SystemSoundID	soundFileObject;
+    SystemSoundID _soundFileObject;
     
 }
 
@@ -85,8 +82,8 @@ typedef enum {
 @property (nonatomic) NSTimeInterval delay;
 @property (nonatomic) RZNotificationPosition position;
 @property (nonatomic) RZNotificationColor color;
-@property (nonatomic) UIColor *customTopColor;
-@property (nonatomic) UIColor *customBottomColor;
+@property (nonatomic, strong) UIColor *customTopColor;
+@property (nonatomic, strong) UIColor *customBottomColor;
 @property (nonatomic, strong) NSString *sound;
 @property (nonatomic) BOOL vibrate;
 @property (nonatomic) RZNotificationAssetColor assetColor;
@@ -104,3 +101,27 @@ typedef enum {
 // FIXME: Is it relevant now ?
 - (void) notificationViewTouched:(RZNotificationView*)notificationView;
 @end
+
+// define some macros
+#ifndef __has_feature
+#define __has_feature(x) 0
+#endif
+#ifndef __has_extension
+#define __has_extension __has_feature // Compatibility with pre-3.0 compilers.
+#endif
+
+#if __has_feature(objc_arc) && __clang_major__ >= 3
+#define RZ_ARC_ENABLED 1
+#endif // __has_feature(objc_arc)
+
+#if RZ_ARC_ENABLED
+#define RZ_RETAIN(xx) (xx)
+#define RZ_RELEASE(xx)  xx = nil
+#define RZ_AUTORELEASE(xx)  (xx)
+#else
+#define RZ_RETAIN(xx)           [xx retain]
+#define RZ_RELEASE(xx)          [xx release], xx = nil
+#define RZ_AUTORELEASE(xx)      [xx autorelease]
+#endif
+
+#define RZSystemVersionGreaterOrEqualThan(version) ([[[UIDevice currentDevice] systemVersion] floatValue] >= version)

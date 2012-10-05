@@ -294,13 +294,15 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
 
 - (void) setCustomTopColor:(UIColor *)customTopColor
 {
-    _customTopColor = customTopColor;
+    RZ_RELEASE(_customTopColor);
+    _customTopColor = RZ_RETAIN(customTopColor);
     [self setNeedsDisplay];
 }
 
 - (void) setCustomBottomColor:(UIColor *)customBottomColor
 {
-    _customBottomColor = customBottomColor;
+    RZ_RELEASE(_customBottomColor);
+    _customBottomColor = RZ_RETAIN(customBottomColor);
     [self setNeedsDisplay];
 }
 
@@ -313,7 +315,8 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
 - (void) setMessage:(NSString *)message
 {
     NSString *tempMessage = message;
-    _message = message;
+    RZ_RELEASE(_message);
+    _message = RZ_RETAIN(message);
     
     if(MAX_MESSAGE_LENGHT < [message length])
         tempMessage = [[message substringToIndex:MAX_MESSAGE_LENGHT] stringByAppendingString:@"..."]; // Tail truncation
@@ -338,21 +341,22 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
 
 - (void) setSound:(NSString *)sound
 {
-    _sound = sound;
-    //NSString *test = [sound ]
+    RZ_RELEASE(_sound);
+    _sound = RZ_RETAIN(sound);
+
     NSURL *soundURL   = [[NSBundle mainBundle] URLForResource: [_sound stringByDeletingPathExtension]
                                                 withExtension: [_sound pathExtension]];
     
     // Create a system sound object representing the sound file.
     AudioServicesCreateSystemSoundID (
                                       (__bridge CFURLRef)(soundURL),
-                                      &soundFileObject
+                                      &_soundFileObject
                                       );
     
     if (_isShowing && !_hasPlayedSound && sound) {
         // Then we play the sound for the first time
         // This happens when you use [RZNotificationView showNotification ...]
-        AudioServicesPlaySystemSound (soundFileObject);
+        AudioServicesPlaySystemSound (_soundFileObject);
         _hasPlayedSound = YES;
     }
 }
@@ -380,12 +384,14 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
     if(customView){
         [_textLabel removeFromSuperview];
         [_customView removeFromSuperview];
-        _customView = customView;
-        _textLabel = nil;
+        RZ_RELEASE(_customView);
+        _customView = RZ_RETAIN(customView);
+        RZ_RELEASE(_textLabel);
         [self addSubview:(UIView*)_customView];
     }
     else{
         [_customView removeFromSuperview];
+        RZ_RELEASE(_customView);
         
         [self addTextLabelIfNeeded];
         
@@ -601,7 +607,7 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
                                                                                 delay:delay];
     [notification setMessage:message];
     [notification show];
-    return notification;
+    return RZ_AUTORELEASE(notification);
 }
 
 + (RZNotificationView*) showNotificationWithMessage:(NSString*)message icon:(RZNotificationIcon)icon position:(RZNotificationPosition)position color:(RZNotificationColor)color assetColor:(RZNotificationAssetColor)assetColor textColor:(RZNotificationTextColor)textColor  delay:(NSTimeInterval)delay addedToController:(UIViewController*)controller;
@@ -615,7 +621,7 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
                                                                                 delay:delay];
     [notification setMessage:message];
     [notification show];
-    return notification;
+    return RZ_AUTORELEASE(notification);
 }
 
 + (RZNotificationView *)showNotificationOnTopMostControllerWithMessage:(NSString *)message icon:(RZNotificationIcon)icon position:(RZNotificationPosition)position color:(RZNotificationColor)color assetColor:(RZNotificationAssetColor)assetColor textColor:(RZNotificationTextColor)textColor delay:(NSTimeInterval)delay
@@ -629,7 +635,7 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
                                                                                 delay:delay];
     [notification setMessage:message];
     [notification show];
-    return notification;
+    return RZ_AUTORELEASE(notification);
 }
 
 + (BOOL) hideNotificationForController:(UIViewController*)controller
@@ -727,7 +733,7 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
     if(_sound)
     {
         _hasPlayedSound = YES;
-        AudioServicesPlaySystemSound (soundFileObject);
+        AudioServicesPlaySystemSound (_soundFileObject);
     }
     
     
@@ -836,13 +842,36 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
             [self addSubview:_highlightedView];
         }
         else
+        {
             [_highlightedView removeFromSuperview];
+            RZ_RELEASE(_highlightedView);
+        }
     }
 }
 
 - (void) dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIDeviceOrientationDidChangeNotification object:nil];
+    
+    AudioServicesDisposeSystemSoundID(_soundFileObject);
+    
+    RZ_RELEASE(_highlightedView);
+    RZ_RELEASE(_controller);
+    RZ_RELEASE(_iconView);
+    RZ_RELEASE(_anchorView);
+    RZ_RELEASE(_textLabel);
+    RZ_RELEASE(_message);
+    RZ_RELEASE(_customView);
+    RZ_RELEASE(_customTopColor);
+    RZ_RELEASE(_customBottomColor);
+    RZ_RELEASE(_sound);
+    RZ_RELEASE(_customIcon);
+    RZ_RELEASE(_paramOnAction);
+    RZ_RELEASE(_urlToOpen);
+    
+#if !RZ_ARC_ENABLED
+    [super dealloc];
+#endif
 }
 
 @end
