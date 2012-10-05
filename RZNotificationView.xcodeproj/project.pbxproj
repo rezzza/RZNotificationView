@@ -138,6 +138,10 @@
 		E0EA8CE2161F200500DECF0D /* UINavigationController+RZNotificationContainerControllerProtocol.m in Sources */ = {isa = PBXBuildFile; fileRef = E0EA8CE1161F200500DECF0D /* UINavigationController+RZNotificationContainerControllerProtocol.m */; };
 		E0EA8CEE161F274300DECF0D /* ModalViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E0EA8CEC161F274300DECF0D /* ModalViewController.m */; };
 		E0EA8CEF161F274300DECF0D /* ModalViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E0EA8CED161F274300DECF0D /* ModalViewController.xib */; };
+		E0EA8CF5161F2A7100DECF0D /* AutomaticViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E0EA8CF3161F2A7100DECF0D /* AutomaticViewController.m */; };
+		E0EA8CF6161F2A7100DECF0D /* AutomaticViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E0EA8CF4161F2A7100DECF0D /* AutomaticViewController.xib */; };
+		E0EA8CFA161F2A8200DECF0D /* AutomaticModalViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E0EA8CF8161F2A8200DECF0D /* AutomaticModalViewController.m */; };
+		E0EA8CFB161F2A8200DECF0D /* AutomaticModalViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E0EA8CF9161F2A8200DECF0D /* AutomaticModalViewController.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -286,6 +290,12 @@
 		E0EA8CEB161F274300DECF0D /* ModalViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ModalViewController.h; sourceTree = "<group>"; };
 		E0EA8CEC161F274300DECF0D /* ModalViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ModalViewController.m; sourceTree = "<group>"; };
 		E0EA8CED161F274300DECF0D /* ModalViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ModalViewController.xib; sourceTree = "<group>"; };
+		E0EA8CF2161F2A7100DECF0D /* AutomaticViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AutomaticViewController.h; sourceTree = "<group>"; };
+		E0EA8CF3161F2A7100DECF0D /* AutomaticViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AutomaticViewController.m; sourceTree = "<group>"; };
+		E0EA8CF4161F2A7100DECF0D /* AutomaticViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AutomaticViewController.xib; sourceTree = "<group>"; };
+		E0EA8CF7161F2A8200DECF0D /* AutomaticModalViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AutomaticModalViewController.h; sourceTree = "<group>"; };
+		E0EA8CF8161F2A8200DECF0D /* AutomaticModalViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AutomaticModalViewController.m; sourceTree = "<group>"; };
+		E0EA8CF9161F2A8200DECF0D /* AutomaticModalViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AutomaticModalViewController.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -475,22 +485,13 @@
 			children = (
 				8BB3D89F16119E6A0056B98F /* AppDelegate.h */,
 				8BB3D8A016119E6A0056B98F /* AppDelegate.m */,
-				8BB3D8A716119F150056B98F /* SampleViewController.h */,
-				8BB3D8A816119F150056B98F /* SampleViewController.m */,
-				8BB3D8A916119F150056B98F /* SampleViewController.xib */,
-				E041A447161DC2DA008D46F5 /* SimpleSampleViewController.h */,
-				E0EA8CEB161F274300DECF0D /* ModalViewController.h */,
-				E0EA8CEC161F274300DECF0D /* ModalViewController.m */,
-				E0EA8CED161F274300DECF0D /* ModalViewController.xib */,
-				E041A448161DC2DB008D46F5 /* SimpleSampleViewController.m */,
-				E041A449161DC2DB008D46F5 /* SimpleSampleViewController.xib */,
-				8B13A68F161AEC3D0068A9F5 /* OtherViewController.h */,
-				8B13A690161AEC3D0068A9F5 /* OtherViewController.m */,
-				8B13A691161AEC3D0068A9F5 /* OtherViewController.xib */,
+				E0EA8CF0161F2A2600DECF0D /* KitchenSink */,
+				E0EA8CF1161F2A5400DECF0D /* Simple Demo */,
 				8B76CF90161B326C00004F2A /* CustomLabel.h */,
 				8B76CF91161B326C00004F2A /* CustomLabel.m */,
 				8B759952161B429500BDA083 /* CustomImageView.h */,
 				8B759953161B429500BDA083 /* CustomImageView.m */,
+				E0EA8CFC161F2A8900DECF0D /* Automatic Demo */,
 			);
 			path = Sample;
 			sourceTree = "<group>";
@@ -612,6 +613,45 @@
 			name = "Container controller protocol on UIKit";
 			sourceTree = "<group>";
 		};
+		E0EA8CF0161F2A2600DECF0D /* KitchenSink */ = {
+			isa = PBXGroup;
+			children = (
+				8BB3D8A716119F150056B98F /* SampleViewController.h */,
+				8BB3D8A816119F150056B98F /* SampleViewController.m */,
+				8BB3D8A916119F150056B98F /* SampleViewController.xib */,
+				8B13A68F161AEC3D0068A9F5 /* OtherViewController.h */,
+				8B13A690161AEC3D0068A9F5 /* OtherViewController.m */,
+				8B13A691161AEC3D0068A9F5 /* OtherViewController.xib */,
+			);
+			name = KitchenSink;
+			sourceTree = "<group>";
+		};
+		E0EA8CF1161F2A5400DECF0D /* Simple Demo */ = {
+			isa = PBXGroup;
+			children = (
+				E041A447161DC2DA008D46F5 /* SimpleSampleViewController.h */,
+				E041A448161DC2DB008D46F5 /* SimpleSampleViewController.m */,
+				E041A449161DC2DB008D46F5 /* SimpleSampleViewController.xib */,
+				E0EA8CEB161F274300DECF0D /* ModalViewController.h */,
+				E0EA8CEC161F274300DECF0D /* ModalViewController.m */,
+				E0EA8CED161F274300DECF0D /* ModalViewController.xib */,
+			);
+			name = "Simple Demo";
+			sourceTree = "<group>";
+		};
+		E0EA8CFC161F2A8900DECF0D /* Automatic Demo */ = {
+			isa = PBXGroup;
+			children = (
+				E0EA8CF2161F2A7100DECF0D /* AutomaticViewController.h */,
+				E0EA8CF3161F2A7100DECF0D /* AutomaticViewController.m */,
+				E0EA8CF4161F2A7100DECF0D /* AutomaticViewController.xib */,
+				E0EA8CF7161F2A8200DECF0D /* AutomaticModalViewController.h */,
+				E0EA8CF8161F2A8200DECF0D /* AutomaticModalViewController.m */,
+				E0EA8CF9161F2A8200DECF0D /* AutomaticModalViewController.xib */,
+			);
+			name = "Automatic Demo";
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -728,6 +768,8 @@
 				E041A44E161DCE60008D46F5 /* notif_anchor.png in Resources */,
 				E041A44F161DCE60008D46F5 /* notif_anchor@2x.png in Resources */,
 				E0EA8CEF161F274300DECF0D /* ModalViewController.xib in Resources */,
+				E0EA8CF6161F2A7100DECF0D /* AutomaticViewController.xib in Resources */,
+				E0EA8CFB161F2A8200DECF0D /* AutomaticModalViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -827,6 +869,8 @@
 				E0EA8CDF161F1FC500DECF0D /* UITabBarController+RZNotificationContainerControllerProtocol.m in Sources */,
 				E0EA8CE2161F200500DECF0D /* UINavigationController+RZNotificationContainerControllerProtocol.m in Sources */,
 				E0EA8CEE161F274300DECF0D /* ModalViewController.m in Sources */,
+				E0EA8CF5161F2A7100DECF0D /* AutomaticViewController.m in Sources */,
+				E0EA8CFA161F2A8200DECF0D /* AutomaticModalViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

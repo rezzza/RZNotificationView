@@ -27,7 +27,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
+    self.navigationController.navigationBar.tintColor = [UIColor colorWithRed:0.6 green:0.0 blue:0.0 alpha:1];
+
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Cancel"
                                                                              style:UIBarButtonItemStylePlain
                                                                             target:self
@@ -42,13 +43,13 @@
 
 - (IBAction)showNotif:(id)sender {
     
-    [RZNotificationView showNotificationOnTopMostControllerWithMessage:@"This is a notification shown without setting a specific view controller. This could be called from anywhere."
-                                                                  icon:RZNotificationIconTwitter
-                                                              position:RZNotificationPositionTop
-                                                                 color:RZNotificationColorYellow
-                                                            assetColor:RZNotificationAssetColorAutomaticLight
-                                                             textColor:RZNotificationTextColorAutomaticDark
-                                                                 delay:3.5];
+    [RZNotificationView showNotificationWithMessage:@"Yeah that works on a modal view too!"
+                                               icon:RZNotificationIconTwitter
+                                           position:RZNotificationPositionTop
+                                              color:RZNotificationColorYellow
+                                         assetColor:RZNotificationAssetColorAutomaticLight
+                                          textColor:RZNotificationTextColorAutomaticDark
+                                  addedToController:self];
     
     
 }

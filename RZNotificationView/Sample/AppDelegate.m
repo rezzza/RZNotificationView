@@ -9,6 +9,7 @@
 #import "AppDelegate.h"
 #import "SampleViewController.h"
 #import "SimpleSampleViewController.h"
+#import "AutomaticViewController.h"
 
 #import "OtherViewController.h"
 
@@ -30,9 +31,14 @@
     tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Simple Demo" image:nil tag:0];
     nSimple.tabBarItem = tabBarItem;
     
-    self.tabBarController = [[UITabBarController alloc] init];
-    [self.tabBarController setViewControllers:[NSArray arrayWithObjects:n, nSimple, nil]];
+    AutomaticViewController *automatic = [[AutomaticViewController alloc] initWithNibName:@"AutomaticViewController" bundle:nil];
+    UINavigationController *nAutomatic = [[UINavigationController alloc] initWithRootViewController:automatic];
+    tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Auto demo" image:nil tag:0];
+    nAutomatic.tabBarItem = tabBarItem;
     
+    self.tabBarController = [[UITabBarController alloc] init];
+    [self.tabBarController setViewControllers:[NSArray arrayWithObjects:n, nSimple, nAutomatic, nil]];
+    self.tabBarController.delegate = self;
     [self.window setRootViewController:self.tabBarController];
     
     [self.window makeKeyAndVisible];
@@ -48,6 +54,41 @@
         s.message.text = [url.query stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
     }
     return YES;
+}
+
+#pragma mark - UITabBarController
+
+- (void) showNotification
+{
+    [RZNotificationView showNotificationOnTopMostControllerWithMessage:@"This is an automatic notification. Triggered only from AppDelegate! Great isn't it?"
+                                                                  icon:arc4random()%6
+                                                              position:arc4random()%2
+                                                                 color:arc4random()%4
+                                                            assetColor:RZNotificationAssetColorAutomaticDark
+                                                             textColor:RZNotificationTextColorAutomaticDark
+                                                                 delay:3.0];
+    [self prepareForNextNotification];
+}
+
+- (void) prepareForNextNotification
+{
+    [self performSelector:@selector(showNotification) withObject:nil afterDelay:5.0];
+}
+
+- (void) cancelAutomaticNotifications
+{
+    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(showNotification) object:nil];
+}
+
+- (void) tabBarController:(UITabBarController *)tabBarController didSelectViewController:(UIViewController *)viewController
+{
+    if ([viewController isKindOfClass:[UINavigationController class]] && [[((UINavigationController*)viewController).viewControllers objectAtIndex:0] isKindOfClass:[AutomaticViewController class]]) {
+        // Then start generating automatic notifications.
+        // In your implementation, this would be for example events from push received directly in the app
+        [self prepareForNextNotification];
+    }
+    else
+        [self cancelAutomaticNotifications];
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application
