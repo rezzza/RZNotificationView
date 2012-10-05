@@ -27,6 +27,10 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    self.title = @"Simple Demo";
+    self.navigationController.navigationBar.tintColor = [UIColor colorWithRed:0.6 green:0.0 blue:0.0 alpha:1];
+
     // Do any additional setup after loading the view from its nib.
 }
 
@@ -43,6 +47,7 @@
                                            position:RZNotificationPositionTop
                                               color:RZNotificationColorYellow
                                          assetColor:RZNotificationAssetColorAutomaticLight
+                                         textColor:RZNotificationTextColorAutomaticDark
                                   addedToController:self];
 }
 
@@ -52,7 +57,7 @@
                                                                            icon:RZNotificationIconWarning
                                                                        position:RZNotificationPositionTop
                                                                           color:RZNotificationColorRed
-                                                                     assetColor:RZNotificationAssetColorAutomaticLight
+                                                                     assetColor:RZNotificationAssetColorAutomaticDark
                                                               addedToController:self];
     [notif setSound:@"DoorBell-SoundBible.com-1986366504.wav"];
     [notif setVibrate:YES];
@@ -64,7 +69,7 @@
                                                icon:RZNotificationIconFacebook
                                            position:RZNotificationPositionBottom
                                               color:RZNotificationColorBlue
-                                         assetColor:RZNotificationAssetColorAutomaticLight
+                                         assetColor:RZNotificationAssetColorAutomaticDark
                                   addedToController:self]
      setUrlToOpen:[NSURL URLWithString:@"fb://"]];
 }
