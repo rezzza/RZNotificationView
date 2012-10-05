@@ -47,8 +47,8 @@
                                                icon:RZNotificationIconTwitter
                                            position:RZNotificationPositionTop
                                               color:RZNotificationColorYellow
-                                         assetColor:RZNotificationAssetColorAutomaticLight
-                                          textColor:RZNotificationTextColorAutomaticDark
+                                         assetColor:RZNotificationContentColorAutomaticLight
+                                          textColor:RZNotificationContentColorAutomaticDark
                                   addedToController:self
                                      withCompletion:nil];
     

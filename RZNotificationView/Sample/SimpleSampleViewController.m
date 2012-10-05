@@ -49,8 +49,8 @@
                                                                   icon:RZNotificationIconTwitter
                                                               position:RZNotificationPositionTop
                                                                  color:RZNotificationColorYellow
-                                                            assetColor:RZNotificationAssetColorAutomaticLight
-                                                             textColor:RZNotificationTextColorAutomaticDark
+                                                            assetColor:RZNotificationContentColorAutomaticLight
+                                                             textColor:RZNotificationContentColorAutomaticDark
                                                                  withCompletion:nil];
 }
 
@@ -60,8 +60,8 @@
                                                                            icon:RZNotificationIconWarning
                                                                        position:RZNotificationPositionTop
                                                                           color:RZNotificationColorRed
-                                                                     assetColor:RZNotificationAssetColorAutomaticDark
-                                                                      textColor:RZNotificationTextColorAutomaticLight
+                                                                     assetColor:RZNotificationContentColorAutomaticDark
+                                                                      textColor:RZNotificationContentColorAutomaticLight
                                                               addedToController:self
                                                                  withCompletion:nil];
     [notif setSound:@"DoorBell-SoundBible.com-1986366504.wav"];
@@ -74,8 +74,8 @@
                                                icon:RZNotificationIconFacebook
                                            position:RZNotificationPositionBottom
                                               color:RZNotificationColorBlue
-                                         assetColor:RZNotificationAssetColorAutomaticDark
-                                          textColor:RZNotificationTextColorAutomaticLight
+                                         assetColor:RZNotificationContentColorAutomaticDark
+                                          textColor:RZNotificationContentColorAutomaticLight
                                   addedToController:self
                                      withCompletion:^(BOOL touched) {
                                          if (touched) {

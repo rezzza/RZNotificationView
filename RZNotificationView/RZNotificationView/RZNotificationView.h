@@ -32,15 +32,10 @@ typedef enum {
 }RZNotificationColor;
 
 typedef enum {
-    RZNotificationTextColorManual = 0,
-    RZNotificationTextColorAutomaticLight,
-    RZNotificationTextColorAutomaticDark
-}RZNotificationTextColor;
-
-typedef enum {
-    RZNotificationAssetColorAutomaticLight = 0,
-    RZNotificationAssetColorAutomaticDark
-}RZNotificationAssetColor;
+    RZNotificationContentColorAutomaticLight = 0,
+    RZNotificationContentColorAutomaticDark,
+    RZNotificationContentColorManual
+}RZNotificationContentColor;
 
 @class RZNotificationView;
 
@@ -57,13 +52,13 @@ typedef void (^RZNotificationCompletion)(BOOL touched);
     
 }
 
-+ (RZNotificationView*) showNotificationWithMessage:(NSString*)message icon:(RZNotificationIcon)icon position:(RZNotificationPosition)position color:(RZNotificationColor)color assetColor:(RZNotificationAssetColor)assetColor textColor:(RZNotificationTextColor)textColor addedToController:(UIViewController*)controller withCompletion:(RZNotificationCompletion)completionBlock;
++ (RZNotificationView*) showNotificationWithMessage:(NSString*)message icon:(RZNotificationIcon)icon position:(RZNotificationPosition)position color:(RZNotificationColor)color assetColor:(RZNotificationContentColor)assetColor textColor:(RZNotificationContentColor)textColor addedToController:(UIViewController*)controller withCompletion:(RZNotificationCompletion)completionBlock;
 
-+ (RZNotificationView*) showNotificationWithMessage:(NSString*)message icon:(RZNotificationIcon)icon position:(RZNotificationPosition)position color:(RZNotificationColor)color assetColor:(RZNotificationAssetColor)assetColor textColor:(RZNotificationTextColor)textColor delay:(NSTimeInterval)delay addedToController:(UIViewController*)controller withCompletion:(RZNotificationCompletion)completionBlock;
++ (RZNotificationView*) showNotificationWithMessage:(NSString*)message icon:(RZNotificationIcon)icon position:(RZNotificationPosition)position color:(RZNotificationColor)color assetColor:(RZNotificationContentColor)assetColor textColor:(RZNotificationContentColor)textColor delay:(NSTimeInterval)delay addedToController:(UIViewController*)controller withCompletion:(RZNotificationCompletion)completionBlock;
 
-+ (RZNotificationView*) showNotificationOnTopMostControllerWithMessage:(NSString*)message icon:(RZNotificationIcon)icon position:(RZNotificationPosition)position color:(RZNotificationColor)color assetColor:(RZNotificationAssetColor)assetColor textColor:(RZNotificationTextColor)textColor withCompletion:(RZNotificationCompletion)completionBlock;
++ (RZNotificationView*) showNotificationOnTopMostControllerWithMessage:(NSString*)message icon:(RZNotificationIcon)icon position:(RZNotificationPosition)position color:(RZNotificationColor)color assetColor:(RZNotificationContentColor)assetColor textColor:(RZNotificationContentColor)textColor withCompletion:(RZNotificationCompletion)completionBlock;
 
-+ (RZNotificationView*) showNotificationOnTopMostControllerWithMessage:(NSString*)message icon:(RZNotificationIcon)icon position:(RZNotificationPosition)position color:(RZNotificationColor)color assetColor:(RZNotificationAssetColor)assetColor textColor:(RZNotificationTextColor)textColor delay:(NSTimeInterval)delay withCompletion:(RZNotificationCompletion)completionBlock;
++ (RZNotificationView*) showNotificationOnTopMostControllerWithMessage:(NSString*)message icon:(RZNotificationIcon)icon position:(RZNotificationPosition)position color:(RZNotificationColor)color assetColor:(RZNotificationContentColor)assetColor textColor:(RZNotificationContentColor)textColor delay:(NSTimeInterval)delay withCompletion:(RZNotificationCompletion)completionBlock;
 
 + (BOOL) hideNotificationForController:(UIViewController*)controller;
 + (NSUInteger) hideAllNotificationsForController:(UIViewController*)controller;
@@ -72,7 +67,7 @@ typedef void (^RZNotificationCompletion)(BOOL touched);
 + (NSArray*) allNotificationsForController:(UIViewController*)controller;
 
 - (id) initWithController:(UIViewController*)controller;
-- (id) initWithController:(UIViewController*)controller icon:(RZNotificationIcon)icon position:(RZNotificationPosition)position color:(RZNotificationColor)color assetColor:(RZNotificationAssetColor)assetColor textColor:(RZNotificationTextColor)textColor delay:(NSTimeInterval)delay completion:(RZNotificationCompletion)completionBlock;
+- (id) initWithController:(UIViewController*)controller icon:(RZNotificationIcon)icon position:(RZNotificationPosition)position color:(RZNotificationColor)color assetColor:(RZNotificationContentColor)assetColor textColor:(RZNotificationContentColor)textColor delay:(NSTimeInterval)delay completion:(RZNotificationCompletion)completionBlock;
 
 
 - (void) show;
@@ -91,8 +86,8 @@ typedef void (^RZNotificationCompletion)(BOOL touched);
 @property (nonatomic, strong) UIColor *customBottomColor;
 @property (nonatomic, strong) NSString *sound;
 @property (nonatomic) BOOL vibrate;
-@property (nonatomic) RZNotificationAssetColor assetColor;
-@property (nonatomic) RZNotificationTextColor textColor;
+@property (nonatomic) RZNotificationContentColor assetColor;
+@property (nonatomic) RZNotificationContentColor textColor;
 @property (nonatomic) RZNotificationIcon icon;
 @property (nonatomic, strong) NSString *customIcon;
 

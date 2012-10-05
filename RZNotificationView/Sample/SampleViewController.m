@@ -42,8 +42,8 @@
     self.title = @"KitchenSink";
     self.navigationController.navigationBar.tintColor = [UIColor colorWithRed:0.6 green:0.0 blue:0.0 alpha:1];
     
-    _assetColor = RZNotificationAssetColorAutomaticLight; // == 1
-    _textColor = RZNotificationTextColorAutomaticLight; // == 1
+    _assetColor = RZNotificationContentColorAutomaticLight; // == 1
+    _textColor = RZNotificationContentColorAutomaticLight; // == 1
 }
 
 - (void)didReceiveMemoryWarning
@@ -525,9 +525,9 @@
                 textStyleCell = [[PrettyCustomViewTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:TextStyleCellIdentifier];
                 
                 NSArray *items = [NSArray arrayWithObjects:
-                                  @"Manual",
                                   @"Light",
                                   @"Dark",
+                                  @"Manual",
                                   nil];
                 MCSegmentedControl *segmentedControl = [[MCSegmentedControl alloc] initWithItems:items];
                 segmentedControl.tag = 9;
@@ -697,7 +697,7 @@
             
             [notif setMessage:[round objectAtIndex:_roundIndex%[round count]]];
             
-            if (_textColor == RZNotificationTextColorManual) {
+            if (_textColor == RZNotificationContentColorManual) {
                 notif.textLabel.textColor = [UIColor greenColor];
                 notif.textLabel.shadowColor = [UIColor redColor];
             }

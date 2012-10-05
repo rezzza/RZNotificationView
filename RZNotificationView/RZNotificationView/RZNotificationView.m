@@ -34,8 +34,8 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
 #define DEFAULT_DELAY 3.5
 #define DEFAULT_COLOR RZNotificationColorBlue
 #define DEFAULT_VIBRATE NO
-#define DEFAULT_ASSET_COLOR RZNotificationAssetColorAutomaticDark
-#define DEFAULT_TEXT_COLOR RZNotificationAssetColorAutomaticLight
+#define DEFAULT_ASSET_COLOR RZNotificationContentColorAutomaticDark
+#define DEFAULT_TEXT_COLOR RZNotificationContentColorAutomaticLight
 #define DEFAULT_ICON RZNotificationIconFacebook
 
 @interface RZNotificationView ()
@@ -55,10 +55,10 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
 
 - (UIColor*) adjustTextColor:(UIColor*)c
 {
-    if(_textColor == RZNotificationTextColorAutomaticDark)
+    if(_textColor == RZNotificationContentColorAutomaticDark)
         return [UIColor darkerColorForColor:c withRgbOffset:0.55];
     
-    if(_textColor == RZNotificationTextColorAutomaticLight)
+    if(_textColor == RZNotificationContentColorAutomaticLight)
         return [UIColor lighterColorForColor:c withRgbOffset:0.9];
     
     return c;
@@ -72,7 +72,7 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
     
     switch(_assetColor)
     {
-        case RZNotificationAssetColorAutomaticLight:
+        case RZNotificationContentColorAutomaticLight:
             iconTrait.gradientColors = [NSArray arrayWithObjects:
                                         [UIColor lighterColorForColor:color withRgbOffset:0.9],
                                         [UIColor lighterColorForColor:color withRgbOffset:0.8], nil];
@@ -82,7 +82,7 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
             iconTrait.innerShadowOffset = CGSizeMake(0.0f, -1.0f);
             iconTrait.clipsShadow = NO;
             break;
-        case RZNotificationAssetColorAutomaticDark:
+        case RZNotificationContentColorAutomaticDark:
             iconTrait.gradientColors = [NSArray arrayWithObjects:
                                         [UIColor darkerColorForColor:color withRgbOffset:0.6],
                                         [UIColor darkerColorForColor:color withRgbOffset:0.4], nil];
@@ -91,6 +91,15 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
             iconTrait.shadowOffset = CGSizeMake(0.0f, 1.0f);
             iconTrait.innerShadowOffset = CGSizeMake(0.0f, 1.0f);
             iconTrait.clipsShadow = NO;
+            break;
+        case RZNotificationContentColorManual:
+            NSLog(@"Warning, setting RZNotificationContentColorManual for assetColor is not supported. Setting to textColor");
+            if (_textColor != RZNotificationContentColorManual)
+                _assetColor = _textColor;
+            else
+                _assetColor = RZNotificationContentColorAutomaticLight;
+            
+            return [self image:img withColor:color];
             break;
     }
     
@@ -235,14 +244,14 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
     
     _iconView.image = [self image:[self getImageForIcon:_icon] withColor:colorStart];
     _anchorView.image = [self image:[UIImage imageNamed:@"notif_anchor.png"] withColor:colorStart];
-    if (_textColor != RZNotificationTextColorManual) {
+    if (_textColor != RZNotificationContentColorManual) {
         _textLabel.textColor = [self adjustTextColor:colorStart];
-        if(_textColor == RZNotificationTextColorAutomaticDark)
+        if(_textColor == RZNotificationContentColorAutomaticDark)
         {
             _textLabel.shadowColor = [UIColor lighterColorForColor:colorStart withRgbOffset:0.4 andAlphaOffset:0.4];
             _textLabel.shadowOffset = CGSizeMake(0.0f, 1.0f);
         }
-        if(_textColor == RZNotificationTextColorAutomaticLight)
+        if(_textColor == RZNotificationContentColorAutomaticLight)
         {
             _textLabel.shadowColor = [UIColor darkerColorForColor:colorStart withRgbOffset:0.25 andAlphaOffset:0.4];
             _textLabel.shadowOffset = CGSizeMake(0.0f, -1.0f);
@@ -286,7 +295,7 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
     [self setNeedsDisplay];
 }
 
-- (void) setAssetColor:(RZNotificationAssetColor)assetColor
+- (void) setAssetColor:(RZNotificationContentColor)assetColor
 {
     _assetColor = assetColor;
     [self setNeedsDisplay];
@@ -477,7 +486,7 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
 
 #pragma mark - Init methods
 
-- (id) initWithFrame:(CGRect)frame icon:(RZNotificationIcon)icon position:(RZNotificationPosition)position color:(RZNotificationColor)color assetColor:(RZNotificationAssetColor)assetColor textColor:(RZNotificationTextColor)textColor delay:(NSTimeInterval)delay
+- (id) initWithFrame:(CGRect)frame icon:(RZNotificationIcon)icon position:(RZNotificationPosition)position color:(RZNotificationColor)color assetColor:(RZNotificationContentColor)assetColor textColor:(RZNotificationContentColor)textColor delay:(NSTimeInterval)delay
 {
     CGRect mFrame = frame;
     mFrame.size.height = MAX(CGRectGetHeight(frame), MIN_HEIGHT);
@@ -541,7 +550,7 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
                          delay:DEFAULT_DELAY];
 }
 
-- (id) initWithController:(UIViewController*)controller icon:(RZNotificationIcon)icon position:(RZNotificationPosition)position color:(RZNotificationColor)color assetColor:(RZNotificationAssetColor)assetColor delay:(NSTimeInterval)delay
+- (id) initWithController:(UIViewController*)controller icon:(RZNotificationIcon)icon position:(RZNotificationPosition)position color:(RZNotificationColor)color assetColor:(RZNotificationContentColor)assetColor delay:(NSTimeInterval)delay
 {
     CGRect frame = self.bounds;
     frame.size.width = CGRectGetWidth(controller.view.frame);
@@ -559,7 +568,7 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
     return self;
 }
 
-- (id) initWithController:(UIViewController*)controller icon:(RZNotificationIcon)icon position:(RZNotificationPosition)position color:(RZNotificationColor)color assetColor:(RZNotificationAssetColor)assetColor textColor:(RZNotificationTextColor)textColor delay:(NSTimeInterval)delay completion:(RZNotificationCompletion)completionBlock;
+- (id) initWithController:(UIViewController*)controller icon:(RZNotificationIcon)icon position:(RZNotificationPosition)position color:(RZNotificationColor)color assetColor:(RZNotificationContentColor)assetColor textColor:(RZNotificationContentColor)textColor delay:(NSTimeInterval)delay completion:(RZNotificationCompletion)completionBlock;
 {
     CGRect frame = self.bounds;
     frame.size.width = CGRectGetWidth(controller.view.frame);
@@ -591,7 +600,7 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
 }
 
 // Freely adapted from MBProgressHUD
-+ (RZNotificationView*) showNotificationWithMessage:(NSString*)message icon:(RZNotificationIcon)icon position:(RZNotificationPosition)position color:(RZNotificationColor)color assetColor:(RZNotificationAssetColor)assetColor  textColor:(RZNotificationTextColor)textColor addedToController:(UIViewController*)controller withCompletion:(RZNotificationCompletion)completionBlock
++ (RZNotificationView*) showNotificationWithMessage:(NSString*)message icon:(RZNotificationIcon)icon position:(RZNotificationPosition)position color:(RZNotificationColor)color assetColor:(RZNotificationContentColor)assetColor  textColor:(RZNotificationContentColor)textColor addedToController:(UIViewController*)controller withCompletion:(RZNotificationCompletion)completionBlock
 {
     return [RZNotificationView showNotificationWithMessage:message
                                                       icon:icon
@@ -604,7 +613,7 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
                                             withCompletion:completionBlock];
 }
 
-+ (RZNotificationView*) showNotificationWithMessage:(NSString*)message icon:(RZNotificationIcon)icon position:(RZNotificationPosition)position color:(RZNotificationColor)color assetColor:(RZNotificationAssetColor)assetColor textColor:(RZNotificationTextColor)textColor  delay:(NSTimeInterval)delay addedToController:(UIViewController*)controller withCompletion:(RZNotificationCompletion)completionBlock;
++ (RZNotificationView*) showNotificationWithMessage:(NSString*)message icon:(RZNotificationIcon)icon position:(RZNotificationPosition)position color:(RZNotificationColor)color assetColor:(RZNotificationContentColor)assetColor textColor:(RZNotificationContentColor)textColor  delay:(NSTimeInterval)delay addedToController:(UIViewController*)controller withCompletion:(RZNotificationCompletion)completionBlock;
 {
     RZNotificationView *notification = [[RZNotificationView alloc] initWithController:controller
                                                                                  icon:icon
@@ -619,7 +628,7 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
     return RZ_AUTORELEASE(notification);
 }
 
-+ (RZNotificationView *)showNotificationOnTopMostControllerWithMessage:(NSString *)message icon:(RZNotificationIcon)icon position:(RZNotificationPosition)position color:(RZNotificationColor)color assetColor:(RZNotificationAssetColor)assetColor textColor:(RZNotificationTextColor)textColor withCompletion:(RZNotificationCompletion)completionBlock
++ (RZNotificationView *)showNotificationOnTopMostControllerWithMessage:(NSString *)message icon:(RZNotificationIcon)icon position:(RZNotificationPosition)position color:(RZNotificationColor)color assetColor:(RZNotificationContentColor)assetColor textColor:(RZNotificationContentColor)textColor withCompletion:(RZNotificationCompletion)completionBlock
 {
     
     return [RZNotificationView showNotificationOnTopMostControllerWithMessage:message
@@ -632,7 +641,7 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
                                                                withCompletion:completionBlock];
 }
 
-+ (RZNotificationView *)showNotificationOnTopMostControllerWithMessage:(NSString *)message icon:(RZNotificationIcon)icon position:(RZNotificationPosition)position color:(RZNotificationColor)color assetColor:(RZNotificationAssetColor)assetColor textColor:(RZNotificationTextColor)textColor delay:(NSTimeInterval)delay withCompletion:(RZNotificationCompletion)completionBlock
++ (RZNotificationView *)showNotificationOnTopMostControllerWithMessage:(NSString *)message icon:(RZNotificationIcon)icon position:(RZNotificationPosition)position color:(RZNotificationColor)color assetColor:(RZNotificationContentColor)assetColor textColor:(RZNotificationContentColor)textColor delay:(NSTimeInterval)delay withCompletion:(RZNotificationCompletion)completionBlock
 {
     RZNotificationView *notification = [[RZNotificationView alloc] initWithController:[RZNotificationView topMostController]
                                                                                  icon:icon
