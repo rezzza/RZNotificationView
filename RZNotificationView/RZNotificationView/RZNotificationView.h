@@ -76,6 +76,8 @@ typedef enum {
 - (void) hide;
 - (void) hideAfterDelay:(NSTimeInterval)delay;
 
++ (UIViewController*) topMostController;
+
 @property (nonatomic, readonly) UILabel *textLabel;
 @property (nonatomic, strong) id <RZNotificationLabelProtocol> customView;
 @property (nonatomic, strong) NSString *message;
