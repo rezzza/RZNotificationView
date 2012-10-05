@@ -48,10 +48,10 @@
 - (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url {
     NSLog(@"%@", url.query);
     if ([[url host] isEqualToString:@"OtherViewController"]) {
-        UINavigationController *n = (UINavigationController*)[RZNotificationView topMostController];
-        if (n.navigationController) {
+        UIViewController *c = [RZNotificationView topMostController];
+        if (c.navigationController) {
             OtherViewController *s = [[OtherViewController alloc] initWithNibName:@"OtherViewController" bundle:nil];
-            [n.navigationController pushViewController:s animated:YES];
+            [c.navigationController pushViewController:s animated:YES];
             s.message.text = [url.query stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
         }
         else
