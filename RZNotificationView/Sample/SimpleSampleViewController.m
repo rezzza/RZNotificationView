@@ -51,7 +51,9 @@
                                                                  color:RZNotificationColorYellow
                                                             assetColor:RZNotificationAssetColorAutomaticLight
                                                              textColor:RZNotificationTextColorAutomaticDark
-                                                                 delay:3.5];
+                                                                 withCompletion:^(BOOL touched) {
+                                                                     
+                                                                 }];
 }
 
 - (IBAction)showWarning:(id)sender
@@ -61,20 +63,32 @@
                                                                        position:RZNotificationPositionTop
                                                                           color:RZNotificationColorRed
                                                                      assetColor:RZNotificationAssetColorAutomaticDark
-                                                              addedToController:self];
+                                                                      textColor:RZNotificationTextColorAutomaticLight
+                                                              addedToController:self
+                                                                 withCompletion:^(BOOL touched) {
+                                                                     
+                                                                 }];
     [notif setSound:@"DoorBell-SoundBible.com-1986366504.wav"];
     [notif setVibrate:YES];
 }
 
 - (IBAction)showFacebook:(id)sender
 {
-    [[RZNotificationView showNotificationWithMessage:@"Tell your friends that RZNotificationView is awesome."
+    [RZNotificationView showNotificationWithMessage:@"Tell your friends that RZNotificationView is awesome."
                                                icon:RZNotificationIconFacebook
                                            position:RZNotificationPositionBottom
                                               color:RZNotificationColorBlue
                                          assetColor:RZNotificationAssetColorAutomaticDark
-                                  addedToController:self]
-     setUrlToOpen:[NSURL URLWithString:@"fb://"]];
+                                          textColor:RZNotificationTextColorAutomaticLight
+                                  addedToController:self
+                                     withCompletion:^(BOOL touched) {
+                                         NSURL *fbURL = [NSURL URLWithString:@"fb://"];
+                                         if ([[UIApplication sharedApplication] canOpenURL:fbURL]) {
+                                             [[UIApplication sharedApplication] openURL:fbURL];
+                                         }
+                                         else
+                                             [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://www.facebook.com"]];
+                                     }];
 }
 
 - (IBAction)hideAllNotifications:(id)sender

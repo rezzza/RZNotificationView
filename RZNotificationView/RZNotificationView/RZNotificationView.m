@@ -543,7 +543,7 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
     return self;
 }
 
-- (id) initWithController:(UIViewController*)controller icon:(RZNotificationIcon)icon position:(RZNotificationPosition)position color:(RZNotificationColor)color assetColor:(RZNotificationAssetColor)assetColor textColor:(RZNotificationTextColor)textColor delay:(NSTimeInterval)delay;
+- (id) initWithController:(UIViewController*)controller icon:(RZNotificationIcon)icon position:(RZNotificationPosition)position color:(RZNotificationColor)color assetColor:(RZNotificationAssetColor)assetColor textColor:(RZNotificationTextColor)textColor delay:(NSTimeInterval)delay completion:(RZNotificationCompletion)completionBlock;
 {
     CGRect frame = self.bounds;
     frame.size.width = CGRectGetWidth(controller.view.frame);
@@ -557,6 +557,7 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
     if (self)
     {
         self.controller = controller;
+        self.completionBlock = completionBlock;
     }
     return self;
 }
@@ -574,19 +575,7 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
 }
 
 // Freely adapted from MBProgressHUD
-+ (RZNotificationView *)showNotificationWithMessage:(NSString *)message icon:(RZNotificationIcon)icon position:(RZNotificationPosition)position color:(RZNotificationColor)color assetColor:(RZNotificationAssetColor)assetColor addedToController:(UIViewController *)controller
-{
-    return [RZNotificationView showNotificationWithMessage:message
-                                                      icon:icon
-                                                  position:position
-                                                     color:color
-                                                assetColor:assetColor
-                                                 textColor:RZNotificationTextColorAutomaticLight
-                                                     delay:DEFAULT_DELAY
-                                         addedToController:controller];
-}
-
-+ (RZNotificationView*) showNotificationWithMessage:(NSString*)message icon:(RZNotificationIcon)icon position:(RZNotificationPosition)position color:(RZNotificationColor)color assetColor:(RZNotificationAssetColor)assetColor  textColor:(RZNotificationTextColor)textColor addedToController:(UIViewController*)controller
++ (RZNotificationView*) showNotificationWithMessage:(NSString*)message icon:(RZNotificationIcon)icon position:(RZNotificationPosition)position color:(RZNotificationColor)color assetColor:(RZNotificationAssetColor)assetColor  textColor:(RZNotificationTextColor)textColor addedToController:(UIViewController*)controller withCompletion:(RZNotificationCompletion)completionBlock
 {
     return [RZNotificationView showNotificationWithMessage:message
                                                       icon:icon
@@ -595,23 +584,11 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
                                                 assetColor:assetColor
                                                  textColor:textColor
                                                      delay:DEFAULT_DELAY
-                                         addedToController:controller];
+                                         addedToController:controller
+                                            withCompletion:completionBlock];
 }
 
-+ (RZNotificationView *)showNotificationWithMessage:(NSString *)message icon:(RZNotificationIcon)icon position:(RZNotificationPosition)position color:(RZNotificationColor)color assetColor:(RZNotificationAssetColor)assetColor delay:(NSTimeInterval)delay addedToController:(UIViewController *)controller
-{
-    RZNotificationView *notification = [[RZNotificationView alloc] initWithController:controller
-                                                                                 icon:icon
-                                                                             position:position
-                                                                                color:color
-                                                                           assetColor:assetColor
-                                                                                delay:delay];
-    [notification setMessage:message];
-    [notification show];
-    return RZ_AUTORELEASE(notification);
-}
-
-+ (RZNotificationView*) showNotificationWithMessage:(NSString*)message icon:(RZNotificationIcon)icon position:(RZNotificationPosition)position color:(RZNotificationColor)color assetColor:(RZNotificationAssetColor)assetColor textColor:(RZNotificationTextColor)textColor  delay:(NSTimeInterval)delay addedToController:(UIViewController*)controller;
++ (RZNotificationView*) showNotificationWithMessage:(NSString*)message icon:(RZNotificationIcon)icon position:(RZNotificationPosition)position color:(RZNotificationColor)color assetColor:(RZNotificationAssetColor)assetColor textColor:(RZNotificationTextColor)textColor  delay:(NSTimeInterval)delay addedToController:(UIViewController*)controller withCompletion:(RZNotificationCompletion)completionBlock;
 {
     RZNotificationView *notification = [[RZNotificationView alloc] initWithController:controller
                                                                                  icon:icon
@@ -619,13 +596,27 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
                                                                                 color:color
                                                                            assetColor:assetColor
                                                                             textColor:textColor
-                                                                                delay:delay];
+                                                                                delay:delay
+                                                                           completion:completionBlock];
     [notification setMessage:message];
     [notification show];
     return RZ_AUTORELEASE(notification);
 }
 
-+ (RZNotificationView *)showNotificationOnTopMostControllerWithMessage:(NSString *)message icon:(RZNotificationIcon)icon position:(RZNotificationPosition)position color:(RZNotificationColor)color assetColor:(RZNotificationAssetColor)assetColor textColor:(RZNotificationTextColor)textColor delay:(NSTimeInterval)delay
++ (RZNotificationView *)showNotificationOnTopMostControllerWithMessage:(NSString *)message icon:(RZNotificationIcon)icon position:(RZNotificationPosition)position color:(RZNotificationColor)color assetColor:(RZNotificationAssetColor)assetColor textColor:(RZNotificationTextColor)textColor withCompletion:(RZNotificationCompletion)completionBlock
+{
+    
+    return [RZNotificationView showNotificationOnTopMostControllerWithMessage:message
+                                                                         icon:icon
+                                                                     position:position
+                                                                        color:color
+                                                                   assetColor:assetColor
+                                                                    textColor:textColor
+                                                                        delay:DEFAULT_DELAY
+                                                               withCompletion:completionBlock];
+}
+
++ (RZNotificationView *)showNotificationOnTopMostControllerWithMessage:(NSString *)message icon:(RZNotificationIcon)icon position:(RZNotificationPosition)position color:(RZNotificationColor)color assetColor:(RZNotificationAssetColor)assetColor textColor:(RZNotificationTextColor)textColor delay:(NSTimeInterval)delay withCompletion:(RZNotificationCompletion)completionBlock
 {
     RZNotificationView *notification = [[RZNotificationView alloc] initWithController:[RZNotificationView topMostController]
                                                                                  icon:icon
@@ -633,7 +624,8 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
                                                                                 color:color
                                                                            assetColor:assetColor
                                                                             textColor:textColor
-                                                                                delay:delay];
+                                                                                delay:delay
+                                                                           completion:completionBlock];
     [notification setMessage:message];
     [notification show];
     return RZ_AUTORELEASE(notification);
@@ -749,6 +741,8 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
 
 - (void) hide
 {
+    _completionBlock(_isTouch);
+    
     _isTouch = NO;
     
     [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(hide) object:nil];
@@ -806,22 +800,12 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
         _isTouch = YES;
                 
         if(_delay == 0.0){
-            if ([self.delegate respondsToSelector:@selector(notificationViewTouched:)]){
-                [self.delegate notificationViewTouched:self];
+            if (_completionBlock){
                 [self hide];
             }
         }
         else{
-            if ([self.delegate respondsToSelector:@selector(notificationViewTouched:)]){
-                [self.delegate notificationViewTouched:self];
-            }
             [self hide];
-        }
-    }
-    
-    if (_urlToOpen) {
-        if ([[UIApplication sharedApplication] canOpenURL:_urlToOpen]) {
-            [[UIApplication sharedApplication] openURL:_urlToOpen];
         }
     }
 }
@@ -867,8 +851,7 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
     RZ_RELEASE(_customBottomColor);
     RZ_RELEASE(_sound);
     RZ_RELEASE(_customIcon);
-    RZ_RELEASE(_paramOnAction);
-    RZ_RELEASE(_urlToOpen);
+    RZ_RELEASE(_completionBlock);
     
 #if !RZ_ARC_ENABLED
     [super dealloc];

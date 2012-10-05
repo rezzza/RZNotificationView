@@ -20,7 +20,7 @@ typedef enum {
 
 @class PrettyGridTableViewCell;
 
-@interface SampleViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, RZNotificationViewDelegate, WEPopoverControllerDelegate, UIPopoverControllerDelegate, ColorViewControllerDelegate>
+@interface SampleViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, WEPopoverControllerDelegate, UIPopoverControllerDelegate, ColorViewControllerDelegate>
 {
     UISlider *_delaySlider;
     UILabel *_delayLabel;

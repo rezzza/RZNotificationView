@@ -66,15 +66,16 @@
 
 - (void) showNotification
 {
-    RZNotificationView *notif = [RZNotificationView showNotificationOnTopMostControllerWithMessage:@"This is an automatic notification. Triggered only from AppDelegate! Great isn't it?"
-                                                                                              icon:arc4random()%6
-                                                                                          position:arc4random()%2
-                                                                                             color:arc4random()%4
-                                                                                        assetColor:RZNotificationAssetColorAutomaticDark
-                                                                                         textColor:RZNotificationTextColorAutomaticDark
-                                                                                             delay:3.0];
-    [notif setUrlToOpen:[NSURL URLWithString:@"rzn://OtherViewController?the%20awesome%20message"]];
-
+    [RZNotificationView showNotificationOnTopMostControllerWithMessage:@"This is an automatic notification. Triggered only from AppDelegate! Great isn't it?"
+                                                                  icon:arc4random()%6
+                                                              position:arc4random()%2
+                                                                 color:arc4random()%4
+                                                            assetColor:RZNotificationAssetColorAutomaticDark
+                                                             textColor:RZNotificationTextColorAutomaticDark
+                                                                 delay:3.0 withCompletion:^(BOOL touched) {
+                                                                     if (touched)
+                                                                         [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"rzn://OtherViewController?the%20awesome%20message"]];
+                                                                 }];
     [self prepareForNextNotification];
 }
 

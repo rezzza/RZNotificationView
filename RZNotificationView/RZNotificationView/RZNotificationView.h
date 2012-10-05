@@ -42,7 +42,10 @@ typedef enum {
     RZNotificationAssetColorAutomaticDark
 }RZNotificationAssetColor;
 
-@protocol RZNotificationViewDelegate;
+@class RZNotificationView;
+
+typedef void (^RZNotificationCompletion)(BOOL touched);
+
 
 @interface RZNotificationView : UIControl
 {
@@ -54,12 +57,13 @@ typedef enum {
     
 }
 
-+ (RZNotificationView*) showNotificationWithMessage:(NSString*)message icon:(RZNotificationIcon)icon position:(RZNotificationPosition)position color:(RZNotificationColor)color assetColor:(RZNotificationAssetColor)assetColor addedToController:(UIViewController*)controller;
-+ (RZNotificationView*) showNotificationWithMessage:(NSString*)message icon:(RZNotificationIcon)icon position:(RZNotificationPosition)position color:(RZNotificationColor)color assetColor:(RZNotificationAssetColor)assetColor  textColor:(RZNotificationTextColor)textColor addedToController:(UIViewController*)controller;
-+ (RZNotificationView*) showNotificationWithMessage:(NSString*)message icon:(RZNotificationIcon)icon position:(RZNotificationPosition)position color:(RZNotificationColor)color assetColor:(RZNotificationAssetColor)assetColor delay:(NSTimeInterval)delay addedToController:(UIViewController*)controller;
-+ (RZNotificationView*) showNotificationWithMessage:(NSString*)message icon:(RZNotificationIcon)icon position:(RZNotificationPosition)position color:(RZNotificationColor)color assetColor:(RZNotificationAssetColor)assetColor textColor:(RZNotificationTextColor)textColor delay:(NSTimeInterval)delay addedToController:(UIViewController*)controller;
++ (RZNotificationView*) showNotificationWithMessage:(NSString*)message icon:(RZNotificationIcon)icon position:(RZNotificationPosition)position color:(RZNotificationColor)color assetColor:(RZNotificationAssetColor)assetColor textColor:(RZNotificationTextColor)textColor addedToController:(UIViewController*)controller withCompletion:(RZNotificationCompletion)completionBlock;
 
-+ (RZNotificationView*) showNotificationOnTopMostControllerWithMessage:(NSString*)message icon:(RZNotificationIcon)icon position:(RZNotificationPosition)position color:(RZNotificationColor)color assetColor:(RZNotificationAssetColor)assetColor textColor:(RZNotificationTextColor)textColor delay:(NSTimeInterval)delay;
++ (RZNotificationView*) showNotificationWithMessage:(NSString*)message icon:(RZNotificationIcon)icon position:(RZNotificationPosition)position color:(RZNotificationColor)color assetColor:(RZNotificationAssetColor)assetColor textColor:(RZNotificationTextColor)textColor delay:(NSTimeInterval)delay addedToController:(UIViewController*)controller withCompletion:(RZNotificationCompletion)completionBlock;
+
++ (RZNotificationView*) showNotificationOnTopMostControllerWithMessage:(NSString*)message icon:(RZNotificationIcon)icon position:(RZNotificationPosition)position color:(RZNotificationColor)color assetColor:(RZNotificationAssetColor)assetColor textColor:(RZNotificationTextColor)textColor withCompletion:(RZNotificationCompletion)completionBlock;
+
++ (RZNotificationView*) showNotificationOnTopMostControllerWithMessage:(NSString*)message icon:(RZNotificationIcon)icon position:(RZNotificationPosition)position color:(RZNotificationColor)color assetColor:(RZNotificationAssetColor)assetColor textColor:(RZNotificationTextColor)textColor delay:(NSTimeInterval)delay withCompletion:(RZNotificationCompletion)completionBlock;
 
 + (BOOL) hideNotificationForController:(UIViewController*)controller;
 + (NSUInteger) hideAllNotificationsForController:(UIViewController*)controller;
@@ -68,8 +72,7 @@ typedef enum {
 + (NSArray*) allNotificationsForController:(UIViewController*)controller;
 
 - (id) initWithController:(UIViewController*)controller;
-- (id) initWithController:(UIViewController*)controller icon:(RZNotificationIcon)icon position:(RZNotificationPosition)position color:(RZNotificationColor)color assetColor:(RZNotificationAssetColor)assetColor delay:(NSTimeInterval)delay;
-- (id) initWithController:(UIViewController*)controller icon:(RZNotificationIcon)icon position:(RZNotificationPosition)position color:(RZNotificationColor)color assetColor:(RZNotificationAssetColor)assetColor textColor:(RZNotificationTextColor)textColor delay:(NSTimeInterval)delay;
+- (id) initWithController:(UIViewController*)controller icon:(RZNotificationIcon)icon position:(RZNotificationPosition)position color:(RZNotificationColor)color assetColor:(RZNotificationAssetColor)assetColor textColor:(RZNotificationTextColor)textColor delay:(NSTimeInterval)delay completion:(RZNotificationCompletion)completionBlock;
 
 
 - (void) show;
@@ -92,16 +95,9 @@ typedef enum {
 @property (nonatomic) RZNotificationTextColor textColor;
 @property (nonatomic) RZNotificationIcon icon;
 @property (nonatomic, strong) NSString *customIcon;
-@property (assign, nonatomic) id <RZNotificationViewDelegate> delegate;
-@property (nonatomic, strong) id paramOnAction;
 
-@property (nonatomic, strong) NSURL *urlToOpen;
+@property (nonatomic, strong) RZNotificationCompletion completionBlock;
 
-@end
-
-@protocol RZNotificationViewDelegate <NSObject>
-// FIXME: Is it relevant now ?
-- (void) notificationViewTouched:(RZNotificationView*)notificationView;
 @end
 
 // define some macros
