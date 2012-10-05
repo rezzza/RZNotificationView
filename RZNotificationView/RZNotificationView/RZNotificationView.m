@@ -181,7 +181,7 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
     _textLabel.frame = contentFrame;
     [_customView setFrame:contentFrame];
     _anchorView.frame = CGRectMake(CGRectGetMinX(notificationFrame) + CGRectGetWidth(notificationFrame) - 26, CGRectGetMinY(notificationFrame) + floor((CGRectGetHeight(notificationFrame) - 22) * 0.5) - ceil((_position == RZNotificationPositionTop ? NOTIFICATION_SHADOW_BLUR_RADIUS : -NOTIFICATION_SHADOW_BLUR_RADIUS)/2), 21, 22);
-    
+
     //// NotificationZone Drawing
     CGRect notificationZoneRect = CGRectMake(CGRectGetMinX(notificationFrame) + 0, CGRectGetMinY(notificationFrame) + (_position == RZNotificationPositionTop ? 0 : outerShadowBlurRadius), CGRectGetWidth(notificationFrame) - 0, CGRectGetHeight(notificationFrame) - (_position == RZNotificationPositionTop ?outerShadowBlurRadius : 0));
     CGRect notificationZoneRectExt = CGRectMake(CGRectGetMinX(notificationFrame) + 0, CGRectGetMinY(notificationFrame) + (_position == RZNotificationPositionTop ? 0 : -outerShadowBlurRadius), CGRectGetWidth(notificationFrame) - 0, CGRectGetHeight(notificationFrame) + (_position == RZNotificationPositionTop ? outerShadowBlurRadius : +outerShadowBlurRadius));
@@ -313,7 +313,7 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
     _message = message;
     
     if(MAX_MESSAGE_LENGHT < [message length])
-        tempMessage = [message substringToIndex:MAX_MESSAGE_LENGHT];
+        tempMessage = [[message substringToIndex:MAX_MESSAGE_LENGHT] stringByAppendingString:@"..."]; // Tail truncation
     
     if ([(UIView*)_customView superview]) {
         [_customView removeFromSuperview];
@@ -327,9 +327,8 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
     frameL.size.width -= 2*OFFSET_X;
     _textLabel.frame = frameL;
     [_textLabel sizeToFit];
-
+    
     _textLabel.text = message;
-    _textLabel.lineBreakMode = NSLineBreakByTruncatingTail;
 
     [self adjustHeightAndRedraw:CGRectGetHeight(_textLabel.frame)];
 }
@@ -368,12 +367,7 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
 - (void) adjustHeightAndRedraw:(CGFloat)height
 {
     CGRect frame = self.frame;
-    if (MIN_HEIGHT < height) { //calculation given by paintcode
-        frame.size.height = height + 2*CONTENT_MARGIN_HEIGHT;
-    }
-    else{
-        frame.size.height = MIN_HEIGHT;
-    }
+    frame.size.height = MAX(MIN_HEIGHT, height + 2*CONTENT_MARGIN_HEIGHT + NOTIFICATION_SHADOW_BLUR_RADIUS);
     self.frame = frame;
     [self setNeedsDisplay];
 }
@@ -410,14 +404,14 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
         if (RZSystemVersionGreaterOrEqualThan(6.0))
         {
             _textLabel.textAlignment = NSTextAlignmentLeft;
-            _textLabel.lineBreakMode = NSLineBreakByWordWrapping;
+            _textLabel.lineBreakMode = NSLineBreakByTruncatingTail;
         }
         else
         {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wdeprecated-declarations"
             _textLabel.textAlignment = UITextAlignmentLeft;
-            _textLabel.lineBreakMode = UILineBreakModeWordWrap;
+            _textLabel.lineBreakMode = UILineBreakModeTailTruncation;
 #pragma clang diagnostic pop
         }
         _textLabel.textColor = [UIColor blackColor];
