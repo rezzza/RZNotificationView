@@ -39,10 +39,11 @@
     self.tableView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"background"]];
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
-    self.title = @"RZNotificationView Sample";
+    self.title = @"KitchenSink";
     self.navigationController.navigationBar.tintColor = [UIColor colorWithRed:0.6 green:0.0 blue:0.0 alpha:1];
     
     _assetColor = RZNotificationAssetColorAutomaticLight; // == 1
+    _textColor = RZNotificationTextColorAutomaticLight; // == 1
 }
 
 - (void)didReceiveMemoryWarning
@@ -83,8 +84,6 @@
 
 - (IBAction) colorSelector:(NSIndexPath*)indexPath index:(NSInteger)index
 {
-    NSLog(@"%@", indexPath);
-    NSLog(@"%d", index);
     _indexPath = indexPath;
     _current = index;
     if (!self.popoverController) {
@@ -164,7 +163,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {    
-    return 12;
+    return 13;
 }
 
 -(CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -494,7 +493,6 @@
                 textStyleCell = [[PrettyCustomViewTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:TextStyleCellIdentifier];
                 
                 NSArray *items = [NSArray arrayWithObjects:
-                                  @"Manual",
                                   @"Light",
                                   @"Dark",
                                   nil];
@@ -517,7 +515,7 @@
                 segmentedControl.unselectedItemColor = [UIColor darkGrayColor];
                 
                 UILabel *positionLabel = [[UILabel alloc] initWithFrame:CGRectMake(10.0, 0.0, 90.0, 44.0)];
-                positionLabel.text = [NSString stringWithFormat:@"Text Color"];
+                positionLabel.text = [NSString stringWithFormat:@"Asset Color"];
                 positionLabel.backgroundColor = [UIColor clearColor];
                 positionLabel.font = [UIFont boldSystemFontOfSize:14.0];
                 
@@ -530,6 +528,47 @@
             textStyleCell.tableViewBackgroundColor = tableView.backgroundColor;
             return textStyleCell;
         case 10:
+            textStyleCell = [tableView dequeueReusableCellWithIdentifier:TextStyleCellIdentifier];
+            if (textStyleCell == nil) {
+                textStyleCell = [[PrettyCustomViewTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:TextStyleCellIdentifier];
+                
+                NSArray *items = [NSArray arrayWithObjects:
+                                  @"Manual",
+                                  @"Light",
+                                  @"Dark",
+                                  nil];
+                MCSegmentedControl *segmentedControl = [[MCSegmentedControl alloc] initWithItems:items];
+                segmentedControl.tag = 9;
+                segmentedControl.font = [UIFont boldSystemFontOfSize:14.0f];
+                segmentedControl.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
+                // set frame, add to view, set target and action for value change as usual
+                segmentedControl.frame = CGRectMake(140.0, 7.0, 175.0, 30.0);
+                [self.view addSubview:segmentedControl];
+                [segmentedControl addTarget:self action:@selector(segmentedControlDidChange:) forControlEvents:UIControlEventValueChanged];
+                
+                segmentedControl.selectedSegmentIndex = _textColor;
+                
+                // Set a tint color
+                segmentedControl.tintColor = [UIColor colorWithRed:.6 green:.0 blue:.0 alpha:1.0];
+                
+                // Customize font and items color
+                segmentedControl.selectedItemColor   = [UIColor whiteColor];
+                segmentedControl.unselectedItemColor = [UIColor darkGrayColor];
+                
+                UILabel *positionLabel = [[UILabel alloc] initWithFrame:CGRectMake(10.0, 0.0, 90.0, 44.0)];
+                positionLabel.text = [NSString stringWithFormat:@"Text Color"];
+                positionLabel.backgroundColor = [UIColor clearColor];
+                positionLabel.font = [UIFont boldSystemFontOfSize:14.0];
+                
+                UIView *delayView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, 320, 44)];
+                [delayView addSubview:segmentedControl];
+                [delayView addSubview:positionLabel];
+                textStyleCell.customView = delayView;
+            }
+            [textStyleCell prepareForTableView:tableView indexPath:indexPath];
+            textStyleCell.tableViewBackgroundColor = tableView.backgroundColor;
+            return textStyleCell;
+        case 11:
             contentStyleCell = [tableView dequeueReusableCellWithIdentifier:ContentStyleCellIdentifier];
             if (contentStyleCell == nil) {
                 contentStyleCell = [[PrettyCustomViewTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:ContentStyleCellIdentifier];
@@ -540,7 +579,7 @@
                                   @"Image",
                                   nil];
                 MCSegmentedControl *segmentedControl = [[MCSegmentedControl alloc] initWithItems:items];
-                segmentedControl.tag = 9;
+                segmentedControl.tag = 10;
                 segmentedControl.font = [UIFont boldSystemFontOfSize:14.0f];
                 segmentedControl.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
                 
@@ -571,7 +610,7 @@
             [contentStyleCell prepareForTableView:tableView indexPath:indexPath];
             contentStyleCell.tableViewBackgroundColor = tableView.backgroundColor;
             return contentStyleCell;
-        case 11:
+        case 12:
             soundCell = [tableView dequeueReusableCellWithIdentifier:SoundCellIdentifier];
             if (soundCell == nil) {
                 soundCell = [[PrettyCustomViewTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:SoundCellIdentifier];
@@ -647,13 +686,15 @@
                                                                               position:_position
                                                                                  color:_color
                                                                             assetColor:_assetColor
+                                                                            textColor:_textColor
                                                                                  delay:_delaySlider.value];
             [notif setMessage:[round objectAtIndex:_roundIndex%[round count]]];
             
-            if (_assetColor == RZNotificationAssetColorManual) {
+            if (_textColor == RZNotificationTextColorManual) {
                 notif.textLabel.textColor = [UIColor greenColor];
                 notif.textLabel.shadowColor = [UIColor redColor];
             }
+
             
             notif.delegate = self;
             
@@ -669,6 +710,7 @@
             [notif setVibrate:_vibrate];
             [notif setSound:_sound];
             [notif setAssetColor:_assetColor];
+            [notif setTextColor:_textColor];
             [notif setCustomView:_customView];
             
             notif.customTopColor = _customTopColor;
@@ -716,6 +758,10 @@
             _assetColor = sender.selectedSegmentIndex;
             break;
         case 9:
+            [RZNotificationView hideNotificationForController:self];
+            _textColor = sender.selectedSegmentIndex;
+            break;
+        case 10:
             [RZNotificationView hideNotificationForController:self];
             switch (sender.selectedSegmentIndex) {
                 case 1:{

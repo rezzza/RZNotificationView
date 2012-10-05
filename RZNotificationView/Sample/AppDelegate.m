@@ -27,7 +27,7 @@
     
     SimpleSampleViewController *simple = [[SimpleSampleViewController alloc] initWithNibName:@"SimpleSampleViewController" bundle:nil];
     UINavigationController *nSimple = [[UINavigationController alloc] initWithRootViewController:simple];
-    tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Easy" image:nil tag:0];
+    tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Simple Demo" image:nil tag:0];
     nSimple.tabBarItem = tabBarItem;
     
     self.tabBarController = [[UITabBarController alloc] init];
