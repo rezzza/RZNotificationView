@@ -134,6 +134,9 @@
 		E04CD653161CC30C00B74BA7 /* MOOMaskedIconView.m in Sources */ = {isa = PBXBuildFile; fileRef = E04CD64D161CC30C00B74BA7 /* MOOMaskedIconView.m */; };
 		E04CD654161CC30C00B74BA7 /* MOOResourceList.m in Sources */ = {isa = PBXBuildFile; fileRef = E04CD64F161CC30C00B74BA7 /* MOOResourceList.m */; };
 		E04CD655161CC30C00B74BA7 /* MOOStyleTrait.m in Sources */ = {isa = PBXBuildFile; fileRef = E04CD651161CC30C00B74BA7 /* MOOStyleTrait.m */; };
+		E0EA8CDF161F1FC500DECF0D /* UITabBarController+RZNotificationContainerControllerProtocol.m in Sources */ = {isa = PBXBuildFile; fileRef = E0EA8CDE161F1FC500DECF0D /* UITabBarController+RZNotificationContainerControllerProtocol.m */; };
+		E0EA8CE2161F200500DECF0D /* UINavigationController+RZNotificationContainerControllerProtocol.m in Sources */ = {isa = PBXBuildFile; fileRef = E0EA8CE1161F200500DECF0D /* UINavigationController+RZNotificationContainerControllerProtocol.m */; };
+		E0EA8CE5161F24A200DECF0D /* UIViewController+RZNotificationContainerControllerProtocol.m in Sources */ = {isa = PBXBuildFile; fileRef = E0EA8CE4161F24A200DECF0D /* UIViewController+RZNotificationContainerControllerProtocol.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -274,6 +277,13 @@
 		E04CD64F161CC30C00B74BA7 /* MOOResourceList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MOOResourceList.m; sourceTree = "<group>"; };
 		E04CD650161CC30C00B74BA7 /* MOOStyleTrait.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MOOStyleTrait.h; sourceTree = "<group>"; };
 		E04CD651161CC30C00B74BA7 /* MOOStyleTrait.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MOOStyleTrait.m; sourceTree = "<group>"; };
+		E0EA8CDB161F1F2D00DECF0D /* RZNotificationContainerControllerProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RZNotificationContainerControllerProtocol.h; sourceTree = "<group>"; };
+		E0EA8CDD161F1FC500DECF0D /* UITabBarController+RZNotificationContainerControllerProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UITabBarController+RZNotificationContainerControllerProtocol.h"; sourceTree = "<group>"; };
+		E0EA8CDE161F1FC500DECF0D /* UITabBarController+RZNotificationContainerControllerProtocol.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UITabBarController+RZNotificationContainerControllerProtocol.m"; sourceTree = "<group>"; };
+		E0EA8CE0161F200500DECF0D /* UINavigationController+RZNotificationContainerControllerProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UINavigationController+RZNotificationContainerControllerProtocol.h"; sourceTree = "<group>"; };
+		E0EA8CE1161F200500DECF0D /* UINavigationController+RZNotificationContainerControllerProtocol.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UINavigationController+RZNotificationContainerControllerProtocol.m"; sourceTree = "<group>"; };
+		E0EA8CE3161F24A200DECF0D /* UIViewController+RZNotificationContainerControllerProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+RZNotificationContainerControllerProtocol.h"; sourceTree = "<group>"; };
+		E0EA8CE4161F24A200DECF0D /* UIViewController+RZNotificationContainerControllerProtocol.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+RZNotificationContainerControllerProtocol.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -452,6 +462,8 @@
 				E041A445161D978B008D46F5 /* UIView+Frame.m */,
 				BE9A6357161E06610064EAF4 /* UIColor+RZAdditions.h */,
 				BE9A6358161E06610064EAF4 /* UIColor+RZAdditions.m */,
+				E0EA8CDB161F1F2D00DECF0D /* RZNotificationContainerControllerProtocol.h */,
+				E0EA8CE6161F24D900DECF0D /* Container controller protocol on UIKit */,
 			);
 			path = RZNotificationView;
 			sourceTree = "<group>";
@@ -583,6 +595,19 @@
 			name = MOOMaskedIconView;
 			path = vendor/MOOMaskedIconView/MOOMaskedIconView;
 			sourceTree = SOURCE_ROOT;
+		};
+		E0EA8CE6161F24D900DECF0D /* Container controller protocol on UIKit */ = {
+			isa = PBXGroup;
+			children = (
+				E0EA8CDD161F1FC500DECF0D /* UITabBarController+RZNotificationContainerControllerProtocol.h */,
+				E0EA8CDE161F1FC500DECF0D /* UITabBarController+RZNotificationContainerControllerProtocol.m */,
+				E0EA8CE0161F200500DECF0D /* UINavigationController+RZNotificationContainerControllerProtocol.h */,
+				E0EA8CE1161F200500DECF0D /* UINavigationController+RZNotificationContainerControllerProtocol.m */,
+				E0EA8CE3161F24A200DECF0D /* UIViewController+RZNotificationContainerControllerProtocol.h */,
+				E0EA8CE4161F24A200DECF0D /* UIViewController+RZNotificationContainerControllerProtocol.m */,
+			);
+			name = "Container controller protocol on UIKit";
+			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
@@ -795,6 +820,9 @@
 				E041A446161D978B008D46F5 /* UIView+Frame.m in Sources */,
 				E041A44A161DC2DB008D46F5 /* SimpleSampleViewController.m in Sources */,
 				BE9A6359161E06610064EAF4 /* UIColor+RZAdditions.m in Sources */,
+				E0EA8CDF161F1FC500DECF0D /* UITabBarController+RZNotificationContainerControllerProtocol.m in Sources */,
+				E0EA8CE2161F200500DECF0D /* UINavigationController+RZNotificationContainerControllerProtocol.m in Sources */,
+				E0EA8CE5161F24A200DECF0D /* UIViewController+RZNotificationContainerControllerProtocol.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

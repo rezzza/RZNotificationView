@@ -13,6 +13,9 @@
 #import "MOOStyleTrait.h"
 #import "UIColor+RZAdditions.h"
 
+#import "UITabBarController+RZNotificationContainerControllerProtocol.h"
+#import "UINavigationController+RZNotificationContainerControllerProtocol.h"
+
 #import <AudioToolbox/AudioServices.h>
 
 #define UIColorFromRGB(rgbValue) [UIColor \
@@ -390,6 +393,33 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
     }
 }
 
++ (UIViewController*) getModalViewControllerOfControllerIfExists:(UIViewController*)controller
+{
+    UIViewController *toReturn = nil;
+    // modalViewController is deprecated since iOS 6
+    if ([controller respondsToSelector:@selector(presentedViewController)])
+        toReturn = [controller performSelector:@selector(presentedViewController)];
+    else
+        toReturn = [controller performSelector:@selector(modalViewController)];
+
+    // if no modal view controller, return the controller itself
+    if (!toReturn) toReturn = controller;
+    return toReturn;
+}
+
++ (UIViewController*) topMostController
+{
+    UIViewController *topController = [UIApplication sharedApplication].keyWindow.rootViewController;
+    topController = [self getModalViewControllerOfControllerIfExists:topController]; // TODO: this need to be checked
+    
+    while ([topController conformsToProtocol:@protocol(RZNotificationContainerControllerProtocol)])
+    {
+        topController = [(UIViewController <RZNotificationContainerControllerProtocol> *)topController visibleViewController];
+        topController = [self getModalViewControllerOfControllerIfExists:topController];
+    }
+    return topController;
+}
+
 #pragma mark - Subviews build
 
 - (void) addTextLabelIfNeeded
@@ -577,6 +607,20 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
 + (RZNotificationView*) showNotificationWithMessage:(NSString*)message icon:(RZNotificationIcon)icon position:(RZNotificationPosition)position color:(RZNotificationColor)color assetColor:(RZNotificationAssetColor)assetColor textColor:(RZNotificationTextColor)textColor  delay:(NSTimeInterval)delay addedToController:(UIViewController*)controller;
 {
     RZNotificationView *notification = [[RZNotificationView alloc] initWithController:controller
+                                                                                 icon:icon
+                                                                             position:position
+                                                                                color:color
+                                                                           assetColor:assetColor
+                                                                            textColor:textColor
+                                                                                delay:delay];
+    [notification setMessage:message];
+    [notification show];
+    return notification;
+}
+
++ (RZNotificationView *)showNotificationOnTopMostControllerWithMessage:(NSString *)message icon:(RZNotificationIcon)icon position:(RZNotificationPosition)position color:(RZNotificationColor)color assetColor:(RZNotificationAssetColor)assetColor textColor:(RZNotificationTextColor)textColor delay:(NSTimeInterval)delay
+{
+    RZNotificationView *notification = [[RZNotificationView alloc] initWithController:[RZNotificationView topMostController]
                                                                                  icon:icon
                                                                              position:position
                                                                                 color:color

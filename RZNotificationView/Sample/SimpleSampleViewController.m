@@ -42,13 +42,13 @@
 
 - (IBAction)showTwitter:(id)sender
 {
-    [RZNotificationView showNotificationWithMessage:@"This is a twitter message!"
-                                               icon:RZNotificationIconTwitter
-                                           position:RZNotificationPositionTop
-                                              color:RZNotificationColorYellow
-                                         assetColor:RZNotificationAssetColorAutomaticLight
-                                         textColor:RZNotificationTextColorAutomaticDark
-                                  addedToController:self];
+    [RZNotificationView showNotificationOnTopMostControllerWithMessage:@"This is a twitter message!"
+                                                                  icon:RZNotificationIconTwitter
+                                                              position:RZNotificationPositionTop
+                                                                 color:RZNotificationColorYellow
+                                                            assetColor:RZNotificationAssetColorAutomaticLight
+                                                             textColor:RZNotificationTextColorAutomaticDark
+                                                                 delay:3.5];
 }
 
 - (IBAction)showWarning:(id)sender
