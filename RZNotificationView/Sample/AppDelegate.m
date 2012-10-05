@@ -48,10 +48,16 @@
 - (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url {
     NSLog(@"%@", url.query);
     if ([[url host] isEqualToString:@"OtherViewController"]) {
-        OtherViewController *s = [[OtherViewController alloc] initWithNibName:@"OtherViewController" bundle:nil];
-        UINavigationController *n = (UINavigationController*)[[self.tabBarController viewControllers] objectAtIndex:0];
-        [n pushViewController:s animated:YES];
-        s.message.text = [url.query stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+        UINavigationController *n = (UINavigationController*)[RZNotificationView topMostController];
+        if (n.navigationController) {
+            OtherViewController *s = [[OtherViewController alloc] initWithNibName:@"OtherViewController" bundle:nil];
+            [n.navigationController pushViewController:s animated:YES];
+            s.message.text = [url.query stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+        }
+        else
+        {
+            NSLog(@"Push the controller in a other way like presentModal. It's up to you!");
+        }
     }
     return YES;
 }
@@ -60,13 +66,15 @@
 
 - (void) showNotification
 {
-    [RZNotificationView showNotificationOnTopMostControllerWithMessage:@"This is an automatic notification. Triggered only from AppDelegate! Great isn't it?"
-                                                                  icon:arc4random()%6
-                                                              position:arc4random()%2
-                                                                 color:arc4random()%4
-                                                            assetColor:RZNotificationAssetColorAutomaticDark
-                                                             textColor:RZNotificationTextColorAutomaticDark
-                                                                 delay:3.0];
+    RZNotificationView *notif = [RZNotificationView showNotificationOnTopMostControllerWithMessage:@"This is an automatic notification. Triggered only from AppDelegate! Great isn't it?"
+                                                                                              icon:arc4random()%6
+                                                                                          position:arc4random()%2
+                                                                                             color:arc4random()%4
+                                                                                        assetColor:RZNotificationAssetColorAutomaticDark
+                                                                                         textColor:RZNotificationTextColorAutomaticDark
+                                                                                             delay:3.0];
+    [notif setUrlToOpen:[NSURL URLWithString:@"rzn://OtherViewController?the%20awesome%20message"]];
+
     [self prepareForNextNotification];
 }
 
