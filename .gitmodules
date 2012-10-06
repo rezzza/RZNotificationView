@@ -13,3 +13,6 @@
 [submodule "vendor/MOOMaskedIconView"]
 	path = vendor/MOOMaskedIconView
 	url = https://github.com/peyton/MOOMaskedIconView.git
+[submodule "vendor/BButton"]
+	path = vendor/BButton
+	url = https://github.com/mattlawer/BButton.git

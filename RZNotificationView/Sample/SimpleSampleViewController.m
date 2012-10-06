@@ -7,7 +7,11 @@
 //
 
 #import "SimpleSampleViewController.h"
+
+#import "ModalViewController.h"
+
 #import "RZNotificationView.h"
+#import "BButton.h"
 
 @interface SimpleSampleViewController ()
 
@@ -31,7 +35,10 @@
     self.title = @"Simple Demo";
     self.navigationController.navigationBar.tintColor = [UIColor colorWithRed:0.6 green:0.0 blue:0.0 alpha:1];
 
-    // Do any additional setup after loading the view from its nib.
+    [_twitterButton setType:BButtonTypeWarning];
+    [_facebookButton setType:BButtonTypeDefault];
+    [_warningButton setType:BButtonTypeDanger];
+
 }
 
 - (void)didReceiveMemoryWarning
@@ -42,13 +49,13 @@
 
 - (IBAction)showTwitter:(id)sender
 {
-    [RZNotificationView showNotificationWithMessage:@"This is a twitter message!"
-                                               icon:RZNotificationIconTwitter
-                                           position:RZNotificationPositionTop
-                                              color:RZNotificationColorYellow
-                                         assetColor:RZNotificationAssetColorAutomaticLight
-                                         textColor:RZNotificationTextColorAutomaticDark
-                                  addedToController:self];
+    [RZNotificationView showNotificationOnTopMostControllerWithMessage:@"This is a twitter message!"
+                                                                  icon:RZNotificationIconTwitter
+                                                              position:RZNotificationPositionTop
+                                                                 color:RZNotificationColorYellow
+                                                            assetColor:RZNotificationContentColorAutomaticLight
+                                                             textColor:RZNotificationContentColorAutomaticDark
+                                                                 withCompletion:nil];
 }
 
 - (IBAction)showWarning:(id)sender
@@ -57,28 +64,51 @@
                                                                            icon:RZNotificationIconWarning
                                                                        position:RZNotificationPositionTop
                                                                           color:RZNotificationColorRed
-                                                                     assetColor:RZNotificationAssetColorAutomaticDark
-                                                              addedToController:self];
+                                                                     assetColor:RZNotificationContentColorAutomaticDark
+                                                                      textColor:RZNotificationContentColorAutomaticLight
+                                                              addedToController:self
+                                                                 withCompletion:nil];
     [notif setSound:@"DoorBell-SoundBible.com-1986366504.wav"];
     [notif setVibrate:YES];
 }
 
 - (IBAction)showFacebook:(id)sender
 {
-    [[RZNotificationView showNotificationWithMessage:@"Tell your friends that RZNotificationView is awesome."
+    [RZNotificationView showNotificationWithMessage:@"Tell your friends that RZNotificationView is awesome."
                                                icon:RZNotificationIconFacebook
                                            position:RZNotificationPositionBottom
                                               color:RZNotificationColorBlue
-                                         assetColor:RZNotificationAssetColorAutomaticDark
-                                  addedToController:self]
-     setUrlToOpen:[NSURL URLWithString:@"fb://"]];
+                                         assetColor:RZNotificationContentColorAutomaticDark
+                                          textColor:RZNotificationContentColorAutomaticLight
+                                  addedToController:self
+                                     withCompletion:^(BOOL touched) {
+                                         if (touched) {
+                                             NSURL *fbURL = [NSURL URLWithString:@"fb://"];
+                                             if ([[UIApplication sharedApplication] canOpenURL:fbURL]) {
+                                                 [[UIApplication sharedApplication] openURL:fbURL];
+                                             }
+                                             else
+                                                 [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://www.facebook.com"]];
+                                         }
+                                     }];
 }
 
 - (IBAction)hideAllNotifications:(id)sender
 {
     [RZNotificationView hideAllNotificationsForController:self];
 }
+
+- (IBAction)presentModalView:(id)sender
+{
+    ModalViewController *modal = [[ModalViewController alloc] initWithNibName:@"ModalViewController" bundle:nil];
+    UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:modal];
+    [self presentModalViewController:nav animated:YES];
+}
+
 - (void)viewDidUnload {
+    _twitterButton = nil;
+    _facebookButton = nil;
+    _warningButton = nil;
     [super viewDidUnload];
 }
 @end
