@@ -48,7 +48,7 @@
 - (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url {
     NSLog(@"%@", url.query);
     if ([[url host] isEqualToString:@"OtherViewController"]) {
-        UIViewController *c = [RZNotificationView topMostController];
+        UIViewController *c = [UIViewController topMostController];
         if (c.navigationController) {
             OtherViewController *s = [[OtherViewController alloc] initWithNibName:@"OtherViewController" bundle:nil];
             [c.navigationController pushViewController:s animated:YES];

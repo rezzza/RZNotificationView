@@ -7,8 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "RZNotificationContainerControllerProtocol.h"
+#import "RZTopMostControllerProtocol.h"
 
-@interface UINavigationController (RZNotificationContainerControllerProtocol) <RZNotificationContainerControllerProtocol>
+@interface UINavigationController (RZTopMostControllerProtocol) <RZTopMostControllerProtocol>
 
 @end

@@ -8,6 +8,6 @@
 
 #import <Foundation/Foundation.h>
 
-@protocol RZNotificationContainerControllerProtocol <NSObject>
+@protocol RZTopMostControllerProtocol <NSObject>
 - (UIViewController*) visibleViewController;
 @end

@@ -10,6 +10,8 @@
 #import "RZNotificationLabelProtocol.h"
 #include <AudioToolbox/AudioToolbox.h>
 
+#import "UIViewController+RZTopMostController.h"
+
 typedef enum {
     RZNotificationIconFacebook = 0,
     RZNotificationIconGift,
@@ -73,8 +75,6 @@ typedef void (^RZNotificationCompletion)(BOOL touched);
 - (void) show;
 - (void) hide;
 - (void) hideAfterDelay:(NSTimeInterval)delay;
-
-+ (UIViewController*) topMostController;
 
 @property (nonatomic, readonly) UILabel *textLabel;
 @property (nonatomic, strong) id <RZNotificationLabelProtocol> customView;

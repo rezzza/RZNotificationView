@@ -6,9 +6,9 @@
 //  Copyright (c) 2012 Rezzza. All rights reserved.
 //
 
-#import "UITabBarController+RZNotificationContainerControllerProtocol.h"
+#import "UITabBarController+RZTopMostControllerProtocol.h"
 
-@implementation UITabBarController (RZNotificationContainerControllerProtocol)
+@implementation UITabBarController (RZTopMostControllerProtocol)
 - (UIViewController*)visibleViewController
 {
     return self.selectedViewController;

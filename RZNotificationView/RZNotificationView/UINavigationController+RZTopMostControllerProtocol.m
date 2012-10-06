@@ -6,9 +6,9 @@
 //  Copyright (c) 2012 Rezzza. All rights reserved.
 //
 
-#import "UINavigationController+RZNotificationContainerControllerProtocol.h"
+#import "UINavigationController+RZTopMostControllerProtocol.h"
 
-@implementation UINavigationController (RZNotificationContainerControllerProtocol)
+@implementation UINavigationController (RZTopMostControllerProtocol)
 - (UIViewController *)visibleViewController
 {
     return self.topViewController;
