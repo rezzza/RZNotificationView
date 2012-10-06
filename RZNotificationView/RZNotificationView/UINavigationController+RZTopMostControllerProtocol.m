@@ -1,5 +1,5 @@
 //
-//  UINavigationController+RZNotificationContainerControllerProtocol.m
+//  UINavigationController+RZTopMostControllerProtocol.m
 //  RZNotificationView
 //
 //  Created by Marian Paul on 05/10/12.

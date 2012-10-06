@@ -1,5 +1,5 @@
 //
-//  RZNotificationContainerControllerProtocol.h
+//  RZTopMostControllerProtocol.h
 //  RZNotificationView
 //
 //  Created by Marian Paul on 05/10/12.

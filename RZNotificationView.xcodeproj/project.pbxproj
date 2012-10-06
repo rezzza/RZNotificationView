@@ -24,7 +24,6 @@
 		8B13A692161AEC3D0068A9F5 /* OtherViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B13A690161AEC3D0068A9F5 /* OtherViewController.m */; };
 		8B13A693161AEC3D0068A9F5 /* OtherViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8B13A691161AEC3D0068A9F5 /* OtherViewController.xib */; };
 		8B759954161B429500BDA083 /* CustomImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B759953161B429500BDA083 /* CustomImageView.m */; };
-		8B759957161B445600BDA083 /* 340119_564053743608283_175259668_o.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 8B759956161B445600BDA083 /* 340119_564053743608283_175259668_o.jpg */; };
 		8B75F27E1614AADE0084B685 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B75F27D1614AADE0084B685 /* AudioToolbox.framework */; };
 		8B76CF8D161B322F00004F2A /* TTTAttributedLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B76CF8C161B322F00004F2A /* TTTAttributedLabel.m */; };
 		8B76CF92161B326C00004F2A /* CustomLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B76CF91161B326C00004F2A /* CustomLabel.m */; };
@@ -127,6 +126,7 @@
 		BE9A6359161E06610064EAF4 /* UIColor+RZAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = BE9A6358161E06610064EAF4 /* UIColor+RZAdditions.m */; };
 		E029B4DA162016F800056ED9 /* BButton.m in Sources */ = {isa = PBXBuildFile; fileRef = E029B4D9162016F800056ED9 /* BButton.m */; };
 		E029B4DE162019F300056ED9 /* UIViewController+RZTopMostController.m in Sources */ = {isa = PBXBuildFile; fileRef = E029B4DD162019F300056ED9 /* UIViewController+RZTopMostController.m */; };
+		E029B4E21620264200056ED9 /* 340119_564053743608283_175259668_o.jpg in Resources */ = {isa = PBXBuildFile; fileRef = E029B4E11620264100056ED9 /* 340119_564053743608283_175259668_o.jpg */; };
 		E041A446161D978B008D46F5 /* UIView+Frame.m in Sources */ = {isa = PBXBuildFile; fileRef = E041A445161D978B008D46F5 /* UIView+Frame.m */; };
 		E041A44A161DC2DB008D46F5 /* SimpleSampleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E041A448161DC2DB008D46F5 /* SimpleSampleViewController.m */; };
 		E041A44B161DC2DB008D46F5 /* SimpleSampleViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E041A449161DC2DB008D46F5 /* SimpleSampleViewController.xib */; };
@@ -188,7 +188,6 @@
 		8B13A691161AEC3D0068A9F5 /* OtherViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = OtherViewController.xib; sourceTree = "<group>"; };
 		8B759952161B429500BDA083 /* CustomImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomImageView.h; sourceTree = "<group>"; };
 		8B759953161B429500BDA083 /* CustomImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomImageView.m; sourceTree = "<group>"; };
-		8B759956161B445600BDA083 /* 340119_564053743608283_175259668_o.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 340119_564053743608283_175259668_o.jpg; sourceTree = "<group>"; };
 		8B75F27D1614AADE0084B685 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		8B76CF81161B1D7700004F2A /* RZNotificationLabelProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RZNotificationLabelProtocol.h; sourceTree = "<group>"; };
 		8B76CF8B161B322F00004F2A /* TTTAttributedLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TTTAttributedLabel.h; path = vendor/TTTAttributedLabel/TTTAttributedLabel.h; sourceTree = SOURCE_ROOT; };
@@ -272,6 +271,7 @@
 		E029B4D9162016F800056ED9 /* BButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BButton.m; sourceTree = "<group>"; };
 		E029B4DC162019F300056ED9 /* UIViewController+RZTopMostController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+RZTopMostController.h"; sourceTree = "<group>"; };
 		E029B4DD162019F300056ED9 /* UIViewController+RZTopMostController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+RZTopMostController.m"; sourceTree = "<group>"; };
+		E029B4E11620264100056ED9 /* 340119_564053743608283_175259668_o.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 340119_564053743608283_175259668_o.jpg; sourceTree = "<group>"; };
 		E041A444161D978B008D46F5 /* UIView+Frame.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+Frame.h"; sourceTree = "<group>"; };
 		E041A445161D978B008D46F5 /* UIView+Frame.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+Frame.m"; sourceTree = "<group>"; };
 		E041A447161DC2DA008D46F5 /* SimpleSampleViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SimpleSampleViewController.h; sourceTree = "<group>"; };
@@ -472,16 +472,10 @@
 		8BB3D89D16119E230056B98F /* RZNotificationView */ = {
 			isa = PBXGroup;
 			children = (
-				8B759956161B445600BDA083 /* 340119_564053743608283_175259668_o.jpg */,
 				8BB3D8A316119EE50056B98F /* RZNotificationView.h */,
 				8BB3D8A416119EE50056B98F /* RZNotificationView.m */,
-				8B76CF81161B1D7700004F2A /* RZNotificationLabelProtocol.h */,
-				E041A444161D978B008D46F5 /* UIView+Frame.h */,
-				E041A445161D978B008D46F5 /* UIView+Frame.m */,
-				BE9A6357161E06610064EAF4 /* UIColor+RZAdditions.h */,
-				BE9A6358161E06610064EAF4 /* UIColor+RZAdditions.m */,
-				E0EA8CDB161F1F2D00DECF0D /* RZTopMostControllerProtocol.h */,
-				E0EA8CE6161F24D900DECF0D /* Container controller protocol on UIKit */,
+				E029B4E01620255000056ED9 /* Protocols */,
+				E029B4DF1620252E00056ED9 /* Categories */,
 			);
 			path = RZNotificationView;
 			sourceTree = "<group>";
@@ -491,6 +485,7 @@
 			children = (
 				8BB3D89F16119E6A0056B98F /* AppDelegate.h */,
 				8BB3D8A016119E6A0056B98F /* AppDelegate.m */,
+				E029B4E11620264100056ED9 /* 340119_564053743608283_175259668_o.jpg */,
 				E0EA8CF0161F2A2600DECF0D /* KitchenSink */,
 				E0EA8CF1161F2A5400DECF0D /* Simple Demo */,
 				8B76CF90161B326C00004F2A /* CustomLabel.h */,
@@ -602,6 +597,26 @@
 			path = vendor/BButton/BButton;
 			sourceTree = SOURCE_ROOT;
 		};
+		E029B4DF1620252E00056ED9 /* Categories */ = {
+			isa = PBXGroup;
+			children = (
+				E041A444161D978B008D46F5 /* UIView+Frame.h */,
+				E041A445161D978B008D46F5 /* UIView+Frame.m */,
+				BE9A6357161E06610064EAF4 /* UIColor+RZAdditions.h */,
+				BE9A6358161E06610064EAF4 /* UIColor+RZAdditions.m */,
+			);
+			name = Categories;
+			sourceTree = "<group>";
+		};
+		E029B4E01620255000056ED9 /* Protocols */ = {
+			isa = PBXGroup;
+			children = (
+				8B76CF81161B1D7700004F2A /* RZNotificationLabelProtocol.h */,
+				E0EA8CE6161F24D900DECF0D /* RZTopMostController */,
+			);
+			name = Protocols;
+			sourceTree = "<group>";
+		};
 		E04CD648161CC30C00B74BA7 /* MOOMaskedIconView */ = {
 			isa = PBXGroup;
 			children = (
@@ -619,9 +634,10 @@
 			path = vendor/MOOMaskedIconView/MOOMaskedIconView;
 			sourceTree = SOURCE_ROOT;
 		};
-		E0EA8CE6161F24D900DECF0D /* Container controller protocol on UIKit */ = {
+		E0EA8CE6161F24D900DECF0D /* RZTopMostController */ = {
 			isa = PBXGroup;
 			children = (
+				E0EA8CDB161F1F2D00DECF0D /* RZTopMostControllerProtocol.h */,
 				E0EA8CDD161F1FC500DECF0D /* UITabBarController+RZTopMostControllerProtocol.h */,
 				E0EA8CDE161F1FC500DECF0D /* UITabBarController+RZTopMostControllerProtocol.m */,
 				E0EA8CE0161F200500DECF0D /* UINavigationController+RZTopMostControllerProtocol.h */,
@@ -629,7 +645,7 @@
 				E029B4DC162019F300056ED9 /* UIViewController+RZTopMostController.h */,
 				E029B4DD162019F300056ED9 /* UIViewController+RZTopMostController.m */,
 			);
-			name = "Container controller protocol on UIKit";
+			name = RZTopMostController;
 			sourceTree = "<group>";
 		};
 		E0EA8CF0161F2A2600DECF0D /* KitchenSink */ = {
@@ -781,7 +797,6 @@
 				8B0AF9281613012D00A31A05 /* background@2x.png in Resources */,
 				8B13A6891619E4920068A9F5 /* Localizable.strings in Resources */,
 				8B13A693161AEC3D0068A9F5 /* OtherViewController.xib in Resources */,
-				8B759957161B445600BDA083 /* 340119_564053743608283_175259668_o.jpg in Resources */,
 				8BAAA406161C79580017B0DB /* DoorBell-SoundBible.com-1986366504.wav in Resources */,
 				E041A44B161DC2DB008D46F5 /* SimpleSampleViewController.xib in Resources */,
 				E041A44E161DCE60008D46F5 /* notif_anchor.png in Resources */,
@@ -789,6 +804,7 @@
 				E0EA8CEF161F274300DECF0D /* ModalViewController.xib in Resources */,
 				E0EA8CF6161F2A7100DECF0D /* AutomaticViewController.xib in Resources */,
 				E0EA8CFB161F2A8200DECF0D /* AutomaticModalViewController.xib in Resources */,
+				E029B4E21620264200056ED9 /* 340119_564053743608283_175259668_o.jpg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

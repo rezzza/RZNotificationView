@@ -1,5 +1,5 @@
 //
-//  UITabBarController+RZNotificationContainerControllerProtocol.m
+//  UITabBarController+RZTopMostControllerProtocol.m
 //  RZNotificationView
 //
 //  Created by Marian Paul on 05/10/12.

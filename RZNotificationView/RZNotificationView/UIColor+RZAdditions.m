@@ -10,7 +10,7 @@
 
 @implementation UIColor (RZAdditions)
 
-// From BButton
+// Largely inspired by BButton methods
 + (UIColor *)lighterColorForColor:(UIColor *)c
 {
     return [UIColor lighterColorForColor:c withRgbOffset:0.6f];
