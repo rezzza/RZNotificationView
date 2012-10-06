@@ -11,6 +11,7 @@
 #import "ModalViewController.h"
 
 #import "RZNotificationView.h"
+#import "BButton.h"
 
 @interface SimpleSampleViewController ()
 
@@ -34,7 +35,10 @@
     self.title = @"Simple Demo";
     self.navigationController.navigationBar.tintColor = [UIColor colorWithRed:0.6 green:0.0 blue:0.0 alpha:1];
 
-    // Do any additional setup after loading the view from its nib.
+    [_twitterButton setType:BButtonTypeWarning];
+    [_facebookButton setType:BButtonTypeDefault];
+    [_warningButton setType:BButtonTypeDanger];
+
 }
 
 - (void)didReceiveMemoryWarning
@@ -102,6 +106,9 @@
 }
 
 - (void)viewDidUnload {
+    _twitterButton = nil;
+    _facebookButton = nil;
+    _warningButton = nil;
     [super viewDidUnload];
 }
 @end

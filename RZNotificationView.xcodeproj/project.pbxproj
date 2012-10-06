@@ -125,6 +125,7 @@
 		8BB3D977161243680056B98F /* README in Resources */ = {isa = PBXBuildFile; fileRef = 8BB3D947161243670056B98F /* README */; };
 		8BB3D97E161245530056B98F /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BB3D97D161245530056B98F /* QuartzCore.framework */; };
 		BE9A6359161E06610064EAF4 /* UIColor+RZAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = BE9A6358161E06610064EAF4 /* UIColor+RZAdditions.m */; };
+		E029B4DA162016F800056ED9 /* BButton.m in Sources */ = {isa = PBXBuildFile; fileRef = E029B4D9162016F800056ED9 /* BButton.m */; };
 		E041A446161D978B008D46F5 /* UIView+Frame.m in Sources */ = {isa = PBXBuildFile; fileRef = E041A445161D978B008D46F5 /* UIView+Frame.m */; };
 		E041A44A161DC2DB008D46F5 /* SimpleSampleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E041A448161DC2DB008D46F5 /* SimpleSampleViewController.m */; };
 		E041A44B161DC2DB008D46F5 /* SimpleSampleViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E041A449161DC2DB008D46F5 /* SimpleSampleViewController.xib */; };
@@ -266,6 +267,8 @@
 		8BB3D97D161245530056B98F /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		BE9A6357161E06610064EAF4 /* UIColor+RZAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+RZAdditions.h"; sourceTree = "<group>"; };
 		BE9A6358161E06610064EAF4 /* UIColor+RZAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+RZAdditions.m"; sourceTree = "<group>"; };
+		E029B4D8162016F800056ED9 /* BButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BButton.h; sourceTree = "<group>"; };
+		E029B4D9162016F800056ED9 /* BButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BButton.m; sourceTree = "<group>"; };
 		E041A444161D978B008D46F5 /* UIView+Frame.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+Frame.h"; sourceTree = "<group>"; };
 		E041A445161D978B008D46F5 /* UIView+Frame.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+Frame.m"; sourceTree = "<group>"; };
 		E041A447161DC2DA008D46F5 /* SimpleSampleViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SimpleSampleViewController.h; sourceTree = "<group>"; };
@@ -520,6 +523,7 @@
 		8BB3D8FA161241CA0056B98F /* Third Party */ = {
 			isa = PBXGroup;
 			children = (
+				E029B4D7162016F800056ED9 /* BButton */,
 				E04CD648161CC30C00B74BA7 /* MOOMaskedIconView */,
 				8B76CF8A161B321C00004F2A /* TTTAttributedLabel */,
 				8B0AF8F91612FEAB00A31A05 /* PrettyKit */,
@@ -584,6 +588,16 @@
 			);
 			path = popoverImages;
 			sourceTree = "<group>";
+		};
+		E029B4D7162016F800056ED9 /* BButton */ = {
+			isa = PBXGroup;
+			children = (
+				E029B4D8162016F800056ED9 /* BButton.h */,
+				E029B4D9162016F800056ED9 /* BButton.m */,
+			);
+			name = BButton;
+			path = vendor/BButton/BButton;
+			sourceTree = SOURCE_ROOT;
 		};
 		E04CD648161CC30C00B74BA7 /* MOOMaskedIconView */ = {
 			isa = PBXGroup;
@@ -871,6 +885,7 @@
 				E0EA8CEE161F274300DECF0D /* ModalViewController.m in Sources */,
 				E0EA8CF5161F2A7100DECF0D /* AutomaticViewController.m in Sources */,
 				E0EA8CFA161F2A8200DECF0D /* AutomaticModalViewController.m in Sources */,
+				E029B4DA162016F800056ED9 /* BButton.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

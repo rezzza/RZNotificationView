@@ -8,7 +8,15 @@
 
 #import <UIKit/UIKit.h>
 
+@class BButton;
+
 @interface SimpleSampleViewController : UIViewController
+{
+    
+    __weak IBOutlet BButton *_twitterButton;
+    __weak IBOutlet BButton *_facebookButton;
+    __weak IBOutlet BButton *_warningButton;
+}
 
 - (IBAction)showTwitter:(id)sender;
 - (IBAction)showWarning:(id)sender;
