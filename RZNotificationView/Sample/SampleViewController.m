@@ -42,8 +42,8 @@
     self.title = @"KitchenSink";
     self.navigationController.navigationBar.tintColor = [UIColor colorWithRed:0.6 green:0.0 blue:0.0 alpha:1];
     
-    _assetColor = RZNotificationAssetColorAutomaticLight; // == 1
-    _textColor = RZNotificationTextColorAutomaticLight; // == 1
+    _assetColor = RZNotificationContentColorAutomaticLight; // == 1
+    _textColor = RZNotificationContentColorAutomaticLight; // == 1
 }
 
 - (void)didReceiveMemoryWarning
@@ -56,15 +56,7 @@
 
 - (void) clicNotificationView:(RZNotificationView*)sender
 {
-    if([sender.paramOnAction isKindOfClass:[NSString class]]){
-        NSLog(@"%@", sender.paramOnAction);
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Message"
-                                                        message:sender.paramOnAction
-                                                       delegate:nil
-                                              cancelButtonTitle:@"That's cool man"
-                                              otherButtonTitles:nil];
-        [alert show];
-    }
+    
 }
 
 - (void) notificationViewTouched:(RZNotificationView*)notificationView
@@ -533,9 +525,9 @@
                 textStyleCell = [[PrettyCustomViewTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:TextStyleCellIdentifier];
                 
                 NSArray *items = [NSArray arrayWithObjects:
-                                  @"Manual",
                                   @"Light",
                                   @"Dark",
+                                  @"Manual",
                                   nil];
                 MCSegmentedControl *segmentedControl = [[MCSegmentedControl alloc] initWithItems:items];
                 segmentedControl.tag = 9;
@@ -681,31 +673,34 @@
             // We don't want to stack the notifications, so hide before presenting a new one
             [RZNotificationView hideNotificationForController:self];
             
-            RZNotificationView *notif = [[RZNotificationView alloc] initWithController:self
-                                                                                  icon:_icon
-                                                                              position:_position
-                                                                                 color:_color
-                                                                            assetColor:_assetColor
-                                                                            textColor:_textColor
-                                                                                 delay:_delaySlider.value];
+            RZNotificationView *notif =
+            [[RZNotificationView alloc] initWithController:self
+                                                      icon:_icon
+                                                  position:_position
+                                                     color:_color
+                                                assetColor:_assetColor
+                                                 textColor:_textColor
+                                                     delay:_delaySlider.value
+                                                completion:^(BOOL touched) {
+                                                    if (touched) {
+                                                        UIAlertView *alert =
+                                                        [[UIAlertView alloc] initWithTitle:@"Message"
+                                                                                   message:@"Anything you want"
+                                                                                  delegate:nil
+                                                                         cancelButtonTitle:@"That's cool man"
+                                                                         otherButtonTitles:nil];
+                                                        [alert show];
+                                                        // Add an URL to define custom action in you app
+                                                        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"rzn://OtherViewController?the%20awesome%20message"]];
+                                                    }
+                                                }];
+            
             [notif setMessage:[round objectAtIndex:_roundIndex%[round count]]];
             
-            if (_textColor == RZNotificationTextColorManual) {
+            if (_textColor == RZNotificationContentColorManual) {
                 notif.textLabel.textColor = [UIColor greenColor];
                 notif.textLabel.shadowColor = [UIColor redColor];
             }
-
-            
-            notif.delegate = self;
-            
-            // Add Action on touch
-            [notif addTarget:self
-                      action:@selector(clicNotificationView:)
-            forControlEvents:UIControlEventTouchUpInside];
-            [notif setParamOnAction:@"This could be a message"];
-            
-            // Add an URL to define custom action in you app
-            [notif setUrlToOpen:[NSURL URLWithString:@"rzn://OtherViewController?the%20awesome%20message"]];
             
             [notif setVibrate:_vibrate];
             [notif setSound:_sound];

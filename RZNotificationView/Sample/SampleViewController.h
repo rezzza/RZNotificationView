@@ -20,13 +20,10 @@ typedef enum {
 
 @class PrettyGridTableViewCell;
 
-@interface SampleViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, RZNotificationViewDelegate, WEPopoverControllerDelegate, UIPopoverControllerDelegate, ColorViewControllerDelegate>
+@interface SampleViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, WEPopoverControllerDelegate, UIPopoverControllerDelegate, ColorViewControllerDelegate>
 {
     UISlider *_delaySlider;
     UILabel *_delayLabel;
-    
-    IBOutlet UIView *_topColorView;
-    IBOutlet UIView *_bottomColorView;
     
     IBOutlet UITableView *_tableView;
 
@@ -43,8 +40,8 @@ typedef enum {
     RZNotificationColor _color;
     RZNotificationPosition _position;
     RZNotificationIcon _icon;
-    RZNotificationAssetColor _assetColor;
-    RZNotificationAssetColor _textColor;
+    RZNotificationContentColor _assetColor;
+    RZNotificationContentColor _textColor;
     
     id<RZNotificationLabelProtocol> _customView;
 }
@@ -52,8 +49,6 @@ typedef enum {
 @property (nonatomic, strong) WEPopoverController *popoverController;
 @property (nonatomic, strong) IBOutlet UITableView *tableView;
 
-- (IBAction) testButtonTop:(id)sender;
-- (IBAction) testButtonBottom:(id)sender;
 - (IBAction) navBarHidden:(id)sender;
 - (IBAction) sliderValueChanged:(id)sender;
 - (void) switchChange:(UISwitch*)sender;
