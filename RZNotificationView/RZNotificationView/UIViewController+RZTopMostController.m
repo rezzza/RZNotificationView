@@ -29,11 +29,13 @@
 + (UIViewController*) topMostController
 {
     UIViewController *topController = ((UIWindow*)[[UIApplication sharedApplication].windows objectAtIndex:0]).rootViewController;
-    
     topController = [self getModalViewControllerOfControllerIfExists:topController];
     
-    while ([topController conformsToProtocol:@protocol(RZTopMostControllerProtocol)])
+    UIViewController *oldTopController = nil;
+    
+    while ([topController conformsToProtocol:@protocol(RZTopMostControllerProtocol)] && oldTopController != topController)
     {
+        oldTopController = topController;
         topController = [(UIViewController <RZTopMostControllerProtocol> *)topController visibleViewController];
         topController = [self getModalViewControllerOfControllerIfExists:topController];
     }
