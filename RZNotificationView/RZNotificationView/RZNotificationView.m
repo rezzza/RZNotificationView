@@ -185,11 +185,20 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
     CGRect notificationFrame = rect;
     
     //// Subframes
+    CGFloat anchorWitdh = 21.0;
+    if (_displayAnchor) {
+        anchorWitdh = 0.0;
+    }
+    
     _iconView.frame = CGRectMake(CGRectGetMinX(notificationFrame) + 7, CGRectGetMinY(notificationFrame) + floor((CGRectGetHeight(notificationFrame) - 22) * 0.5) - ceil((_position == RZNotificationPositionTop ? NOTIFICATION_SHADOW_BLUR_RADIUS : -NOTIFICATION_SHADOW_BLUR_RADIUS)/2), 21, 22);
-    CGRect contentFrame = CGRectMake(CGRectGetMinX(notificationFrame) + OFFSET_X, CGRectGetMinY(notificationFrame) + CGRectGetMinY(notificationFrame) + CONTENT_MARGIN_HEIGHT + (_position == RZNotificationPositionTop ? 0 : NOTIFICATION_SHADOW_BLUR_RADIUS), CGRectGetWidth(notificationFrame) - 2*OFFSET_X, CGRectGetHeight(notificationFrame) - 2*CONTENT_MARGIN_HEIGHT - NOTIFICATION_SHADOW_BLUR_RADIUS);
+    CGRect contentFrame = CGRectMake(CGRectGetMinX(notificationFrame) + OFFSET_X,
+                                     CGRectGetMinY(notificationFrame) + CGRectGetMinY(notificationFrame) + CONTENT_MARGIN_HEIGHT + (_position == RZNotificationPositionTop ? 0 : NOTIFICATION_SHADOW_BLUR_RADIUS),
+                                     CGRectGetWidth(notificationFrame) - 2*OFFSET_X + anchorWitdh,
+                                     CGRectGetHeight(notificationFrame) - 2*CONTENT_MARGIN_HEIGHT - NOTIFICATION_SHADOW_BLUR_RADIUS);
     _textLabel.frame = contentFrame;
     [_customView setFrame:contentFrame];
-    _anchorView.frame = CGRectMake(CGRectGetMinX(notificationFrame) + CGRectGetWidth(notificationFrame) - 26, CGRectGetMinY(notificationFrame) + floor((CGRectGetHeight(notificationFrame) - 22) * 0.5) - ceil((_position == RZNotificationPositionTop ? NOTIFICATION_SHADOW_BLUR_RADIUS : -NOTIFICATION_SHADOW_BLUR_RADIUS)/2), 21, 22);
+    _anchorView.frame = CGRectMake(CGRectGetMinX(notificationFrame) + CGRectGetWidth(notificationFrame) - 26, CGRectGetMinY(notificationFrame) + floor((CGRectGetHeight(notificationFrame) - 22) * 0.5) - ceil((_position == RZNotificationPositionTop ? NOTIFICATION_SHADOW_BLUR_RADIUS : -NOTIFICATION_SHADOW_BLUR_RADIUS)/2), anchorWitdh, 22);
+    
 
     //// NotificationZone Drawing
     CGRect notificationZoneRect = CGRectMake(CGRectGetMinX(notificationFrame) + 0, CGRectGetMinY(notificationFrame) + (_position == RZNotificationPositionTop ? 0 : outerShadowBlurRadius), CGRectGetWidth(notificationFrame) - 0, CGRectGetHeight(notificationFrame) - (_position == RZNotificationPositionTop ?outerShadowBlurRadius : 0));
@@ -474,6 +483,7 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
         _assetColor = assetColor;
         _textColor = textColor;
         _icon = icon;
+        _displayAnchor = YES;
         
         // Add icon view
         _iconView = [[UIImageView alloc] initWithFrame:CGRectZero];
@@ -758,6 +768,17 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
     {
         [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(hide) object:nil];
         [self performSelector:@selector(hide) withObject:nil afterDelay:delay];
+    }
+}
+
+- (void) setDisplayAnchor:(BOOL)displayAnchor
+{
+    _displayAnchor = displayAnchor;
+    if (_displayAnchor && !_anchorView.superview) {
+        [self addSubview:_anchorView];
+    }
+    else if (!_displayAnchor && _anchorView.superview){
+        [_anchorView removeFromSuperview];
     }
 }
 
