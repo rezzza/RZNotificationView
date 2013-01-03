@@ -439,13 +439,15 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
     [self adjustHeightAndRedraw:height];
 }
 
-- (void) adjustHeightAndRedraw:(CGFloat)height
+- (void) setDisplayAnchor:(BOOL)displayAnchor
 {
-    CGRect frame = self.frame;
-    frame.size.height = MAX(MIN_HEIGHT, height + 2*CONTENT_MARGIN_HEIGHT + NOTIFICATION_SHADOW_BLUR_RADIUS);
-    frame.size.height += 2.0*_contentMarginHeight;
-    self.frame = frame;
-    [self setNeedsDisplay];
+    _displayAnchor = displayAnchor;
+    if (_displayAnchor && !_anchorView.superview) {
+        [self addSubview:_anchorView];
+    }
+    else if (!_displayAnchor && _anchorView.superview){
+        [_anchorView removeFromSuperview];
+    }
 }
 
 - (void) setCustomView:(id<RZNotificationLabelProtocol>)customView
@@ -825,15 +827,13 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
     }
 }
 
-- (void) setDisplayAnchor:(BOOL)displayAnchor
+- (void) adjustHeightAndRedraw:(CGFloat)height
 {
-    _displayAnchor = displayAnchor;
-    if (_displayAnchor && !_anchorView.superview) {
-        [self addSubview:_anchorView];
-    }
-    else if (!_displayAnchor && _anchorView.superview){
-        [_anchorView removeFromSuperview];
-    }
+    CGRect frame = self.frame;
+    frame.size.height = MAX(MIN_HEIGHT, height + 2*CONTENT_MARGIN_HEIGHT + NOTIFICATION_SHADOW_BLUR_RADIUS);
+    frame.size.height += 2.0*_contentMarginHeight;
+    self.frame = frame;
+    [self setNeedsDisplay];
 }
 
 #pragma mark - Rotation handling
