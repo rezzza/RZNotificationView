@@ -13,6 +13,9 @@
 #import "MCSegmentedControl.h"
 #import "CustomLabel.h"
 #import "CustomImageView.h"
+#import "MOOMaskedIconView.h"
+#import "UIColor+RZAdditions.h"
+
 
 @interface SampleViewController ()
 
@@ -44,6 +47,7 @@
     
     _assetColor = RZNotificationContentColorAutomaticLight; // == 1
     _textColor = RZNotificationContentColorAutomaticLight; // == 1
+    _anchor = YES;
 }
 
 - (void)didReceiveMemoryWarning
@@ -72,6 +76,11 @@
 - (IBAction) sliderValueChanged:(id)sender
 {
     _delayLabel.text = [NSString stringWithFormat:@"Delay : %.1f", _delaySlider.value];
+}
+
+- (void) sliderMarginHeightValueChanged:(id)sender
+{
+    _marginHeigtLabel.text = [NSString stringWithFormat:@"Margin : %.0fpx", _marginHeigtSlider.value];
 }
 
 - (IBAction) colorSelector:(NSIndexPath*)indexPath index:(NSInteger)index
@@ -130,6 +139,16 @@
     }
 }
 
+- (void) switchChangeAnchor:(UISwitch*)sender
+{
+    if (sender.on){
+        _anchor = YES;
+    }
+    else{
+        _anchor = NO;
+    }
+}
+
 #pragma mark -
 #pragma mark WEPopoverControllerDelegate implementation
 
@@ -155,7 +174,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {    
-    return 13;
+    return 15;
 }
 
 -(CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -201,6 +220,15 @@
     
     static NSString *SoundCellIdentifier = @"SoundCellIdentifier";
     PrettyCustomViewTableViewCell *soundCell;
+    
+    static NSString *AnchorCellIdentifier = @"AnchorCellIdentifier";
+    PrettyCustomViewTableViewCell *anchorCell;
+    
+    static NSString *MarginHeigtCellIdentifier = @"MarginHeigtCellIdentifier";
+    PrettyCustomViewTableViewCell *marginHeightCell;
+    
+    static NSString *MaxLenghtCellIdentifier = @"MaxLenghtCellIdentifier";
+    PrettyCustomViewTableViewCell *maxLenghtCell;
     
     PrettyCustomViewTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
@@ -272,22 +300,22 @@
             if (colorCell == nil) {
                 colorCell = [[PrettyCustomViewTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:ColorCellIdentifier];
                 
-                UILabel *positionLabel = [[UILabel alloc] initWithFrame:CGRectMake(20.0, 2.0, 260.0, 20.0)];
-                positionLabel.text = [NSString stringWithFormat:@"Or predefined colors :"];
-                positionLabel.numberOfLines = 1;
+                UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(20.0, 2.0, 260.0, 20.0)];
+                titleLabel.text = [NSString stringWithFormat:@"Or predefined colors :"];
+                titleLabel.numberOfLines = 1;
                 if (RZSystemVersionGreaterOrEqualThan(6.0))
                 {
-                    positionLabel.textAlignment = NSTextAlignmentCenter;
+                    titleLabel.textAlignment = NSTextAlignmentCenter;
                 }
                 else
                 {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wdeprecated-declarations"
-                    positionLabel.textAlignment = UITextAlignmentCenter;
+                    titleLabel.textAlignment = UITextAlignmentCenter;
 #pragma clang diagnostic pop
-                }                positionLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-                positionLabel.backgroundColor = [UIColor clearColor];
-                positionLabel.font = [UIFont boldSystemFontOfSize:14.0];
+                }                titleLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+                titleLabel.backgroundColor = [UIColor clearColor];
+                titleLabel.font = [UIFont boldSystemFontOfSize:14.0];
                 
                 NSArray *items = [NSArray arrayWithObjects:
                                   @"Grey",
@@ -313,11 +341,11 @@
                 segmentedControl.selectedItemColor   = [UIColor whiteColor];
                 segmentedControl.unselectedItemColor = [UIColor darkGrayColor];
                 
-                UIView *delayView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, 320, 44 + 15)];
-                delayView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-                [delayView addSubview:segmentedControl];
-                [delayView addSubview:positionLabel];
-                colorCell.customView = delayView;
+                UIView *custumView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, 320, 44 + 15)];
+                custumView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+                [custumView addSubview:segmentedControl];
+                [custumView addSubview:titleLabel];
+                colorCell.customView = custumView;
             }
             [colorCell prepareForTableView:tableView indexPath:indexPath];
             colorCell.tableViewBackgroundColor = tableView.backgroundColor;
@@ -350,15 +378,15 @@
                 segmentedControl.selectedItemColor   = [UIColor whiteColor];
                 segmentedControl.unselectedItemColor = [UIColor darkGrayColor];
                 
-                UILabel *positionLabel = [[UILabel alloc] initWithFrame:CGRectMake(10.0, 0.0, 100.0, 44.0)];
-                positionLabel.text = [NSString stringWithFormat:@"Position"];
-                positionLabel.backgroundColor = [UIColor clearColor];
-                positionLabel.font = [UIFont boldSystemFontOfSize:14.0];
+                UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(10.0, 0.0, 100.0, 44.0)];
+                titleLabel.text = [NSString stringWithFormat:@"Position"];
+                titleLabel.backgroundColor = [UIColor clearColor];
+                titleLabel.font = [UIFont boldSystemFontOfSize:14.0];
                 
-                UIView *delayView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, 320, 44)];
-                [delayView addSubview:segmentedControl];
-                [delayView addSubview:positionLabel];
-                positionCell.customView = delayView;
+                UIView *custumView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, 320, 44)];
+                [custumView addSubview:segmentedControl];
+                [custumView addSubview:titleLabel];
+                positionCell.customView = custumView;
             }
             [positionCell prepareForTableView:tableView indexPath:indexPath];
             positionCell.tableViewBackgroundColor = tableView.backgroundColor;
@@ -369,14 +397,23 @@
             if (iconCell == nil) {
                 iconCell = [[PrettyCustomViewTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:IconCellIdentifier];
                 
+                MOOMaskedIconView *iconFacebook= [MOOMaskedIconView iconWithImage:[UIImage imageNamed:@"notif_facebook.png"]];
+                MOOMaskedIconView *iconGift = [MOOMaskedIconView iconWithImage:[UIImage imageNamed:@"notif_gift.png"]];
+                MOOMaskedIconView *iconInfo = [MOOMaskedIconView iconWithImage:[UIImage imageNamed:@"notif_infos.png"]];
+                MOOMaskedIconView *iconSmiley = [MOOMaskedIconView iconWithImage:[UIImage imageNamed:@"notif_smiley.png"]];
+                MOOMaskedIconView *iconTwitter = [MOOMaskedIconView iconWithImage:[UIImage imageNamed:@"notif_twitter.png"]];
+                MOOMaskedIconView *iconWarning = [MOOMaskedIconView iconWithImage:[UIImage imageNamed:@"notif_warning.png"]];
+
                 NSArray *items = [NSArray arrayWithObjects:
-                                  [UIImage imageNamed:@"notif_facebook.png"],
-                                  [UIImage imageNamed:@"notif_gift.png"],
-                                  [UIImage imageNamed:@"notif_infos.png"],
-                                  [UIImage imageNamed:@"notif_smiley.png"],
-                                  [UIImage imageNamed:@"notif_twitter.png"],
-                                  [UIImage imageNamed:@"notif_warning.png"],
+                                  [iconFacebook renderImage],
+                                  [iconGift renderImage],
+                                  [iconInfo renderImage],
+                                  [iconSmiley renderImage],
+                                  [iconTwitter renderImage],
+                                  [iconWarning renderImage],
+                                  @"No",
                                   nil];
+                
                 MCSegmentedControl *segmentedControl = [[MCSegmentedControl alloc] initWithItems:items];
                 segmentedControl.tag = 4;
                 segmentedControl.font = [UIFont boldSystemFontOfSize:14.0f];
@@ -396,15 +433,15 @@
                 segmentedControl.selectedItemColor   = [UIColor whiteColor];
                 segmentedControl.unselectedItemColor = [UIColor darkGrayColor];
                 
-                UILabel *positionLabel = [[UILabel alloc] initWithFrame:CGRectMake(10.0, 0.0, 70.0, 44.0)];
-                positionLabel.text = [NSString stringWithFormat:@"Icon"];
-                positionLabel.backgroundColor = [UIColor clearColor];
-                positionLabel.font = [UIFont boldSystemFontOfSize:14.0];
+                UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(10.0, 0.0, 70.0, 44.0)];
+                titleLabel.text = [NSString stringWithFormat:@"Icon"];
+                titleLabel.backgroundColor = [UIColor clearColor];
+                titleLabel.font = [UIFont boldSystemFontOfSize:14.0];
                 
-                UIView *delayView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, 320, 44)];
-                [delayView addSubview:segmentedControl];
-                [delayView addSubview:positionLabel];
-                iconCell.customView = delayView;
+                UIView *custumView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, 320, 44)];
+                [custumView addSubview:segmentedControl];
+                [custumView addSubview:titleLabel];
+                iconCell.customView = custumView;
             }
             [iconCell prepareForTableView:tableView indexPath:indexPath];
             iconCell.tableViewBackgroundColor = tableView.backgroundColor;
@@ -421,15 +458,15 @@
                 switchView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
                 [switchView addTarget:self action:@selector(switchChange:) forControlEvents:UIControlEventValueChanged];
                 
-                UILabel *positionLabel = [[UILabel alloc] initWithFrame:CGRectMake(10.0, 0.0, 70.0, 44.0)];
-                positionLabel.text = [NSString stringWithFormat:@"Vibrate"];
-                positionLabel.backgroundColor = [UIColor clearColor];
-                positionLabel.font = [UIFont boldSystemFontOfSize:14.0];
+                UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(10.0, 0.0, 70.0, 44.0)];
+                titleLabel.text = [NSString stringWithFormat:@"Vibrate"];
+                titleLabel.backgroundColor = [UIColor clearColor];
+                titleLabel.font = [UIFont boldSystemFontOfSize:14.0];
                 
-                UIView *delayView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, 320, 44)];
-                [delayView addSubview:switchView];
-                [delayView addSubview:positionLabel];
-                vibrateCell.customView = delayView;
+                UIView *custumView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, 320, 44)];
+                [custumView addSubview:switchView];
+                [custumView addSubview:titleLabel];
+                vibrateCell.customView = custumView;
             }
             [vibrateCell prepareForTableView:tableView indexPath:indexPath];
             vibrateCell.tableViewBackgroundColor = tableView.backgroundColor;
@@ -466,15 +503,15 @@
                 segmentedControl.selectedItemColor   = [UIColor whiteColor];
                 segmentedControl.unselectedItemColor = [UIColor darkGrayColor];
                 
-                UILabel *positionLabel = [[UILabel alloc] initWithFrame:CGRectMake(10.0, 0.0, 90.0, 44.0)];
-                positionLabel.text = [NSString stringWithFormat:@"Text Sample"];
-                positionLabel.backgroundColor = [UIColor clearColor];
-                positionLabel.font = [UIFont boldSystemFontOfSize:14.0];
+                UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(10.0, 0.0, 90.0, 44.0)];
+                titleLabel.text = [NSString stringWithFormat:@"Text Sample"];
+                titleLabel.backgroundColor = [UIColor clearColor];
+                titleLabel.font = [UIFont boldSystemFontOfSize:14.0];
                 
-                UIView *delayView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, 320, 44)];
-                [delayView addSubview:segmentedControl];
-                [delayView addSubview:positionLabel];
-                textSampleCell.customView = delayView;
+                UIView *custumView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, 320, 44)];
+                [custumView addSubview:segmentedControl];
+                [custumView addSubview:titleLabel];
+                textSampleCell.customView = custumView;
             }
             [textSampleCell prepareForTableView:tableView indexPath:indexPath];
             textSampleCell.tableViewBackgroundColor = tableView.backgroundColor;
@@ -506,15 +543,15 @@
                 segmentedControl.selectedItemColor   = [UIColor whiteColor];
                 segmentedControl.unselectedItemColor = [UIColor darkGrayColor];
                 
-                UILabel *positionLabel = [[UILabel alloc] initWithFrame:CGRectMake(10.0, 0.0, 90.0, 44.0)];
-                positionLabel.text = [NSString stringWithFormat:@"Asset Color"];
-                positionLabel.backgroundColor = [UIColor clearColor];
-                positionLabel.font = [UIFont boldSystemFontOfSize:14.0];
+                UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(10.0, 0.0, 90.0, 44.0)];
+                titleLabel.text = [NSString stringWithFormat:@"Asset Color"];
+                titleLabel.backgroundColor = [UIColor clearColor];
+                titleLabel.font = [UIFont boldSystemFontOfSize:14.0];
                 
-                UIView *delayView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, 320, 44)];
-                [delayView addSubview:segmentedControl];
-                [delayView addSubview:positionLabel];
-                textStyleCell.customView = delayView;
+                UIView *custumView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, 320, 44)];
+                [custumView addSubview:segmentedControl];
+                [custumView addSubview:titleLabel];
+                textStyleCell.customView = custumView;
             }
             [textStyleCell prepareForTableView:tableView indexPath:indexPath];
             textStyleCell.tableViewBackgroundColor = tableView.backgroundColor;
@@ -547,15 +584,15 @@
                 segmentedControl.selectedItemColor   = [UIColor whiteColor];
                 segmentedControl.unselectedItemColor = [UIColor darkGrayColor];
                 
-                UILabel *positionLabel = [[UILabel alloc] initWithFrame:CGRectMake(10.0, 0.0, 90.0, 44.0)];
-                positionLabel.text = [NSString stringWithFormat:@"Text Color"];
-                positionLabel.backgroundColor = [UIColor clearColor];
-                positionLabel.font = [UIFont boldSystemFontOfSize:14.0];
+                UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(10.0, 0.0, 90.0, 44.0)];
+                titleLabel.text = [NSString stringWithFormat:@"Text Color"];
+                titleLabel.backgroundColor = [UIColor clearColor];
+                titleLabel.font = [UIFont boldSystemFontOfSize:14.0];
                 
-                UIView *delayView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, 320, 44)];
-                [delayView addSubview:segmentedControl];
-                [delayView addSubview:positionLabel];
-                textStyleCell.customView = delayView;
+                UIView *custumView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, 320, 44)];
+                [custumView addSubview:segmentedControl];
+                [custumView addSubview:titleLabel];
+                textStyleCell.customView = custumView;
             }
             [textStyleCell prepareForTableView:tableView indexPath:indexPath];
             textStyleCell.tableViewBackgroundColor = tableView.backgroundColor;
@@ -589,15 +626,15 @@
                 segmentedControl.selectedItemColor   = [UIColor whiteColor];
                 segmentedControl.unselectedItemColor = [UIColor darkGrayColor];
                 
-                UILabel *positionLabel = [[UILabel alloc] initWithFrame:CGRectMake(10.0, 0.0, 90.0, 44.0)];
-                positionLabel.text = [NSString stringWithFormat:@"Content"];
-                positionLabel.backgroundColor = [UIColor clearColor];
-                positionLabel.font = [UIFont boldSystemFontOfSize:14.0];
+                UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(10.0, 0.0, 90.0, 44.0)];
+                titleLabel.text = [NSString stringWithFormat:@"Content"];
+                titleLabel.backgroundColor = [UIColor clearColor];
+                titleLabel.font = [UIFont boldSystemFontOfSize:14.0];
                 
-                UIView *delayView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, 320, 44)];
-                [delayView addSubview:segmentedControl];
-                [delayView addSubview:positionLabel];
-                contentStyleCell.customView = delayView;
+                UIView *custumView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, 320, 44)];
+                [custumView addSubview:segmentedControl];
+                [custumView addSubview:titleLabel];
+                contentStyleCell.customView = custumView;
             }
             [contentStyleCell prepareForTableView:tableView indexPath:indexPath];
             contentStyleCell.tableViewBackgroundColor = tableView.backgroundColor;
@@ -613,19 +650,96 @@
                 switchView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
                 [switchView addTarget:self action:@selector(switchChangeSound:) forControlEvents:UIControlEventValueChanged];
                 
-                UILabel *positionLabel = [[UILabel alloc] initWithFrame:CGRectMake(10.0, 0.0, 70.0, 44.0)];
-                positionLabel.text = [NSString stringWithFormat:@"Sound"];
-                positionLabel.backgroundColor = [UIColor clearColor];
-                positionLabel.font = [UIFont boldSystemFontOfSize:14.0];
+                UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(10.0, 0.0, 70.0, 44.0)];
+                titleLabel.text = [NSString stringWithFormat:@"Sound"];
+                titleLabel.backgroundColor = [UIColor clearColor];
+                titleLabel.font = [UIFont boldSystemFontOfSize:14.0];
                 
-                UIView *delayView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, 320, 44)];
-                [delayView addSubview:switchView];
-                [delayView addSubview:positionLabel];
-                soundCell.customView = delayView;
+                UIView *custumView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, 320, 44)];
+                [custumView addSubview:switchView];
+                [custumView addSubview:titleLabel];
+                soundCell.customView = custumView;
             }
             [soundCell prepareForTableView:tableView indexPath:indexPath];
             soundCell.tableViewBackgroundColor = tableView.backgroundColor;
             return soundCell;
+        case 13:
+            anchorCell = [tableView dequeueReusableCellWithIdentifier:AnchorCellIdentifier];
+            if (anchorCell == nil) {
+                anchorCell = [[PrettyCustomViewTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:AnchorCellIdentifier];
+                
+                UISwitch *switchView = [[UISwitch alloc] initWithFrame:CGRectZero];
+                switchView.center = CGPointMake(220.0, 22.0);
+                switchView.onTintColor = [UIColor colorWithRed:.6 green:.0 blue:.0 alpha:1.0];
+                switchView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
+                switchView.on = _anchor;
+                [switchView addTarget:self action:@selector(switchChangeAnchor:) forControlEvents:UIControlEventValueChanged];
+                
+                UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(10.0, 0.0, 70.0, 44.0)];
+                titleLabel.text = [NSString stringWithFormat:@"Anchor"];
+                titleLabel.backgroundColor = [UIColor clearColor];
+                titleLabel.font = [UIFont boldSystemFontOfSize:14.0];
+                
+                UIView *anchorView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, 320, 44)];
+                [anchorView addSubview:switchView];
+                [anchorView addSubview:titleLabel];
+                anchorCell.customView = anchorView;
+            }
+            [anchorCell prepareForTableView:tableView indexPath:indexPath];
+            anchorCell.tableViewBackgroundColor = tableView.backgroundColor;
+            return anchorCell;
+        case 14:
+            marginHeightCell = [tableView dequeueReusableCellWithIdentifier:MarginHeigtCellIdentifier];
+            if (marginHeightCell == nil) {
+                marginHeightCell = [[PrettyCustomViewTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:MarginHeigtCellIdentifier];
+                _marginHeigtSlider = [ [ UISlider alloc ] initWithFrame: CGRectMake(120.0, 0.0, 190.0, 44.0) ];
+                _marginHeigtSlider.minimumValue = 0.0;
+                _marginHeigtSlider.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+                _marginHeigtSlider.minimumTrackTintColor = [UIColor colorWithRed:.6 green:.0 blue:.0 alpha:1.0];
+                _marginHeigtSlider.maximumValue = 30.0;
+                _marginHeigtSlider.value = 8.0;
+                _marginHeigtSlider.continuous = YES;
+                [_marginHeigtSlider addTarget:self action:@selector(sliderMarginHeightValueChanged:) forControlEvents:UIControlEventValueChanged];
+                
+                _marginHeigtLabel = [[UILabel alloc] initWithFrame:CGRectMake(10.0, 0.0, 100.0, 44.0)];
+                _marginHeigtLabel.text = [NSString stringWithFormat:@"Margin : %.0fpx", 0.0];
+                _marginHeigtLabel.backgroundColor = [UIColor clearColor];
+                _marginHeigtLabel.font = [UIFont boldSystemFontOfSize:14.0];
+                
+                UIView *marginView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, 320, 44)];
+                [marginView addSubview:_marginHeigtSlider];
+                [marginView addSubview:_marginHeigtLabel];
+                marginHeightCell.customView = marginView;
+            }
+            [marginHeightCell prepareForTableView:tableView indexPath:indexPath];
+            marginHeightCell.tableViewBackgroundColor = tableView.backgroundColor;
+            return marginHeightCell;
+        case 15:
+            maxLenghtCell = [tableView dequeueReusableCellWithIdentifier:MaxLenghtCellIdentifier];
+            if (maxLenghtCell == nil) {
+                maxLenghtCell = [[PrettyCustomViewTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:MaxLenghtCellIdentifier];
+                _marginHeigtSlider = [ [ UISlider alloc ] initWithFrame: CGRectMake(120.0, 0.0, 190.0, 44.0) ];
+                _marginHeigtSlider.minimumValue = 0.0;
+                _marginHeigtSlider.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+                _marginHeigtSlider.minimumTrackTintColor = [UIColor colorWithRed:.6 green:.0 blue:.0 alpha:1.0];
+                _marginHeigtSlider.maximumValue = 30.0;
+                _marginHeigtSlider.value = 0.0;
+                _marginHeigtSlider.continuous = YES;
+                [_marginHeigtSlider addTarget:self action:@selector(sliderMarginHeightValueChanged:) forControlEvents:UIControlEventValueChanged];
+                
+                _marginHeigtLabel = [[UILabel alloc] initWithFrame:CGRectMake(10.0, 0.0, 100.0, 44.0)];
+                _marginHeigtLabel.text = [NSString stringWithFormat:@"Margin : %.0fpx", 0.0];
+                _marginHeigtLabel.backgroundColor = [UIColor clearColor];
+                _marginHeigtLabel.font = [UIFont boldSystemFontOfSize:14.0];
+                
+                UIView *marginView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, 320, 44)];
+                [marginView addSubview:_marginHeigtSlider];
+                [marginView addSubview:_marginHeigtLabel];
+                maxLenghtCell.customView = marginView;
+            }
+            [maxLenghtCell prepareForTableView:tableView indexPath:indexPath];
+            maxLenghtCell.tableViewBackgroundColor = tableView.backgroundColor;
+            return maxLenghtCell;
         default:
             break;
     }
@@ -707,7 +821,8 @@
             [notif setAssetColor:_assetColor];
             [notif setTextColor:_textColor];
             [notif setCustomView:_customView];
-            
+            [notif setDisplayAnchor:_anchor];
+            [notif setContentMarginHeight:_marginHeigtSlider.value];
             notif.customTopColor = _customTopColor;
             notif.customBottomColor = _customBottomColor;
             
@@ -761,7 +876,7 @@
             switch (sender.selectedSegmentIndex) {
                 case 1:{
                     CustomLabel *customLabel = [[CustomLabel alloc] initWithFrame:CGRectZero];
-                    customLabel.font = [UIFont fontWithName:@"Helvetica" size:12.0];
+                    customLabel.font = [UIFont fontWithName:@"Helvetica" size:14.0];
                     customLabel.textColor = [UIColor darkGrayColor];
                     customLabel.numberOfLines = 0;
                     customLabel.backgroundColor = [UIColor clearColor];
@@ -780,8 +895,56 @@
                         customLabel.lineBreakMode = UILineBreakModeWordWrap;
 #pragma clang diagnostic pop
                     }
-                    customLabel.textColor = [UIColor blackColor];
-                    customLabel.shadowColor = [UIColor whiteColor];
+                    
+                    
+                    UIColor* colorStart;                    
+                    if( _customTopColor || _customBottomColor) {
+                        if( !_customTopColor)
+                            _customTopColor = _customBottomColor;
+                        
+                        if( !_customBottomColor)
+                            _customBottomColor = _customTopColor;
+                        
+                        colorStart = _customTopColor;
+                    }
+                    else {
+                        switch (_color) {
+                            case RZNotificationColorGrey:
+                                colorStart = [UIColor colorWithRed: 162.0/255.0 green: 156.0/255.0 blue: 142.0/255.0 alpha: 1];
+                                break;
+                            case RZNotificationColorYellow:
+                                colorStart = [UIColor colorWithRed: 255.0/255.0 green: 204.0/255.0 blue: 0.0/255.0 alpha: 1];
+                                break;
+                            case RZNotificationColorRed:
+                                colorStart = [UIColor colorWithRed: 227.0/255.0 green: 0.0/255.0 blue: 0.0/255.0 alpha: 1];
+                                break;
+                            case RZNotificationColorBlue:
+                                colorStart = [UIColor colorWithRed: 110.0/255.0 green: 132.0/255.0 blue: 181.0/255.0 alpha: 1];
+                                break;
+                            default:
+                                colorStart = [UIColor colorWithRed: 162.0/255.0 green: 156.0/255.0 blue: 142.0/255.0 alpha: 1];
+                                break;
+                        }
+                    }                    
+
+                    if(_textColor == RZNotificationContentColorAutomaticDark)
+                    {
+                        customLabel.textColor = [UIColor darkerColorForColor:colorStart withRgbOffset:0.55];
+                        customLabel.shadowColor = [UIColor lighterColorForColor:colorStart withRgbOffset:0.4 andAlphaOffset:0.4];
+                        customLabel.shadowOffset = CGSizeMake(0.0f, 1.0f);
+                    }
+                    else if(_textColor == RZNotificationContentColorAutomaticLight)
+                    {
+                        customLabel.textColor = [UIColor lighterColorForColor:colorStart withRgbOffset:0.9];
+                        customLabel.shadowColor = [UIColor darkerColorForColor:colorStart withRgbOffset:0.25 andAlphaOffset:0.4];
+                        customLabel.shadowOffset = CGSizeMake(0.0f, -1.0f);
+                    }
+                    else {
+                        // manual
+                        customLabel.textColor = [UIColor blackColor];
+                        customLabel.shadowColor = [UIColor whiteColor];
+                        
+                    }
                     
                     NSString *text = @"Your friend \"John Appleseed\" just download the application ... Congratulations, you just won € 10 credit that can be used for your next purchase! :)";
                     [customLabel setText:text afterInheritingLabelAttributesAndConfiguringWithBlock:^ NSMutableAttributedString *(NSMutableAttributedString *mutableAttributedString) {
