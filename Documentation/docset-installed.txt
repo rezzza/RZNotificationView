@@ -1,4 +1,0 @@
-Documentation set was installed to Xcode!
-
-Path: /Users/jeremylagrue/Library/Developer/Shared/Documentation/DocSets/com.rezzza.RZNotificationView.docset
-Time: 2013-01-03 15:48:31 +0000

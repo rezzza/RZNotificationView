@@ -6,6 +6,21 @@
 	objectVersion = 46;
 	objects = {
 
+/* Begin PBXAggregateTarget section */
+		BE90E73216962FC000D6E20C /* BuildDocumentation */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = BE90E73316962FC000D6E20C /* Build configuration list for PBXAggregateTarget "BuildDocumentation" */;
+			buildPhases = (
+				BE90E73816962FCB00D6E20C /* ShellScript */,
+			);
+			dependencies = (
+				BE90E73716962FC700D6E20C /* PBXTargetDependency */,
+			);
+			name = BuildDocumentation;
+			productName = BuildDocumentation;
+		};
+/* End PBXAggregateTarget section */
+
 /* Begin PBXBuildFile section */
 		8B0AF8831612FCDF00A31A05 /* MCSegmentedControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B0AF8821612FCDF00A31A05 /* MCSegmentedControl.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		8B0AF90E1612FEAB00A31A05 /* PrettyCustomViewTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B0AF8FC1612FEAB00A31A05 /* PrettyCustomViewTableViewCell.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
@@ -148,6 +163,13 @@
 
 /* Begin PBXContainerItemProxy section */
 		8BB3D88016119CA70056B98F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8BB3D85116119CA60056B98F /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 8BB3D85916119CA60056B98F;
+			remoteInfo = RZNotificationView;
+		};
+		BE90E73616962FC700D6E20C /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 8BB3D85116119CA60056B98F /* Project object */;
 			proxyType = 1;
@@ -750,6 +772,7 @@
 			targets = (
 				8BB3D85916119CA60056B98F /* RZNotificationView */,
 				8BB3D87A16119CA70056B98F /* RZNotificationViewTests */,
+				BE90E73216962FC000D6E20C /* BuildDocumentation */,
 			);
 		};
 /* End PBXProject section */
@@ -862,6 +885,19 @@
 			shellPath = /bin/sh;
 			shellScript = "# Run the unit tests in this test bundle.\n\"${SYSTEM_DEVELOPER_DIR}/Tools/RunUnitTests\"\n";
 		};
+		BE90E73816962FCB00D6E20C /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "/usr/local/bin/appledoc \\\n--project-name \"RZNotificationView\" \\\n--search-undocumented-doc \\\n--project-company \"Rezzza SAS\" \\\n--company-id \"com.rezzza\" \\\n--output \"Documentation/\" \\\n--verbose 6 \\\n--logformat xcode \\\n--keep-intermediate-files \\\n--no-repeat-first-par \\\n--no-warn-invalid-crossref \\\n--ignore \"*.m\" \\\n\"RZNotificationView/RZNotificationView\"";
+		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -936,6 +972,11 @@
 			isa = PBXTargetDependency;
 			target = 8BB3D85916119CA60056B98F /* RZNotificationView */;
 			targetProxy = 8BB3D88016119CA70056B98F /* PBXContainerItemProxy */;
+		};
+		BE90E73716962FC700D6E20C /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 8BB3D85916119CA60056B98F /* RZNotificationView */;
+			targetProxy = BE90E73616962FC700D6E20C /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -1077,6 +1118,20 @@
 			};
 			name = Release;
 		};
+		BE90E73416962FC000D6E20C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		BE90E73516962FC000D6E20C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -1106,6 +1161,14 @@
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
+		};
+		BE90E73316962FC000D6E20C /* Build configuration list for PBXAggregateTarget "BuildDocumentation" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BE90E73416962FC000D6E20C /* Debug */,
+				BE90E73516962FC000D6E20C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
 		};
 /* End XCConfigurationList section */
 	};
