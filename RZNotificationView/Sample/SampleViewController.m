@@ -695,7 +695,7 @@
                 _marginHeigtSlider.autoresizingMask = UIViewAutoresizingFlexibleWidth;
                 _marginHeigtSlider.minimumTrackTintColor = [UIColor colorWithRed:.6 green:.0 blue:.0 alpha:1.0];
                 _marginHeigtSlider.maximumValue = 30.0;
-                _marginHeigtSlider.value = 0.0;
+                _marginHeigtSlider.value = 8.0;
                 _marginHeigtSlider.continuous = YES;
                 [_marginHeigtSlider addTarget:self action:@selector(sliderMarginHeightValueChanged:) forControlEvents:UIControlEventValueChanged];
                 
