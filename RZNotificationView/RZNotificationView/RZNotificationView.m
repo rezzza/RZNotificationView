@@ -48,6 +48,28 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
 
 @implementation RZNotificationView
 
+#pragma mark - Get Offset
+
+- (CGFloat) getOffsetXLeft
+{
+    CGFloat icontWitdhFree = 0.0;
+    if (![self getImageForIcon:_icon]) {
+        icontWitdhFree = 21.0;
+    }
+    
+    return OFFSET_X - icontWitdhFree;
+}
+
+- (CGFloat) getOffsetXRight
+{
+    CGFloat anchorWitdhFree = 21.0;
+    if (_displayAnchor) {
+        anchorWitdhFree = 0.0;
+    }
+    
+    return OFFSET_X - anchorWitdhFree;
+}
+
 #pragma mark - Color Adjustements
 
 - (UIColor*) adjustTextColor:(UIColor*)c
@@ -185,19 +207,18 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
     CGRect notificationFrame = rect;
     
     //// Subframes
-    CGFloat anchorWitdh = 21.0;
-    if (_displayAnchor) {
-        anchorWitdh = 0.0;
-    }
     
-    _iconView.frame = CGRectMake(CGRectGetMinX(notificationFrame) + 7, CGRectGetMinY(notificationFrame) + floor((CGRectGetHeight(notificationFrame) - 22) * 0.5) - ceil((_position == RZNotificationPositionTop ? NOTIFICATION_SHADOW_BLUR_RADIUS : -NOTIFICATION_SHADOW_BLUR_RADIUS)/2), 21, 22);
-    CGRect contentFrame = CGRectMake(CGRectGetMinX(notificationFrame) + OFFSET_X,
+    _iconView.frame = CGRectMake(CGRectGetMinX(notificationFrame) + 7,
+                                 CGRectGetMinY(notificationFrame) + floor((CGRectGetHeight(notificationFrame) - 22) * 0.5) - ceil((_position == RZNotificationPositionTop ? NOTIFICATION_SHADOW_BLUR_RADIUS : -NOTIFICATION_SHADOW_BLUR_RADIUS)/2),
+                                 21,
+                                 22);
+    CGRect contentFrame = CGRectMake(CGRectGetMinX(notificationFrame) + [self getOffsetXLeft],
                                      CGRectGetMinY(notificationFrame) + CGRectGetMinY(notificationFrame) + CONTENT_MARGIN_HEIGHT + (_position == RZNotificationPositionTop ? 0 : NOTIFICATION_SHADOW_BLUR_RADIUS),
-                                     CGRectGetWidth(notificationFrame) - 2*OFFSET_X + anchorWitdh,
+                                     CGRectGetWidth(notificationFrame) - [self getOffsetXLeft] - [self getOffsetXRight],
                                      CGRectGetHeight(notificationFrame) - 2*CONTENT_MARGIN_HEIGHT - NOTIFICATION_SHADOW_BLUR_RADIUS);
     _textLabel.frame = contentFrame;
     [_customView setFrame:contentFrame];
-    _anchorView.frame = CGRectMake(CGRectGetMinX(notificationFrame) + CGRectGetWidth(notificationFrame) - 26, CGRectGetMinY(notificationFrame) + floor((CGRectGetHeight(notificationFrame) - 22) * 0.5) - ceil((_position == RZNotificationPositionTop ? NOTIFICATION_SHADOW_BLUR_RADIUS : -NOTIFICATION_SHADOW_BLUR_RADIUS)/2), anchorWitdh, 22);
+    _anchorView.frame = CGRectMake(CGRectGetMinX(notificationFrame) + CGRectGetWidth(notificationFrame) - 26, CGRectGetMinY(notificationFrame) + floor((CGRectGetHeight(notificationFrame) - 22) * 0.5) - ceil((_position == RZNotificationPositionTop ? NOTIFICATION_SHADOW_BLUR_RADIUS : -NOTIFICATION_SHADOW_BLUR_RADIUS)/2), 21, 22);
     
 
     //// NotificationZone Drawing
@@ -289,10 +310,27 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
         case RZNotificationIconWarning:
             image = [UIImage imageNamed:@"notif_warning.png"];
             break;
+        case RZNotificationIconCustom:
+            image = [UIImage imageNamed:_customIcon];
+            break;
+        case RZNotificationIconNone:
+            image = nil;
+            break;
         default:
             break;
     }
     return image;
+}
+
+- (void) setCustomIcon:(NSString *)customIcon
+{
+    _customIcon = customIcon;
+    if (customIcon) {
+        _icon = RZNotificationIconCustom;
+    }
+    else {
+        _icon = RZNotificationIconNone;
+    }
 }
 
 - (void) setColor:(RZNotificationColor)color
@@ -345,7 +383,7 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
     _textLabel.text = tempMessage;
     
     CGRect frameL = self.frame;
-    frameL.size.width -= 2*OFFSET_X;
+    frameL.size.width -= [self getOffsetXLeft] + [self getOffsetXRight];
     _textLabel.frame = frameL;
     [_textLabel sizeToFit];
     
@@ -435,7 +473,7 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
 - (void) addTextLabelIfNeeded
 {
     if (!_textLabel) {
-        _textLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.bounds) - 2*OFFSET_X, 0)];
+        _textLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.bounds) - [self getOffsetXLeft] - [self getOffsetXRight], 0)];
         _textLabel.numberOfLines = 0;
         _textLabel.font = [UIFont fontWithName:@"Helvetica-Bold" size:12.0];
         _textLabel.backgroundColor = [UIColor clearColor];
@@ -704,7 +742,7 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
 - (void) show
 {
     if (_customView) {
-        CGFloat height = [_customView resizeForWidth:CGRectGetWidth(self.frame)-2*OFFSET_X];
+        CGFloat height = [_customView resizeForWidth:CGRectGetWidth(self.frame) - [self getOffsetXLeft] - [self getOffsetXRight]];
         [self adjustHeightAndRedraw:height];
     }
     
@@ -791,7 +829,7 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
             self.message = _message;
         }
         else{
-            CGFloat height = [_customView resizeForWidth:CGRectGetWidth(self.frame)-2*OFFSET_X];
+            CGFloat height = [_customView resizeForWidth:CGRectGetWidth(self.frame) - [self getOffsetXLeft] - [self getOffsetXRight]];
             [self adjustHeightAndRedraw:height];
         }
         

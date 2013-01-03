@@ -18,7 +18,9 @@ typedef enum {
     RZNotificationIconInfo,
     RZNotificationIconSmiley,
 	RZNotificationIconTwitter,
-    RZNotificationIconWarning
+    RZNotificationIconWarning,
+    RZNotificationIconCustom,
+    RZNotificationIconNone
 }RZNotificationIcon;
 
 typedef enum {
