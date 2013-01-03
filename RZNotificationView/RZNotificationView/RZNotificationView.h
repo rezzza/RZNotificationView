@@ -12,6 +12,10 @@
 
 #import "UIViewController+RZTopMostController.h"
 
+/**
+ @enum RZNotificationIcon
+ The icon to display
+ */
 typedef enum {
     RZNotificationIconFacebook = 0,
     RZNotificationIconGift,
@@ -73,7 +77,9 @@ typedef void (^RZNotificationCompletion)(BOOL touched);
 - (id) initWithController:(UIViewController*)controller;
 - (id) initWithController:(UIViewController*)controller icon:(RZNotificationIcon)icon position:(RZNotificationPosition)position color:(RZNotificationColor)color assetColor:(RZNotificationContentColor)assetColor textColor:(RZNotificationContentColor)textColor delay:(NSTimeInterval)delay completion:(RZNotificationCompletion)completionBlock;
 
-
+/**
+ Allow to show the notification
+ */
 - (void) show;
 - (void) hide;
 - (void) hideAfterDelay:(NSTimeInterval)delay;
