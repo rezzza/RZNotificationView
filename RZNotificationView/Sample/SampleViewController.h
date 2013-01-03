@@ -34,6 +34,7 @@ typedef enum {
     
     BOOL _vibrate;
     NSString *_sound;
+    BOOL _anchor;
     
     UIColor *_customTopColor, *_customBottomColor;
     
@@ -44,6 +45,9 @@ typedef enum {
     RZNotificationContentColor _textColor;
     
     id<RZNotificationLabelProtocol> _customView;
+    
+    UISlider *_marginHeigtSlider;
+    UILabel *_marginHeigtLabel;
 }
 
 @property (nonatomic, strong) WEPopoverController *popoverController;
