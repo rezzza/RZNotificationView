@@ -13,6 +13,7 @@
 #import "MCSegmentedControl.h"
 #import "CustomLabel.h"
 #import "CustomImageView.h"
+#import "MOOMaskedIconView.h"
 
 @interface SampleViewController ()
 
@@ -369,14 +370,22 @@
             if (iconCell == nil) {
                 iconCell = [[PrettyCustomViewTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:IconCellIdentifier];
                 
+                MOOMaskedIconView *iconFacebook= [MOOMaskedIconView iconWithImage:[UIImage imageNamed:@"notif_facebook.png"]];
+                MOOMaskedIconView *iconGift = [MOOMaskedIconView iconWithImage:[UIImage imageNamed:@"notif_gift.png"]];
+                MOOMaskedIconView *iconInfo = [MOOMaskedIconView iconWithImage:[UIImage imageNamed:@"notif_infos.png"]];
+                MOOMaskedIconView *iconSmiley = [MOOMaskedIconView iconWithImage:[UIImage imageNamed:@"notif_smiley.png"]];
+                MOOMaskedIconView *iconTwitter = [MOOMaskedIconView iconWithImage:[UIImage imageNamed:@"notif_twitter.png"]];
+                MOOMaskedIconView *iconWarning = [MOOMaskedIconView iconWithImage:[UIImage imageNamed:@"notif_warning.png"]];
+
                 NSArray *items = [NSArray arrayWithObjects:
-                                  [UIImage imageNamed:@"notif_facebook.png"],
-                                  [UIImage imageNamed:@"notif_gift.png"],
-                                  [UIImage imageNamed:@"notif_infos.png"],
-                                  [UIImage imageNamed:@"notif_smiley.png"],
-                                  [UIImage imageNamed:@"notif_twitter.png"],
-                                  [UIImage imageNamed:@"notif_warning.png"],
+                                  [iconFacebook renderImage],
+                                  [iconGift renderImage],
+                                  [iconInfo renderImage],
+                                  [iconSmiley renderImage],
+                                  [iconTwitter renderImage],
+                                  [iconWarning renderImage],
                                   nil];
+                
                 MCSegmentedControl *segmentedControl = [[MCSegmentedControl alloc] initWithItems:items];
                 segmentedControl.tag = 4;
                 segmentedControl.font = [UIFont boldSystemFontOfSize:14.0f];
