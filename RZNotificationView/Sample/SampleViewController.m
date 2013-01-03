@@ -14,6 +14,8 @@
 #import "CustomLabel.h"
 #import "CustomImageView.h"
 #import "MOOMaskedIconView.h"
+#import "UIColor+RZAdditions.h"
+
 
 @interface SampleViewController ()
 
@@ -874,7 +876,7 @@
             switch (sender.selectedSegmentIndex) {
                 case 1:{
                     CustomLabel *customLabel = [[CustomLabel alloc] initWithFrame:CGRectZero];
-                    customLabel.font = [UIFont fontWithName:@"Helvetica" size:12.0];
+                    customLabel.font = [UIFont fontWithName:@"Helvetica" size:14.0];
                     customLabel.textColor = [UIColor darkGrayColor];
                     customLabel.numberOfLines = 0;
                     customLabel.backgroundColor = [UIColor clearColor];
@@ -893,8 +895,56 @@
                         customLabel.lineBreakMode = UILineBreakModeWordWrap;
 #pragma clang diagnostic pop
                     }
-                    customLabel.textColor = [UIColor blackColor];
-                    customLabel.shadowColor = [UIColor whiteColor];
+                    
+                    
+                    UIColor* colorStart;                    
+                    if( _customTopColor || _customBottomColor) {
+                        if( !_customTopColor)
+                            _customTopColor = _customBottomColor;
+                        
+                        if( !_customBottomColor)
+                            _customBottomColor = _customTopColor;
+                        
+                        colorStart = _customTopColor;
+                    }
+                    else {
+                        switch (_color) {
+                            case RZNotificationColorGrey:
+                                colorStart = [UIColor colorWithRed: 162.0/255.0 green: 156.0/255.0 blue: 142.0/255.0 alpha: 1];
+                                break;
+                            case RZNotificationColorYellow:
+                                colorStart = [UIColor colorWithRed: 255.0/255.0 green: 204.0/255.0 blue: 0.0/255.0 alpha: 1];
+                                break;
+                            case RZNotificationColorRed:
+                                colorStart = [UIColor colorWithRed: 227.0/255.0 green: 0.0/255.0 blue: 0.0/255.0 alpha: 1];
+                                break;
+                            case RZNotificationColorBlue:
+                                colorStart = [UIColor colorWithRed: 110.0/255.0 green: 132.0/255.0 blue: 181.0/255.0 alpha: 1];
+                                break;
+                            default:
+                                colorStart = [UIColor colorWithRed: 162.0/255.0 green: 156.0/255.0 blue: 142.0/255.0 alpha: 1];
+                                break;
+                        }
+                    }                    
+
+                    if(_textColor == RZNotificationContentColorAutomaticDark)
+                    {
+                        customLabel.textColor = [UIColor darkerColorForColor:colorStart withRgbOffset:0.55];
+                        customLabel.shadowColor = [UIColor lighterColorForColor:colorStart withRgbOffset:0.4 andAlphaOffset:0.4];
+                        customLabel.shadowOffset = CGSizeMake(0.0f, 1.0f);
+                    }
+                    else if(_textColor == RZNotificationContentColorAutomaticLight)
+                    {
+                        customLabel.textColor = [UIColor lighterColorForColor:colorStart withRgbOffset:0.9];
+                        customLabel.shadowColor = [UIColor darkerColorForColor:colorStart withRgbOffset:0.25 andAlphaOffset:0.4];
+                        customLabel.shadowOffset = CGSizeMake(0.0f, -1.0f);
+                    }
+                    else {
+                        // manual
+                        customLabel.textColor = [UIColor blackColor];
+                        customLabel.shadowColor = [UIColor whiteColor];
+                        
+                    }
                     
                     NSString *text = @"Your friend \"John Appleseed\" just download the application ... Congratulations, you just won € 10 credit that can be used for your next purchase! :)";
                     [customLabel setText:text afterInheritingLabelAttributesAndConfiguringWithBlock:^ NSMutableAttributedString *(NSMutableAttributedString *mutableAttributedString) {
