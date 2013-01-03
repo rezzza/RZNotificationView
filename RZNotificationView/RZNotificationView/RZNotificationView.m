@@ -205,6 +205,7 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
     
     //// Frames
     CGRect notificationFrame = rect;
+
     
     //// Subframes
     
@@ -222,8 +223,15 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
     
 
     //// NotificationZone Drawing
-    CGRect notificationZoneRect = CGRectMake(CGRectGetMinX(notificationFrame) + 0, CGRectGetMinY(notificationFrame) + (_position == RZNotificationPositionTop ? 0 : outerShadowBlurRadius), CGRectGetWidth(notificationFrame) - 0, CGRectGetHeight(notificationFrame) - (_position == RZNotificationPositionTop ?outerShadowBlurRadius : 0));
-    CGRect notificationZoneRectExt = CGRectMake(CGRectGetMinX(notificationFrame) + 0, CGRectGetMinY(notificationFrame) + (_position == RZNotificationPositionTop ? 0 : -outerShadowBlurRadius), CGRectGetWidth(notificationFrame) - 0, CGRectGetHeight(notificationFrame) + (_position == RZNotificationPositionTop ? outerShadowBlurRadius : +outerShadowBlurRadius));
+    CGRect notificationZoneRect = CGRectMake(CGRectGetMinX(notificationFrame) + 0,
+                                             CGRectGetMinY(notificationFrame) + (_position == RZNotificationPositionTop ? 0 : outerShadowBlurRadius),
+                                             CGRectGetWidth(notificationFrame) - 0,
+                                             CGRectGetHeight(notificationFrame) - (_position == RZNotificationPositionTop ?outerShadowBlurRadius : 0));
+    
+    CGRect notificationZoneRectExt = CGRectMake(CGRectGetMinX(notificationFrame) + 0,
+                                                CGRectGetMinY(notificationFrame) + (_position == RZNotificationPositionTop ? 0 : -outerShadowBlurRadius),
+                                                CGRectGetWidth(notificationFrame) - 0,
+                                                CGRectGetHeight(notificationFrame) + (_position == RZNotificationPositionTop ? outerShadowBlurRadius : +outerShadowBlurRadius));
     
     UIBezierPath* notificationZonePath = [UIBezierPath bezierPathWithRect: notificationZoneRect];
     UIBezierPath* notificationZonePathExt = [UIBezierPath bezierPathWithRect: notificationZoneRectExt];
@@ -424,10 +432,18 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
     }
 }
 
+- (void) setContentMarginHeight:(CGFloat)contentMarginHeight
+{
+    _contentMarginHeight = contentMarginHeight;
+    CGFloat height = [_customView resizeForWidth:CGRectGetWidth(self.frame) - [self getOffsetXLeft] - [self getOffsetXRight]];
+    [self adjustHeightAndRedraw:height];
+}
+
 - (void) adjustHeightAndRedraw:(CGFloat)height
 {
     CGRect frame = self.frame;
     frame.size.height = MAX(MIN_HEIGHT, height + 2*CONTENT_MARGIN_HEIGHT + NOTIFICATION_SHADOW_BLUR_RADIUS);
+    frame.size.height += 2.0*_contentMarginHeight;
     self.frame = frame;
     [self setNeedsDisplay];
 }

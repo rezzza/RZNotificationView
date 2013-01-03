@@ -93,6 +93,7 @@ typedef void (^RZNotificationCompletion)(BOOL touched);
 @property (nonatomic) RZNotificationIcon icon;
 @property (nonatomic, strong) NSString *customIcon;
 @property (nonatomic) BOOL displayAnchor;
+@property (nonatomic) CGFloat contentMarginHeight;
 
 @property (nonatomic, strong) RZNotificationCompletion completionBlock;
 
