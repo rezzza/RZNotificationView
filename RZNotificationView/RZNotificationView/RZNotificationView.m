@@ -22,11 +22,11 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
 
 #define DEFAULT_MAX_MESSAGE_LENGHT 150
 #define MIN_HEIGHT 40
-#define CONTENT_MARGIN_HEIGHT 8.0f
 #define NOTIFICATION_SHADOW_BLUR_RADIUS 3.0f
 
 #define OFFSET_X 35.0
 
+#define DEFAULT_CONTENT_MARGIN_HEIGHT 8.0f
 #define DEFAULT_POSITION RZNotificationPositionTop
 #define DEFAULT_DELAY 3.5
 #define DEFAULT_COLOR RZNotificationColorBlue
@@ -214,9 +214,9 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
                                  21,
                                  22);
     CGRect contentFrame = CGRectMake(CGRectGetMinX(notificationFrame) + [self getOffsetXLeft],
-                                     CGRectGetMinY(notificationFrame) + CGRectGetMinY(notificationFrame) + CONTENT_MARGIN_HEIGHT + (_position == RZNotificationPositionTop ? 0 : NOTIFICATION_SHADOW_BLUR_RADIUS),
+                                     CGRectGetMinY(notificationFrame) + CGRectGetMinY(notificationFrame) + _contentMarginHeight + (_position == RZNotificationPositionTop ? 0 : NOTIFICATION_SHADOW_BLUR_RADIUS),
                                      CGRectGetWidth(notificationFrame) - [self getOffsetXLeft] - [self getOffsetXRight],
-                                     CGRectGetHeight(notificationFrame) - 2*CONTENT_MARGIN_HEIGHT - NOTIFICATION_SHADOW_BLUR_RADIUS);
+                                     CGRectGetHeight(notificationFrame) - 2*_contentMarginHeight - NOTIFICATION_SHADOW_BLUR_RADIUS);
     _textLabel.frame = contentFrame;
     [_customView setFrame:contentFrame];
     _anchorView.frame = CGRectMake(CGRectGetMinX(notificationFrame) + CGRectGetWidth(notificationFrame) - 26, CGRectGetMinY(notificationFrame) + floor((CGRectGetHeight(notificationFrame) - 22) * 0.5) - ceil((_position == RZNotificationPositionTop ? NOTIFICATION_SHADOW_BLUR_RADIUS : -NOTIFICATION_SHADOW_BLUR_RADIUS)/2), 21, 22);
@@ -379,12 +379,12 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
     RZ_RELEASE(_message);
     _message = RZ_RETAIN(message);
     
-    NSInteger maxLeght = _messageMaxLenght;
-    if (maxLeght == 0)
-        maxLeght = DEFAULT_MAX_MESSAGE_LENGHT;
+    NSInteger maxLenght = _messageMaxLenght;
+    if (maxLenght == 0)
+        maxLenght = DEFAULT_MAX_MESSAGE_LENGHT;
     
-    if(maxLeght < [message length])
-        tempMessage = [[message substringToIndex:maxLeght] stringByAppendingString:@"..."]; // Tail truncation
+    if(maxLenght < [message length])
+        tempMessage = [[message substringToIndex:maxLenght] stringByAppendingString:@"..."]; // Tail truncation
     
     if ([(UIView*)_customView superview]) {
         [_customView removeFromSuperview];
@@ -396,7 +396,7 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
     
     CGRect frameL = self.frame;
     frameL.size.width -= [self getOffsetXLeft] + [self getOffsetXRight];
-    _textLabel.frame = frameL;
+    _textLabel.frame   = frameL;
     [_textLabel sizeToFit];
     
     _textLabel.text = message;
@@ -508,7 +508,7 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
         _textLabel.font = [UIFont fontWithName:@"Helvetica-Bold" size:12.0];
         _textLabel.backgroundColor = [UIColor clearColor];
         _textLabel.shadowOffset = CGSizeMake(0.0, 1.0);
-        _textLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+        _textLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
         if (RZSystemVersionGreaterOrEqualThan(6.0))
         {
             _textLabel.textAlignment = NSTextAlignmentLeft;
@@ -552,6 +552,7 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
         _textColor = textColor;
         _icon = icon;
         _displayAnchor = YES;
+        _contentMarginHeight = DEFAULT_CONTENT_MARGIN_HEIGHT;
         
         // Add icon view
         _iconView = [[UIImageView alloc] initWithFrame:CGRectZero];
@@ -842,8 +843,7 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
 - (void) adjustHeightAndRedraw:(CGFloat)height
 {
     CGRect frame = self.frame;
-    frame.size.height = MAX(MIN_HEIGHT, height + 2*CONTENT_MARGIN_HEIGHT + NOTIFICATION_SHADOW_BLUR_RADIUS);
-    frame.size.height += 2.0*_contentMarginHeight;
+    frame.size.height = MAX(MIN_HEIGHT , height + 2.0*_contentMarginHeight + NOTIFICATION_SHADOW_BLUR_RADIUS);
     self.frame = frame;
     [self setNeedsDisplay];
 }
