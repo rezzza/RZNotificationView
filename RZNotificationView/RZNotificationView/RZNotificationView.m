@@ -286,7 +286,7 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
             _textLabel.shadowColor = [UIColor lighterColorForColor:colorStart withRgbOffset:0.4 andAlphaOffset:0.4];
             _textLabel.shadowOffset = CGSizeMake(0.0f, 1.0f);
         }
-        if(_textColor == RZNotificationContentColorAutomaticLight)
+        else if(_textColor == RZNotificationContentColorAutomaticLight)
         {
             _textLabel.shadowColor = [UIColor darkerColorForColor:colorStart withRgbOffset:0.25 andAlphaOffset:0.4];
             _textLabel.shadowOffset = CGSizeMake(0.0f, -1.0f);
