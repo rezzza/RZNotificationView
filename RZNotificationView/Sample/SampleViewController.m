@@ -225,6 +225,9 @@
     static NSString *MarginHeigtCellIdentifier = @"MarginHeigtCellIdentifier";
     PrettyCustomViewTableViewCell *marginHeightCell;
     
+    static NSString *MaxLenghtCellIdentifier = @"MaxLenghtCellIdentifier";
+    PrettyCustomViewTableViewCell *maxLenghtCell;
+    
     PrettyCustomViewTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
         cell = [[PrettyCustomViewTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
@@ -709,6 +712,32 @@
             [marginHeightCell prepareForTableView:tableView indexPath:indexPath];
             marginHeightCell.tableViewBackgroundColor = tableView.backgroundColor;
             return marginHeightCell;
+        case 15:
+            maxLenghtCell = [tableView dequeueReusableCellWithIdentifier:MaxLenghtCellIdentifier];
+            if (maxLenghtCell == nil) {
+                maxLenghtCell = [[PrettyCustomViewTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:MaxLenghtCellIdentifier];
+                _marginHeigtSlider = [ [ UISlider alloc ] initWithFrame: CGRectMake(120.0, 0.0, 190.0, 44.0) ];
+                _marginHeigtSlider.minimumValue = 0.0;
+                _marginHeigtSlider.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+                _marginHeigtSlider.minimumTrackTintColor = [UIColor colorWithRed:.6 green:.0 blue:.0 alpha:1.0];
+                _marginHeigtSlider.maximumValue = 30.0;
+                _marginHeigtSlider.value = 0.0;
+                _marginHeigtSlider.continuous = YES;
+                [_marginHeigtSlider addTarget:self action:@selector(sliderMarginHeightValueChanged:) forControlEvents:UIControlEventValueChanged];
+                
+                _marginHeigtLabel = [[UILabel alloc] initWithFrame:CGRectMake(10.0, 0.0, 100.0, 44.0)];
+                _marginHeigtLabel.text = [NSString stringWithFormat:@"Margin : %.0fpx", 0.0];
+                _marginHeigtLabel.backgroundColor = [UIColor clearColor];
+                _marginHeigtLabel.font = [UIFont boldSystemFontOfSize:14.0];
+                
+                UIView *marginView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, 320, 44)];
+                [marginView addSubview:_marginHeigtSlider];
+                [marginView addSubview:_marginHeigtLabel];
+                maxLenghtCell.customView = marginView;
+            }
+            [maxLenghtCell prepareForTableView:tableView indexPath:indexPath];
+            maxLenghtCell.tableViewBackgroundColor = tableView.backgroundColor;
+            return maxLenghtCell;
         default:
             break;
     }

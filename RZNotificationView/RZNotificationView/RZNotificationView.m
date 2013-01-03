@@ -20,7 +20,7 @@ colorWithRed:((float)((rgbValue & 0xFF0000) >> 16))/255.0 \
 green:((float)((rgbValue & 0xFF00) >> 8))/255.0 \
 blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
 
-#define MAX_MESSAGE_LENGHT 150
+#define DEFAULT_MAX_MESSAGE_LENGHT 150
 #define MIN_HEIGHT 40
 #define CONTENT_MARGIN_HEIGHT 8.0f
 #define NOTIFICATION_SHADOW_BLUR_RADIUS 3.0f
@@ -379,8 +379,12 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
     RZ_RELEASE(_message);
     _message = RZ_RETAIN(message);
     
-    if(MAX_MESSAGE_LENGHT < [message length])
-        tempMessage = [[message substringToIndex:MAX_MESSAGE_LENGHT] stringByAppendingString:@"..."]; // Tail truncation
+    NSInteger maxLeght = _messageMaxLenght;
+    if (maxLeght == 0)
+        maxLeght = DEFAULT_MAX_MESSAGE_LENGHT;
+    
+    if(maxLeght < [message length])
+        tempMessage = [[message substringToIndex:maxLeght] stringByAppendingString:@"..."]; // Tail truncation
     
     if ([(UIView*)_customView superview]) {
         [_customView removeFromSuperview];
@@ -435,7 +439,15 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
 - (void) setContentMarginHeight:(CGFloat)contentMarginHeight
 {
     _contentMarginHeight = contentMarginHeight;
-    CGFloat height = [_customView resizeForWidth:CGRectGetWidth(self.frame) - [self getOffsetXLeft] - [self getOffsetXRight]];
+    
+    CGFloat height;
+    
+    if ([(UIView*)_customView superview]) {
+         height = [_customView resizeForWidth:CGRectGetWidth(self.frame) - [self getOffsetXLeft] - [self getOffsetXRight]];
+    }
+    else{
+        height = CGRectGetHeight(_textLabel.frame);
+    }
     [self adjustHeightAndRedraw:height];
 }
 
