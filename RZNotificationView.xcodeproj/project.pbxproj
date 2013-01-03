@@ -697,7 +697,6 @@
 				8BB3D85616119CA60056B98F /* Sources */,
 				8BB3D85716119CA60056B98F /* Frameworks */,
 				8BB3D85816119CA60056B98F /* Resources */,
-				8BE7BC141695DBB500190D8D /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -862,19 +861,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "# Run the unit tests in this test bundle.\n\"${SYSTEM_DEVELOPER_DIR}/Tools/RunUnitTests\"\n";
-		};
-		8BE7BC141695DBB500190D8D /* ShellScript */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 12;
-			files = (
-			);
-			inputPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "/usr/local/bin/appledoc --project-name RZNotificationView --project-company \"Rezzza\" --company-id com.rezzza --output \"${PROJECT_DIR}\"/Documentation/ \"${PROJECT_DIR}\"/RZNotificationView/RZNotificationView/RZNotificationView.h ";
 		};
 /* End PBXShellScriptBuildPhase section */
 
