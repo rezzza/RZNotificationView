@@ -384,6 +384,7 @@
                                   [iconSmiley renderImage],
                                   [iconTwitter renderImage],
                                   [iconWarning renderImage],
+                                  @"No",
                                   nil];
                 
                 MCSegmentedControl *segmentedControl = [[MCSegmentedControl alloc] initWithItems:items];
