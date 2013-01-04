@@ -332,7 +332,8 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
 
 - (void) setCustomIcon:(NSString *)customIcon
 {
-    _customIcon = customIcon;
+    RZ_RELEASE(_customIcon);
+    _customIcon = RZ_RETAIN(customIcon);
     if (customIcon) {
         _icon = RZNotificationIconCustom;
     }
@@ -496,6 +497,14 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
     
     RZ_RELEASE(_completionBlock);
     _completionBlock = RZ_RETAIN(completionBlock);
+}
+
+- (void) setMessageMaxLenght:(NSInteger)messageMaxLenght
+{
+    _messageMaxLenght = messageMaxLenght;
+    if (_message && _textLabel.superview) {
+        [self setMessage:_message];
+    }
 }
 
 #pragma mark - Subviews build
