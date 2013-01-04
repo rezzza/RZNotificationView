@@ -83,6 +83,11 @@
     _marginHeigtLabel.text = [NSString stringWithFormat:@"Margin : %.0fpx", _marginHeigtSlider.value];
 }
 
+- (void) sliderMaxLenghtValueChanged:(id)sender
+{
+    _maxLenghtLabel.text = [NSString stringWithFormat:@"Max length : %.0f", _maxLenghtSlider.value];
+}
+
 - (IBAction) colorSelector:(NSIndexPath*)indexPath index:(NSInteger)index
 {
     _indexPath = indexPath;
@@ -174,7 +179,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {    
-    return 15;
+    return 16;
 }
 
 -(CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -702,7 +707,7 @@
                 [_marginHeigtSlider addTarget:self action:@selector(sliderMarginHeightValueChanged:) forControlEvents:UIControlEventValueChanged];
                 
                 _marginHeigtLabel = [[UILabel alloc] initWithFrame:CGRectMake(10.0, 0.0, 100.0, 44.0)];
-                _marginHeigtLabel.text = [NSString stringWithFormat:@"Margin : %.0fpx", 0.0];
+                _marginHeigtLabel.text = [NSString stringWithFormat:@"Margin : %.0fpx", _marginHeigtSlider.value];
                 _marginHeigtLabel.backgroundColor = [UIColor clearColor];
                 _marginHeigtLabel.font = [UIFont boldSystemFontOfSize:14.0];
                 
@@ -718,24 +723,24 @@
             maxLenghtCell = [tableView dequeueReusableCellWithIdentifier:MaxLenghtCellIdentifier];
             if (maxLenghtCell == nil) {
                 maxLenghtCell = [[PrettyCustomViewTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:MaxLenghtCellIdentifier];
-                _marginHeigtSlider = [ [ UISlider alloc ] initWithFrame: CGRectMake(120.0, 0.0, 190.0, 44.0) ];
-                _marginHeigtSlider.minimumValue = 0.0;
-                _marginHeigtSlider.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-                _marginHeigtSlider.minimumTrackTintColor = [UIColor colorWithRed:.6 green:.0 blue:.0 alpha:1.0];
-                _marginHeigtSlider.maximumValue = 30.0;
-                _marginHeigtSlider.value = 0.0;
-                _marginHeigtSlider.continuous = YES;
-                [_marginHeigtSlider addTarget:self action:@selector(sliderMarginHeightValueChanged:) forControlEvents:UIControlEventValueChanged];
+                _maxLenghtSlider = [ [ UISlider alloc ] initWithFrame: CGRectMake(160.0, 0.0, 150.0, 44.0) ];
+                _maxLenghtSlider.minimumValue = 0.0;
+                _maxLenghtSlider.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+                _maxLenghtSlider.minimumTrackTintColor = [UIColor colorWithRed:.6 green:.0 blue:.0 alpha:1.0];
+                _maxLenghtSlider.maximumValue = 250.0;
+                _maxLenghtSlider.value = 0.0;
+                _maxLenghtSlider.continuous = YES;
+                [_maxLenghtSlider addTarget:self action:@selector(sliderMaxLenghtValueChanged:) forControlEvents:UIControlEventValueChanged];
                 
-                _marginHeigtLabel = [[UILabel alloc] initWithFrame:CGRectMake(10.0, 0.0, 100.0, 44.0)];
-                _marginHeigtLabel.text = [NSString stringWithFormat:@"Margin : %.0fpx", 0.0];
-                _marginHeigtLabel.backgroundColor = [UIColor clearColor];
-                _marginHeigtLabel.font = [UIFont boldSystemFontOfSize:14.0];
+                _maxLenghtLabel = [[UILabel alloc] initWithFrame:CGRectMake(10.0, 0.0, 140.0, 44.0)];
+                _maxLenghtLabel.text = [NSString stringWithFormat:@"Max length : %.0f", _maxLenghtSlider.value];
+                _maxLenghtLabel.backgroundColor = [UIColor clearColor];
+                _maxLenghtLabel.font = [UIFont boldSystemFontOfSize:14.0];
                 
-                UIView *marginView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, 320, 44)];
-                [marginView addSubview:_marginHeigtSlider];
-                [marginView addSubview:_marginHeigtLabel];
-                maxLenghtCell.customView = marginView;
+                UIView *customView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, 320, 44)];
+                [customView addSubview:_maxLenghtSlider];
+                [customView addSubview:_maxLenghtLabel];
+                maxLenghtCell.customView = customView;
             }
             [maxLenghtCell prepareForTableView:tableView indexPath:indexPath];
             maxLenghtCell.tableViewBackgroundColor = tableView.backgroundColor;
@@ -823,6 +828,7 @@
             [notif setCustomView:_customView];
             [notif setDisplayAnchor:_anchor];
             [notif setContentMarginHeight:_marginHeigtSlider.value];
+            [notif setMessageMaxLenght:(int)_maxLenghtSlider.value];
             notif.customTopColor = _customTopColor;
             notif.customBottomColor = _customBottomColor;
             
