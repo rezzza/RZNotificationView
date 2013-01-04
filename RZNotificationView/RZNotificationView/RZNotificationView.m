@@ -498,6 +498,12 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
     _completionBlock = RZ_RETAIN(completionBlock);
 }
 
+- (void) setMessageMaxLenght:(NSInteger)messageMaxLenght
+{
+    _messageMaxLenght = messageMaxLenght;
+    [self setMessage:_message];
+}
+
 #pragma mark - Subviews build
 
 - (void) addTextLabelIfNeeded

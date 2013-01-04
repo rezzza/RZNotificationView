@@ -48,6 +48,9 @@ typedef enum {
     
     UISlider *_marginHeigtSlider;
     UILabel *_marginHeigtLabel;
+    
+    UISlider *_maxLenghtSlider;
+    UILabel *_maxLenghtLabel;
 }
 
 @property (nonatomic, strong) WEPopoverController *popoverController;
