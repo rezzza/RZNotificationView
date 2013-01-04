@@ -332,7 +332,8 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
 
 - (void) setCustomIcon:(NSString *)customIcon
 {
-    _customIcon = customIcon;
+    RZ_RELEASE(_customIcon);
+    _customIcon = RZ_RETAIN(customIcon);
     if (customIcon) {
         _icon = RZNotificationIconCustom;
     }
