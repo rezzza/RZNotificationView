@@ -258,10 +258,12 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
     {
         CGFloat xOffset = innerShadowOffset.width + round(notificationZoneBorderRect.size.width);
         CGFloat yOffset = innerShadowOffset.height;
+        UIColor *bottomColor = [innerShadow colorWithAlphaComponent:0.2];
+        
         CGContextSetShadowWithColor(context,
                                     CGSizeMake(xOffset + copysign(0.1, xOffset), yOffset + copysign(0.1, yOffset)),
                                     innerShadowBlurRadius,
-                                    innerShadow.CGColor);
+                                    bottomColor.CGColor);
         
         [notificationZonePath addClip];
         CGAffineTransform transform = CGAffineTransformMakeTranslation(-round(notificationZoneBorderRect.size.width), 0);
