@@ -409,23 +409,25 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
 
 - (void) setSound:(NSString *)sound
 {
-    RZ_RELEASE(_sound);
-    _sound = RZ_RETAIN(sound);
-
-    NSURL *soundURL   = [[NSBundle mainBundle] URLForResource: [_sound stringByDeletingPathExtension]
-                                                withExtension: [_sound pathExtension]];
-    
-    // Create a system sound object representing the sound file.
-    AudioServicesCreateSystemSoundID (
-                                      (__bridge CFURLRef)(soundURL),
-                                      &_soundFileObject
-                                      );
-    
-    if (_isShowing && !_hasPlayedSound && sound) {
-        // Then we play the sound for the first time
-        // This happens when you use [RZNotificationView showNotification ...]
-        AudioServicesPlaySystemSound (_soundFileObject);
-        _hasPlayedSound = YES;
+    if(sound && ((NSNull*)sound != [NSNull null])) {
+        RZ_RELEASE(_sound);
+        _sound = RZ_RETAIN(sound);
+        
+        NSURL *soundURL   = [[NSBundle mainBundle] URLForResource: [_sound stringByDeletingPathExtension]
+                                                    withExtension: [_sound pathExtension]];
+        
+        // Create a system sound object representing the sound file.
+        AudioServicesCreateSystemSoundID (
+                                          (__bridge CFURLRef)(soundURL),
+                                          &_soundFileObject
+                                          );
+        
+        if (_isShowing && !_hasPlayedSound && sound) {
+            // Then we play the sound for the first time
+            // This happens when you use [RZNotificationView showNotification ...]
+            AudioServicesPlaySystemSound (_soundFileObject);
+            _hasPlayedSound = YES;
+        }
     }
 }
 
