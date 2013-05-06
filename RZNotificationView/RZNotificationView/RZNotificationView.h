@@ -74,9 +74,17 @@ typedef enum {
     RZNotificationContentColorManual
 }RZNotificationContentColor;
 
+
 @class RZNotificationView;
 
 typedef void (^RZNotificationCompletion)(BOOL touched);
+
+@protocol RZNotificationViewProtocol
+
+- (CGFloat)yOriginForRZNotificationViewForPosition:(RZNotificationPosition)position;
+- (void)addRZNotificationView:(RZNotificationView*)view;
+
+@end
 
 /** Display a Notification easily
  
