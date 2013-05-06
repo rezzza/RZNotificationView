@@ -205,7 +205,7 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
     
     //// Frames
     CGRect notificationFrame = rect;
-
+    
     
     //// Subframes
     
@@ -221,7 +221,7 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
     [_customView setFrame:contentFrame];
     _anchorView.frame = CGRectMake(CGRectGetMinX(notificationFrame) + CGRectGetWidth(notificationFrame) - 26, CGRectGetMinY(notificationFrame) + floor((CGRectGetHeight(notificationFrame) - 22) * 0.5) - ceil((_position == RZNotificationPositionTop ? NOTIFICATION_SHADOW_BLUR_RADIUS : -NOTIFICATION_SHADOW_BLUR_RADIUS)/2), 21, 22);
     
-
+    
     //// NotificationZone Drawing
     CGRect notificationZoneRect = CGRectMake(CGRectGetMinX(notificationFrame) + 0,
                                              CGRectGetMinY(notificationFrame) + (_position == RZNotificationPositionTop ? 0 : outerShadowBlurRadius),
@@ -403,7 +403,7 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
     [_textLabel sizeToFit];
     
     _textLabel.text = message;
-
+    
     [self adjustHeightAndRedraw:CGRectGetHeight(_textLabel.frame)];
 }
 
@@ -448,7 +448,7 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
     CGFloat height;
     
     if ([(UIView*)_customView superview]) {
-         height = [_customView resizeForWidth:CGRectGetWidth(self.frame) - [self getOffsetXLeft] - [self getOffsetXRight]];
+        height = [_customView resizeForWidth:CGRectGetWidth(self.frame) - [self getOffsetXLeft] - [self getOffsetXRight]];
     }
     else{
         height = CGRectGetHeight(_textLabel.frame);
@@ -597,7 +597,7 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
         
     }
     return self;
- 
+    
 }
 
 - (id) initWithFrame:(CGRect)frame
@@ -607,7 +607,7 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
                       position:DEFAULT_POSITION
                          color:DEFAULT_COLOR
                     assetColor:DEFAULT_ASSET_COLOR
-                    textColor:DEFAULT_TEXT_COLOR
+                     textColor:DEFAULT_TEXT_COLOR
                          delay:DEFAULT_DELAY];
 }
 
@@ -620,7 +620,7 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
                       position:position
                          color:color
                     assetColor:assetColor
-                    textColor:assetColor
+                     textColor:assetColor
                          delay:delay];
     if (self)
     {
@@ -763,24 +763,49 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
 }
 
 #pragma mark - Show hide methods
+- (CGFloat) _getFinalOriginForPosition:(RZNotificationPosition)position
+{
+    UIViewController *c = _controller;
+    CGFloat finalOrigin = 0.0f;
+    
+    if ([c conformsToProtocol:@protocol(RZNotificationViewProtocol)]) {
+        finalOrigin = [(UIViewController<RZNotificationViewProtocol>*)c yOriginForRZNotificationViewForPosition:position];
+    } else {
+        if (position == RZNotificationPositionTop) {
+            finalOrigin = 0.0f;
+        } else {
+            finalOrigin = CGRectGetHeight(_controller.view.frame);
+        }
+    }
+    
+    return finalOrigin;
+}
+
 - (void) placeToOrigin
 {
+    CGFloat yOrigin = 0.0f;
+    
     if (_position == RZNotificationPositionTop) {
-        [self setYOrigin:-CGRectGetHeight(self.frame)];
+        yOrigin = [self _getFinalOriginForPosition:_position]-CGRectGetHeight(self.frame);
     }
     else {
-        [self setYOrigin:CGRectGetHeight(_controller.view.frame)];
+        yOrigin = [self _getFinalOriginForPosition:_position];
     }
+    
+    [self setYOrigin:yOrigin];
 }
 
 - (void) placeToFinalPosition
 {
+    CGFloat yFinalOrigin = 0.0f;
+    
     if (_position == RZNotificationPositionTop) {
-        [self setYOrigin:0.0];
+        yFinalOrigin = [self _getFinalOriginForPosition:_position];
+    } else {
+        yFinalOrigin = [self _getFinalOriginForPosition:_position]-CGRectGetHeight(self.frame);
     }
-    else{
-        [self setYOrigin:CGRectGetHeight(_controller.view.frame)-CGRectGetHeight(self.frame)];
-    }
+    
+    [self setYOrigin:yFinalOrigin];
 }
 
 - (void) show
@@ -790,6 +815,7 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
         [self adjustHeightAndRedraw:height];
     }
     
+    self.hidden = YES;
     [self placeToOrigin];
     
     _isShowing = YES;
@@ -801,7 +827,11 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
         self.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
     }
     
-    [_controller.view addSubview:self];
+    if ([_controller conformsToProtocol:@protocol(RZNotificationViewProtocol)]) {
+        [(UIViewController<RZNotificationViewProtocol>*)_controller addRZNotificationView:self];
+    } else {
+        [_controller.view addSubview:self];
+    }
     
     if(_vibrate)
     {
@@ -818,6 +848,7 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
     
     [UIView animateWithDuration:0.4
                      animations:^{
+                         self.hidden = NO;
                          [self placeToFinalPosition];
                      }
      ];
@@ -866,25 +897,34 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
 - (void) deviceOrientationDidChange:(NSNotification*)notification
 {
     if(self.superview){
-        if(_textLabel){
-            self.message = _message;
+        UIDevice *device = (UIDevice*)notification.object;
+        if ([_controller shouldAutorotateToInterfaceOrientation:device.orientation]) {
+            if(_textLabel){
+                self.message = _message;
+            }
+            else{
+                CGFloat height = [_customView resizeForWidth:CGRectGetWidth(self.frame) - [self getOffsetXLeft] - [self getOffsetXRight]];
+                [self adjustHeightAndRedraw:height];
+            }
+            
+            CGRect frame = self.frame;
+            CGFloat yOrigin = 0.0f;
+            
+            if (_position == RZNotificationPositionTop) {
+                yOrigin = [self _getFinalOriginForPosition:_position];
+            }
+            else {
+                yOrigin = [self _getFinalOriginForPosition:_position]-CGRectGetHeight(self.frame);
+            }
+            
+            frame.origin.y = yOrigin;
+            
+            if (_controller.view.frame.size.width != 0)
+                frame.size.width = _controller.view.frame.size.width;
+            self.frame = frame;
+            
+            _highlightedView.frame = CGRectOffset(CGRectInset(self.bounds, 0.0, 1.5), 0.0, _position == RZNotificationPositionTop ? -NOTIFICATION_SHADOW_BLUR_RADIUS : NOTIFICATION_SHADOW_BLUR_RADIUS);
         }
-        else{
-            CGFloat height = [_customView resizeForWidth:CGRectGetWidth(self.frame) - [self getOffsetXLeft] - [self getOffsetXRight]];
-            [self adjustHeightAndRedraw:height];
-        }
-        
-        CGRect frame = self.frame;
-        if (_position == RZNotificationPositionBottom) {
-            frame.origin.y = CGRectGetHeight(_controller.view.frame) - self.frame.size.height;
-        }
-        else {
-            frame.origin.y = 0.0;
-        }
-        if (_controller.view.frame.size.width != 0)
-            frame.size.width = _controller.view.frame.size.width;
-        self.frame = frame;
-        _highlightedView.frame = CGRectOffset(CGRectInset(self.bounds, 0.0, 1.5), 0.0, _position == RZNotificationPositionTop ? -NOTIFICATION_SHADOW_BLUR_RADIUS : NOTIFICATION_SHADOW_BLUR_RADIUS);
     }
 }
 
@@ -893,7 +933,7 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
 {
     if(!_isTouch){
         _isTouch = YES;
-                
+        
         if(_delay == 0.0){
             if (_completionBlock){
                 [self hide];
