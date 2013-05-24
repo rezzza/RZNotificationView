@@ -10,7 +10,7 @@
 #import "RZNotificationLabelProtocol.h"
 #include <AudioToolbox/AudioToolbox.h>
 
-#import "UIViewController+RZTopMostController.h"
+#import "UIViewController+PPTopMostController.h"
 
 /**
  @enum RZNotificationIcon
