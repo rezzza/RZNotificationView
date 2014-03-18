@@ -1,6 +1,6 @@
 [submodule "vendor/ColorPopover"]
 	path = vendor/ColorPopover
-	url = git@github.com:jeremylagrue/ColorPopover.git
+	url = https://github.com/jeremylagrue/ColorPopover.git
 [submodule "vendor/PrettyKit"]
 	path = vendor/PrettyKit
 	url = git://github.com/vicpenap/PrettyKit.git
