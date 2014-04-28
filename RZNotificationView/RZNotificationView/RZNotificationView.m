@@ -35,6 +35,8 @@ static const NSTimeInterval kDefaultDelay                  = 3.5;
 static const CGFloat kMinHeight                            = 64.0f;
 static const CGFloat kOffsetX                              = 35.0f;
 
+static BOOL RZOrientationMaskContainsOrientation(UIInterfaceOrientationMask mask, UIInterfaceOrientation orientation);
+
 @interface RZNotificationView ()
 {
     BOOL _isShowing;
@@ -815,7 +817,7 @@ static const CGFloat kOffsetX                              = 35.0f;
 {
     if(self.superview){
         UIDevice *device = (UIDevice*)notification.object;
-        if ([_controller shouldAutorotateToInterfaceOrientation:device.orientation]) {
+        if ([_controller shouldAutorotate] && (RZOrientationMaskContainsOrientation([_controller supportedInterfaceOrientations], device.orientation))) {
             if(_textLabel){
                 self.message = _message;
             }
@@ -894,3 +896,7 @@ static const CGFloat kOffsetX                              = 35.0f;
 }
 
 @end
+
+static BOOL RZOrientationMaskContainsOrientation(UIInterfaceOrientationMask mask, UIInterfaceOrientation orientation) {
+    return (mask & (1 << orientation)) != 0;
+}
