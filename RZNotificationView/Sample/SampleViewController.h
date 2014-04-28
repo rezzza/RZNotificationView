@@ -18,6 +18,25 @@ typedef enum {
     SampleMessageLong
 }SampleMessage;
 
+typedef enum
+{
+    RZSampleFormShowButton,
+    RZSampleFormDelay,
+    RZSampleFormTopBotColors,
+    RZSampleFormPredefinedColors,
+    RZSampleFormPosition,
+    RZSampleFormVibrate,
+    RZSampleFormHideShowNavBar,
+    RZSampleFormTextSample,
+    RZSampleFormAssetColor,
+    RZSampleFormTextColor,
+    RZSampleFormContent,
+    RZSampleFormSound,
+    RZSampleFormAnchor,
+    RZSampleFormMargin,
+    RZSampleFormMaxLength
+}RZSampleFormType;
+
 @class PrettyGridTableViewCell;
 
 @interface SampleViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, WEPopoverControllerDelegate, UIPopoverControllerDelegate, ColorViewControllerDelegate>
@@ -26,7 +45,8 @@ typedef enum {
     UILabel *_delayLabel;
     
     IBOutlet UITableView *_tableView;
-
+    NSArray *_formArray;
+    
     NSInteger _current;
     NSIndexPath *_indexPath;
     SampleMessage _sampleMessage;
@@ -40,7 +60,6 @@ typedef enum {
     
     RZNotificationColor _color;
     RZNotificationPosition _position;
-    RZNotificationIcon _icon;
     RZNotificationContentColor _assetColor;
     RZNotificationContentColor _textColor;
     

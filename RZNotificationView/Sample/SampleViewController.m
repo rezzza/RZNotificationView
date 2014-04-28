@@ -13,6 +13,7 @@
 #import "MCSegmentedControl.h"
 #import "CustomLabel.h"
 #import "CustomImageView.h"
+#import "PrettyGridTableViewCell.h"
 
 #import "UIColor+RZAdditions.h"
 
@@ -47,6 +48,24 @@
     _assetColor = RZNotificationContentColorAutomaticLight; // == 1
     _textColor = RZNotificationContentColorAutomaticLight; // == 1
     _anchor = YES;
+    
+    _formArray = @[
+                   @(RZSampleFormShowButton),
+                   @(RZSampleFormDelay),
+                   @(RZSampleFormTopBotColors),
+                   @(RZSampleFormPredefinedColors),
+                   @(RZSampleFormPosition),
+                   @(RZSampleFormVibrate),
+                   @(RZSampleFormHideShowNavBar),
+                   @(RZSampleFormTextSample),
+                   @(RZSampleFormAssetColor),
+                   @(RZSampleFormTextColor),
+                   @(RZSampleFormContent),
+                   @(RZSampleFormSound),
+                   @(RZSampleFormAnchor),
+                   @(RZSampleFormMargin),
+                   @(RZSampleFormMaxLength)
+                   ];
 }
 
 - (void)didReceiveMemoryWarning
@@ -178,12 +197,12 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {    
-    return 15;
+    return [_formArray count];
 }
 
 -(CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (indexPath.row == 3) {
+    if (indexPath.row == RZSampleFormPredefinedColors) {
         return tableView.rowHeight + [PrettyTableViewCell
                                       tableView:tableView neededHeightForIndexPath:indexPath] + 20.0;
     }
@@ -252,10 +271,10 @@
     }
     
     switch (indexPath.row) {
-        case 0:
+        case RZSampleFormShowButton:
             cell.textLabel.text = @"Show notification";
             return cell;
-        case 1:
+        case RZSampleFormDelay:
             delayCell = [tableView dequeueReusableCellWithIdentifier:DelayCellIdentifier];
             if (delayCell == nil) {
                 delayCell = [[PrettyCustomViewTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:DelayCellIdentifier];
@@ -281,7 +300,7 @@
             [delayCell prepareForTableView:tableView indexPath:indexPath];
             delayCell.tableViewBackgroundColor = tableView.backgroundColor;
             return delayCell;
-        case 2:
+        case RZSampleFormTopBotColors:
             bgCell = [tableView dequeueReusableCellWithIdentifier:BgCellIdentifier];
             if (bgCell == nil) {
                 bgCell = [[PrettyGridTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:BgCellIdentifier];
@@ -296,7 +315,7 @@
             [bgCell setText:@"Bottom Color" atIndex:1];
 
             return bgCell;
-        case 3:
+        case RZSampleFormPredefinedColors:
             colorCell = [tableView dequeueReusableCellWithIdentifier:ColorCellIdentifier];
             if (colorCell == nil) {
                 colorCell = [[PrettyCustomViewTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:ColorCellIdentifier];
@@ -351,7 +370,7 @@
             [colorCell prepareForTableView:tableView indexPath:indexPath];
             colorCell.tableViewBackgroundColor = tableView.backgroundColor;
             return colorCell;
-        case 4:
+        case RZSampleFormPosition:
             positionCell = [tableView dequeueReusableCellWithIdentifier:PositionCellIdentifier];
             if (positionCell == nil) {
                 positionCell = [[PrettyCustomViewTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:PositionCellIdentifier];
@@ -393,7 +412,7 @@
             positionCell.tableViewBackgroundColor = tableView.backgroundColor;
             return positionCell;
             
-        case 5:
+        case RZSampleFormVibrate:
             vibrateCell = [tableView dequeueReusableCellWithIdentifier:VibrateCellIdentifier];
             if (vibrateCell == nil) {
                 vibrateCell = [[PrettyCustomViewTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:VibrateCellIdentifier];
@@ -417,10 +436,10 @@
             [vibrateCell prepareForTableView:tableView indexPath:indexPath];
             vibrateCell.tableViewBackgroundColor = tableView.backgroundColor;
             return vibrateCell;            
-        case 6:
+        case RZSampleFormHideShowNavBar:
             cell.textLabel.text = @"Hidde/Show Navbar";
             return cell;
-        case 7:
+        case RZSampleFormTextSample:
             textSampleCell = [tableView dequeueReusableCellWithIdentifier:TextSampleCellIdentifier];
             if (textSampleCell == nil) {
                 textSampleCell = [[PrettyCustomViewTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:TextSampleCellIdentifier];
@@ -462,7 +481,7 @@
             [textSampleCell prepareForTableView:tableView indexPath:indexPath];
             textSampleCell.tableViewBackgroundColor = tableView.backgroundColor;
             return textSampleCell;
-        case 8:
+        case RZSampleFormAssetColor:
             textStyleCell = [tableView dequeueReusableCellWithIdentifier:TextStyleCellIdentifier];
             if (textStyleCell == nil) {
                 textStyleCell = [[PrettyCustomViewTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:TextStyleCellIdentifier];
@@ -502,7 +521,7 @@
             [textStyleCell prepareForTableView:tableView indexPath:indexPath];
             textStyleCell.tableViewBackgroundColor = tableView.backgroundColor;
             return textStyleCell;
-        case 9:
+        case RZSampleFormTextColor:
             textStyleCell = [tableView dequeueReusableCellWithIdentifier:TextStyleCellIdentifier];
             if (textStyleCell == nil) {
                 textStyleCell = [[PrettyCustomViewTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:TextStyleCellIdentifier];
@@ -543,7 +562,7 @@
             [textStyleCell prepareForTableView:tableView indexPath:indexPath];
             textStyleCell.tableViewBackgroundColor = tableView.backgroundColor;
             return textStyleCell;
-        case 10:
+        case RZSampleFormContent:
             contentStyleCell = [tableView dequeueReusableCellWithIdentifier:ContentStyleCellIdentifier];
             if (contentStyleCell == nil) {
                 contentStyleCell = [[PrettyCustomViewTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:ContentStyleCellIdentifier];
@@ -585,7 +604,7 @@
             [contentStyleCell prepareForTableView:tableView indexPath:indexPath];
             contentStyleCell.tableViewBackgroundColor = tableView.backgroundColor;
             return contentStyleCell;
-        case 11:
+        case RZSampleFormSound:
             soundCell = [tableView dequeueReusableCellWithIdentifier:SoundCellIdentifier];
             if (soundCell == nil) {
                 soundCell = [[PrettyCustomViewTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:SoundCellIdentifier];
@@ -609,7 +628,7 @@
             [soundCell prepareForTableView:tableView indexPath:indexPath];
             soundCell.tableViewBackgroundColor = tableView.backgroundColor;
             return soundCell;
-        case 12:
+        case RZSampleFormAnchor:
             anchorCell = [tableView dequeueReusableCellWithIdentifier:AnchorCellIdentifier];
             if (anchorCell == nil) {
                 anchorCell = [[PrettyCustomViewTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:AnchorCellIdentifier];
@@ -634,7 +653,7 @@
             [anchorCell prepareForTableView:tableView indexPath:indexPath];
             anchorCell.tableViewBackgroundColor = tableView.backgroundColor;
             return anchorCell;
-        case 13:
+        case RZSampleFormMargin:
             marginHeightCell = [tableView dequeueReusableCellWithIdentifier:MarginHeigtCellIdentifier];
             if (marginHeightCell == nil) {
                 marginHeightCell = [[PrettyCustomViewTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:MarginHeigtCellIdentifier];
@@ -660,7 +679,7 @@
             [marginHeightCell prepareForTableView:tableView indexPath:indexPath];
             marginHeightCell.tableViewBackgroundColor = tableView.backgroundColor;
             return marginHeightCell;
-        case 14:
+        case RZSampleFormMaxLength:
             maxLenghtCell = [tableView dequeueReusableCellWithIdentifier:MaxLenghtCellIdentifier];
             if (maxLenghtCell == nil) {
                 maxLenghtCell = [[PrettyCustomViewTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:MaxLenghtCellIdentifier];
@@ -698,7 +717,7 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {    
     switch (indexPath.row) {
-        case 0:
+        case RZSampleFormShowButton:
         {
             _roundIndex ++;
             NSArray *round ;
@@ -735,7 +754,7 @@
             
             RZNotificationView *notif =
             [[RZNotificationView alloc] initWithController:self
-                                                      icon:_icon
+                                                      icon:RZNotificationIconNone
                                                   position:_position
                                                      color:_color
                                                 assetColor:_assetColor
@@ -777,7 +796,7 @@
 
         }
             break;
-        case 6:
+        case RZSampleFormHideShowNavBar:
             [self navBarHidden:nil];
             break;
         default:
@@ -788,7 +807,7 @@
 - (void)segmentedControlDidChange:(MCSegmentedControl *)sender
 {
     switch (sender.tag) {
-        case 2:
+        case RZSampleFormTopBotColors:
         {
             _color = sender.selectedSegmentIndex;
             PrettyGridTableViewCell *cell = (PrettyGridTableViewCell*) [self.tableView cellForRowAtIndexPath:_indexPath];
@@ -800,25 +819,22 @@
                 [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:_indexPath] withRowAnimation:UITableViewRowAnimationFade];
         }
             break;
-        case 3:
+        case RZSampleFormPredefinedColors:
             _position = sender.selectedSegmentIndex;
             break;
-        case 4:
-            _icon = sender.selectedSegmentIndex;
-            break;
-        case 6:
+        case RZSampleFormTextSample:
             [RZNotificationView hideNotificationForController:self];
             _sampleMessage = sender.selectedSegmentIndex;
             break;
-        case 7:
+        case RZSampleFormAssetColor:
             [RZNotificationView hideNotificationForController:self];
             _assetColor = sender.selectedSegmentIndex;
             break;
-        case 8:
+        case RZSampleFormTextColor:
             [RZNotificationView hideNotificationForController:self];
             _textColor = sender.selectedSegmentIndex;
             break;
-        case 9:
+        case RZSampleFormContent:
             [RZNotificationView hideNotificationForController:self];
             switch (sender.selectedSegmentIndex) {
                 case 1:{
