@@ -40,7 +40,6 @@
 		8B13A693161AEC3D0068A9F5 /* OtherViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8B13A691161AEC3D0068A9F5 /* OtherViewController.xib */; };
 		8B759954161B429500BDA083 /* CustomImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B759953161B429500BDA083 /* CustomImageView.m */; };
 		8B75F27E1614AADE0084B685 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B75F27D1614AADE0084B685 /* AudioToolbox.framework */; };
-		8B76CF8D161B322F00004F2A /* TTTAttributedLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B76CF8C161B322F00004F2A /* TTTAttributedLabel.m */; };
 		8B76CF92161B326C00004F2A /* CustomLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B76CF91161B326C00004F2A /* CustomLabel.m */; };
 		8B76CF94161B34C400004F2A /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B76CF93161B34C400004F2A /* CoreText.framework */; };
 		8BAAA406161C79580017B0DB /* DoorBell-SoundBible.com-1986366504.wav in Resources */ = {isa = PBXBuildFile; fileRef = 8BAAA405161C79580017B0DB /* DoorBell-SoundBible.com-1986366504.wav */; };
@@ -139,7 +138,6 @@
 		8BB3D977161243680056B98F /* README in Resources */ = {isa = PBXBuildFile; fileRef = 8BB3D947161243670056B98F /* README */; };
 		8BB3D97E161245530056B98F /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BB3D97D161245530056B98F /* QuartzCore.framework */; };
 		BE9A6359161E06610064EAF4 /* UIColor+RZAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = BE9A6358161E06610064EAF4 /* UIColor+RZAdditions.m */; };
-		E029B4DA162016F800056ED9 /* BButton.m in Sources */ = {isa = PBXBuildFile; fileRef = E029B4D9162016F800056ED9 /* BButton.m */; };
 		E029B4DE162019F300056ED9 /* UIViewController+RZTopMostController.m in Sources */ = {isa = PBXBuildFile; fileRef = E029B4DD162019F300056ED9 /* UIViewController+RZTopMostController.m */; };
 		E029B4E21620264200056ED9 /* 340119_564053743608283_175259668_o.jpg in Resources */ = {isa = PBXBuildFile; fileRef = E029B4E11620264100056ED9 /* 340119_564053743608283_175259668_o.jpg */; };
 		E041A446161D978B008D46F5 /* UIView+Frame.m in Sources */ = {isa = PBXBuildFile; fileRef = E041A445161D978B008D46F5 /* UIView+Frame.m */; };
@@ -147,10 +145,6 @@
 		E041A44B161DC2DB008D46F5 /* SimpleSampleViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E041A449161DC2DB008D46F5 /* SimpleSampleViewController.xib */; };
 		E041A44E161DCE60008D46F5 /* notif_anchor.png in Resources */ = {isa = PBXBuildFile; fileRef = E041A44C161DCE60008D46F5 /* notif_anchor.png */; };
 		E041A44F161DCE60008D46F5 /* notif_anchor@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E041A44D161DCE60008D46F5 /* notif_anchor@2x.png */; };
-		E04CD652161CC30C00B74BA7 /* MOOCGImageWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = E04CD64B161CC30C00B74BA7 /* MOOCGImageWrapper.m */; };
-		E04CD653161CC30C00B74BA7 /* MOOMaskedIconView.m in Sources */ = {isa = PBXBuildFile; fileRef = E04CD64D161CC30C00B74BA7 /* MOOMaskedIconView.m */; };
-		E04CD654161CC30C00B74BA7 /* MOOResourceList.m in Sources */ = {isa = PBXBuildFile; fileRef = E04CD64F161CC30C00B74BA7 /* MOOResourceList.m */; };
-		E04CD655161CC30C00B74BA7 /* MOOStyleTrait.m in Sources */ = {isa = PBXBuildFile; fileRef = E04CD651161CC30C00B74BA7 /* MOOStyleTrait.m */; };
 		E0EA8CDF161F1FC500DECF0D /* UITabBarController+RZTopMostControllerProtocol.m in Sources */ = {isa = PBXBuildFile; fileRef = E0EA8CDE161F1FC500DECF0D /* UITabBarController+RZTopMostControllerProtocol.m */; };
 		E0EA8CE2161F200500DECF0D /* UINavigationController+RZTopMostControllerProtocol.m in Sources */ = {isa = PBXBuildFile; fileRef = E0EA8CE1161F200500DECF0D /* UINavigationController+RZTopMostControllerProtocol.m */; };
 		E0EA8CEE161F274300DECF0D /* ModalViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E0EA8CEC161F274300DECF0D /* ModalViewController.m */; };
@@ -159,6 +153,7 @@
 		E0EA8CF6161F2A7100DECF0D /* AutomaticViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E0EA8CF4161F2A7100DECF0D /* AutomaticViewController.xib */; };
 		E0EA8CFA161F2A8200DECF0D /* AutomaticModalViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E0EA8CF8161F2A8200DECF0D /* AutomaticModalViewController.m */; };
 		E0EA8CFB161F2A8200DECF0D /* AutomaticModalViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E0EA8CF9161F2A8200DECF0D /* AutomaticModalViewController.xib */; };
+		E95E1066989442098460E867 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 430ED3E9F8FA4E4E8BFE32E2 /* libPods.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -179,6 +174,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		430ED3E9F8FA4E4E8BFE32E2 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		44AD4392943448DD9381F41A /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
 		8B0AF8811612FCDF00A31A05 /* MCSegmentedControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MCSegmentedControl.h; sourceTree = "<group>"; };
 		8B0AF8821612FCDF00A31A05 /* MCSegmentedControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MCSegmentedControl.m; sourceTree = "<group>"; };
 		8B0AF8FB1612FEAB00A31A05 /* PrettyCustomViewTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PrettyCustomViewTableViewCell.h; sourceTree = "<group>"; };
@@ -212,8 +209,6 @@
 		8B759953161B429500BDA083 /* CustomImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomImageView.m; sourceTree = "<group>"; };
 		8B75F27D1614AADE0084B685 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		8B76CF81161B1D7700004F2A /* RZNotificationLabelProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RZNotificationLabelProtocol.h; sourceTree = "<group>"; };
-		8B76CF8B161B322F00004F2A /* TTTAttributedLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TTTAttributedLabel.h; path = vendor/TTTAttributedLabel/TTTAttributedLabel.h; sourceTree = SOURCE_ROOT; };
-		8B76CF8C161B322F00004F2A /* TTTAttributedLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TTTAttributedLabel.m; path = vendor/TTTAttributedLabel/TTTAttributedLabel.m; sourceTree = SOURCE_ROOT; };
 		8B76CF90161B326C00004F2A /* CustomLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomLabel.h; sourceTree = "<group>"; };
 		8B76CF91161B326C00004F2A /* CustomLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomLabel.m; sourceTree = "<group>"; };
 		8B76CF93161B34C400004F2A /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
@@ -289,8 +284,6 @@
 		8BB3D97D161245530056B98F /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		BE9A6357161E06610064EAF4 /* UIColor+RZAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+RZAdditions.h"; sourceTree = "<group>"; };
 		BE9A6358161E06610064EAF4 /* UIColor+RZAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+RZAdditions.m"; sourceTree = "<group>"; };
-		E029B4D8162016F800056ED9 /* BButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BButton.h; sourceTree = "<group>"; };
-		E029B4D9162016F800056ED9 /* BButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BButton.m; sourceTree = "<group>"; };
 		E029B4DC162019F300056ED9 /* UIViewController+RZTopMostController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+RZTopMostController.h"; sourceTree = "<group>"; };
 		E029B4DD162019F300056ED9 /* UIViewController+RZTopMostController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+RZTopMostController.m"; sourceTree = "<group>"; };
 		E029B4E11620264100056ED9 /* 340119_564053743608283_175259668_o.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 340119_564053743608283_175259668_o.jpg; sourceTree = "<group>"; };
@@ -301,15 +294,6 @@
 		E041A449161DC2DB008D46F5 /* SimpleSampleViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SimpleSampleViewController.xib; sourceTree = "<group>"; };
 		E041A44C161DCE60008D46F5 /* notif_anchor.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = notif_anchor.png; sourceTree = "<group>"; };
 		E041A44D161DCE60008D46F5 /* notif_anchor@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "notif_anchor@2x.png"; sourceTree = "<group>"; };
-		E04CD649161CC30C00B74BA7 /* AHHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AHHelper.h; sourceTree = "<group>"; };
-		E04CD64A161CC30C00B74BA7 /* MOOCGImageWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MOOCGImageWrapper.h; sourceTree = "<group>"; };
-		E04CD64B161CC30C00B74BA7 /* MOOCGImageWrapper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MOOCGImageWrapper.m; sourceTree = "<group>"; };
-		E04CD64C161CC30C00B74BA7 /* MOOMaskedIconView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MOOMaskedIconView.h; sourceTree = "<group>"; };
-		E04CD64D161CC30C00B74BA7 /* MOOMaskedIconView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MOOMaskedIconView.m; sourceTree = "<group>"; };
-		E04CD64E161CC30C00B74BA7 /* MOOResourceList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MOOResourceList.h; sourceTree = "<group>"; };
-		E04CD64F161CC30C00B74BA7 /* MOOResourceList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MOOResourceList.m; sourceTree = "<group>"; };
-		E04CD650161CC30C00B74BA7 /* MOOStyleTrait.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MOOStyleTrait.h; sourceTree = "<group>"; };
-		E04CD651161CC30C00B74BA7 /* MOOStyleTrait.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MOOStyleTrait.m; sourceTree = "<group>"; };
 		E0EA8CDB161F1F2D00DECF0D /* RZTopMostControllerProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RZTopMostControllerProtocol.h; sourceTree = "<group>"; };
 		E0EA8CDD161F1FC500DECF0D /* UITabBarController+RZTopMostControllerProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UITabBarController+RZTopMostControllerProtocol.h"; sourceTree = "<group>"; };
 		E0EA8CDE161F1FC500DECF0D /* UITabBarController+RZTopMostControllerProtocol.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UITabBarController+RZTopMostControllerProtocol.m"; sourceTree = "<group>"; };
@@ -338,6 +322,7 @@
 				8BB3D85F16119CA60056B98F /* UIKit.framework in Frameworks */,
 				8BB3D86116119CA60056B98F /* Foundation.framework in Frameworks */,
 				8BB3D86316119CA70056B98F /* CoreGraphics.framework in Frameworks */,
+				E95E1066989442098460E867 /* libPods.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -399,15 +384,6 @@
 			path = Cells;
 			sourceTree = "<group>";
 		};
-		8B76CF8A161B321C00004F2A /* TTTAttributedLabel */ = {
-			isa = PBXGroup;
-			children = (
-				8B76CF8B161B322F00004F2A /* TTTAttributedLabel.h */,
-				8B76CF8C161B322F00004F2A /* TTTAttributedLabel.m */,
-			);
-			name = TTTAttributedLabel;
-			sourceTree = "<group>";
-		};
 		8BB3D84F16119CA60056B98F = {
 			isa = PBXGroup;
 			children = (
@@ -415,6 +391,7 @@
 				8BB3D88216119CA70056B98F /* RZNotificationViewTests */,
 				8BB3D85D16119CA60056B98F /* Frameworks */,
 				8BB3D85B16119CA60056B98F /* Products */,
+				44AD4392943448DD9381F41A /* Pods.xcconfig */,
 			);
 			sourceTree = "<group>";
 		};
@@ -436,6 +413,7 @@
 				8BB3D86016119CA60056B98F /* Foundation.framework */,
 				8BB3D86216119CA60056B98F /* CoreGraphics.framework */,
 				8BB3D87C16119CA70056B98F /* SenTestingKit.framework */,
+				430ED3E9F8FA4E4E8BFE32E2 /* libPods.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -543,9 +521,6 @@
 		8BB3D8FA161241CA0056B98F /* Third Party */ = {
 			isa = PBXGroup;
 			children = (
-				E029B4D7162016F800056ED9 /* BButton */,
-				E04CD648161CC30C00B74BA7 /* MOOMaskedIconView */,
-				8B76CF8A161B321C00004F2A /* TTTAttributedLabel */,
 				8B0AF8F91612FEAB00A31A05 /* PrettyKit */,
 				8B0AF8801612FCDF00A31A05 /* MCSegmentedControl */,
 				8BB3D925161243670056B98F /* ColorPopover */,
@@ -609,16 +584,6 @@
 			path = popoverImages;
 			sourceTree = "<group>";
 		};
-		E029B4D7162016F800056ED9 /* BButton */ = {
-			isa = PBXGroup;
-			children = (
-				E029B4D8162016F800056ED9 /* BButton.h */,
-				E029B4D9162016F800056ED9 /* BButton.m */,
-			);
-			name = BButton;
-			path = vendor/BButton/BButton;
-			sourceTree = SOURCE_ROOT;
-		};
 		E029B4DF1620252E00056ED9 /* Categories */ = {
 			isa = PBXGroup;
 			children = (
@@ -638,23 +603,6 @@
 			);
 			name = Protocols;
 			sourceTree = "<group>";
-		};
-		E04CD648161CC30C00B74BA7 /* MOOMaskedIconView */ = {
-			isa = PBXGroup;
-			children = (
-				E04CD649161CC30C00B74BA7 /* AHHelper.h */,
-				E04CD64A161CC30C00B74BA7 /* MOOCGImageWrapper.h */,
-				E04CD64B161CC30C00B74BA7 /* MOOCGImageWrapper.m */,
-				E04CD64C161CC30C00B74BA7 /* MOOMaskedIconView.h */,
-				E04CD64D161CC30C00B74BA7 /* MOOMaskedIconView.m */,
-				E04CD64E161CC30C00B74BA7 /* MOOResourceList.h */,
-				E04CD64F161CC30C00B74BA7 /* MOOResourceList.m */,
-				E04CD650161CC30C00B74BA7 /* MOOStyleTrait.h */,
-				E04CD651161CC30C00B74BA7 /* MOOStyleTrait.m */,
-			);
-			name = MOOMaskedIconView;
-			path = vendor/MOOMaskedIconView/MOOMaskedIconView;
-			sourceTree = SOURCE_ROOT;
 		};
 		E0EA8CE6161F24D900DECF0D /* RZTopMostController */ = {
 			isa = PBXGroup;
@@ -716,9 +664,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 8BB3D88D16119CA70056B98F /* Build configuration list for PBXNativeTarget "RZNotificationView" */;
 			buildPhases = (
+				8EEE680D9EED4E5289D5BE22 /* Check Pods Manifest.lock */,
 				8BB3D85616119CA60056B98F /* Sources */,
 				8BB3D85716119CA60056B98F /* Frameworks */,
 				8BB3D85816119CA60056B98F /* Resources */,
+				E4D59D7CF1C648DB94BA7DD9 /* Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -754,7 +704,7 @@
 		8BB3D85116119CA60056B98F /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0450;
+				LastUpgradeCheck = 0510;
 				ORGANIZATIONNAME = Rezzza;
 			};
 			buildConfigurationList = 8BB3D85416119CA60056B98F /* Build configuration list for PBXProject "RZNotificationView" */;
@@ -885,6 +835,21 @@
 			shellPath = /bin/sh;
 			shellScript = "# Run the unit tests in this test bundle.\n\"${SYSTEM_DEVELOPER_DIR}/Tools/RunUnitTests\"\n";
 		};
+		8EEE680D9EED4E5289D5BE22 /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
 		BE90E73816962FCB00D6E20C /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -897,6 +862,21 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "/usr/local/bin/appledoc \\\n--project-name \"RZNotificationView\" \\\n--search-undocumented-doc \\\n--project-company \"Rezzza SAS\" \\\n--company-id \"com.rezzza\" \\\n--output \"Documentation/\" \\\n--verbose 6 \\\n--logformat xcode \\\n--keep-intermediate-files \\\n--no-repeat-first-par \\\n--no-warn-invalid-crossref \\\n--ignore \"*.m\" \\\n\"RZNotificationView/RZNotificationView\"";
+		};
+		E4D59D7CF1C648DB94BA7DD9 /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Pods-resources.sh\"\n";
+			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -927,13 +907,8 @@
 				8B0AF9151612FEAB00A31A05 /* PrettyTabBar.m in Sources */,
 				8B0AF9161612FEAB00A31A05 /* PrettyToolbar.m in Sources */,
 				8B13A692161AEC3D0068A9F5 /* OtherViewController.m in Sources */,
-				8B76CF8D161B322F00004F2A /* TTTAttributedLabel.m in Sources */,
 				8B76CF92161B326C00004F2A /* CustomLabel.m in Sources */,
 				8B759954161B429500BDA083 /* CustomImageView.m in Sources */,
-				E04CD652161CC30C00B74BA7 /* MOOCGImageWrapper.m in Sources */,
-				E04CD653161CC30C00B74BA7 /* MOOMaskedIconView.m in Sources */,
-				E04CD654161CC30C00B74BA7 /* MOOResourceList.m in Sources */,
-				E04CD655161CC30C00B74BA7 /* MOOStyleTrait.m in Sources */,
 				E041A446161D978B008D46F5 /* UIView+Frame.m in Sources */,
 				E041A44A161DC2DB008D46F5 /* SimpleSampleViewController.m in Sources */,
 				BE9A6359161E06610064EAF4 /* UIColor+RZAdditions.m in Sources */,
@@ -942,7 +917,6 @@
 				E0EA8CEE161F274300DECF0D /* ModalViewController.m in Sources */,
 				E0EA8CF5161F2A7100DECF0D /* AutomaticViewController.m in Sources */,
 				E0EA8CFA161F2A8200DECF0D /* AutomaticModalViewController.m in Sources */,
-				E029B4DA162016F800056ED9 /* BButton.m in Sources */,
 				E029B4DE162019F300056ED9 /* UIViewController+RZTopMostController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1032,6 +1006,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -1062,24 +1037,28 @@
 		};
 		8BB3D88E16119CA70056B98F /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 44AD4392943448DD9381F41A /* Pods.xcconfig */;
 			buildSettings = {
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "RZNotificationView/RZNotificationView-Prefix.pch";
 				INFOPLIST_FILE = "RZNotificationView/RZNotificationView-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				VALID_ARCHS = "arm64 armv7 armv7s i386";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
 		};
 		8BB3D88F16119CA70056B98F /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 44AD4392943448DD9381F41A /* Pods.xcconfig */;
 			buildSettings = {
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "RZNotificationView/RZNotificationView-Prefix.pch";
 				INFOPLIST_FILE = "RZNotificationView/RZNotificationView-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				VALID_ARCHS = "arm64 armv7 armv7s i386";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
@@ -1169,6 +1148,7 @@
 				BE90E73516962FC000D6E20C /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

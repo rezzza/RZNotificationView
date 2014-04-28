@@ -9,8 +9,9 @@
 #import "RZNotificationView.h"
 #import "UIView+Frame.h"
 
-#import "MOOMaskedIconView.h"
-#import "MOOStyleTrait.h"
+#import <MOOMaskedIconView/MOOMaskedIconView.h>
+#import <MOOMaskedIconView/MOOStyleTrait.h>
+
 #import "UIColor+RZAdditions.h"
 
 #import <AudioToolbox/AudioServices.h>

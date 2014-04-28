@@ -11,7 +11,7 @@
 #import "ModalViewController.h"
 
 #import "RZNotificationView.h"
-#import "BButton.h"
+#import <BButton/BButton.h>
 
 @interface SimpleSampleViewController ()
 
