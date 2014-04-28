@@ -13,10 +13,8 @@
 #import "MCSegmentedControl.h"
 #import "CustomLabel.h"
 #import "CustomImageView.h"
-#import <MOOMaskedIconView/MOOMaskedIconView.h>
 
 #import "UIColor+RZAdditions.h"
-
 
 @interface SampleViewController ()
 
@@ -180,7 +178,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {    
-    return 16;
+    return 15;
 }
 
 -(CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -208,9 +206,6 @@
     
     static NSString *PositionCellIdentifier = @"PositionCellIdentifier";
     PrettyCustomViewTableViewCell *positionCell;
-    
-    static NSString *IconCellIdentifier = @"IconCellIdentifier";
-    PrettyCustomViewTableViewCell *iconCell;
     
     static NSString *VibrateCellIdentifier = @"VibrateCellIdentifier";
     PrettyCustomViewTableViewCell *vibrateCell;
@@ -399,61 +394,6 @@
             return positionCell;
             
         case 5:
-            iconCell = [tableView dequeueReusableCellWithIdentifier:IconCellIdentifier];
-            if (iconCell == nil) {
-                iconCell = [[PrettyCustomViewTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:IconCellIdentifier];
-                
-                MOOMaskedIconView *iconFacebook= [MOOMaskedIconView iconWithImage:[UIImage imageNamed:@"notif_facebook.png"]];
-                MOOMaskedIconView *iconGift = [MOOMaskedIconView iconWithImage:[UIImage imageNamed:@"notif_gift.png"]];
-                MOOMaskedIconView *iconInfo = [MOOMaskedIconView iconWithImage:[UIImage imageNamed:@"notif_infos.png"]];
-                MOOMaskedIconView *iconSmiley = [MOOMaskedIconView iconWithImage:[UIImage imageNamed:@"notif_smiley.png"]];
-                MOOMaskedIconView *iconTwitter = [MOOMaskedIconView iconWithImage:[UIImage imageNamed:@"notif_twitter.png"]];
-                MOOMaskedIconView *iconWarning = [MOOMaskedIconView iconWithImage:[UIImage imageNamed:@"notif_warning.png"]];
-
-                NSArray *items = [NSArray arrayWithObjects:
-                                  [iconFacebook renderImage],
-                                  [iconGift renderImage],
-                                  [iconInfo renderImage],
-                                  [iconSmiley renderImage],
-                                  [iconTwitter renderImage],
-                                  [iconWarning renderImage],
-                                  @"No",
-                                  nil];
-                
-                MCSegmentedControl *segmentedControl = [[MCSegmentedControl alloc] initWithItems:items];
-                segmentedControl.tag = 4;
-                segmentedControl.font = [UIFont boldSystemFontOfSize:14.0f];
-                segmentedControl.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
-                
-                // set frame, add to view, set target and action for value change as usual
-                segmentedControl.frame = CGRectMake(90.0, 7.0, 210.0, 30.0);
-                [self.view addSubview:segmentedControl];
-                [segmentedControl addTarget:self action:@selector(segmentedControlDidChange:) forControlEvents:UIControlEventValueChanged];
-                
-                segmentedControl.selectedSegmentIndex = 0;
-                
-                // Set a tint color
-                segmentedControl.tintColor = [UIColor colorWithRed:.6 green:.0 blue:.0 alpha:1.0];
-                
-                // Customize font and items color
-                segmentedControl.selectedItemColor   = [UIColor whiteColor];
-                segmentedControl.unselectedItemColor = [UIColor darkGrayColor];
-                
-                UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(10.0, 0.0, 70.0, 44.0)];
-                titleLabel.text = [NSString stringWithFormat:@"Icon"];
-                titleLabel.backgroundColor = [UIColor clearColor];
-                titleLabel.font = [UIFont boldSystemFontOfSize:14.0];
-                
-                UIView *custumView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, 320, 44)];
-                [custumView addSubview:segmentedControl];
-                [custumView addSubview:titleLabel];
-                iconCell.customView = custumView;
-            }
-            [iconCell prepareForTableView:tableView indexPath:indexPath];
-            iconCell.tableViewBackgroundColor = tableView.backgroundColor;
-            return iconCell;
-        
-        case 6:
             vibrateCell = [tableView dequeueReusableCellWithIdentifier:VibrateCellIdentifier];
             if (vibrateCell == nil) {
                 vibrateCell = [[PrettyCustomViewTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:VibrateCellIdentifier];
@@ -477,10 +417,10 @@
             [vibrateCell prepareForTableView:tableView indexPath:indexPath];
             vibrateCell.tableViewBackgroundColor = tableView.backgroundColor;
             return vibrateCell;            
-        case 7:
+        case 6:
             cell.textLabel.text = @"Hidde/Show Navbar";
             return cell;
-        case 8:
+        case 7:
             textSampleCell = [tableView dequeueReusableCellWithIdentifier:TextSampleCellIdentifier];
             if (textSampleCell == nil) {
                 textSampleCell = [[PrettyCustomViewTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:TextSampleCellIdentifier];
@@ -522,7 +462,7 @@
             [textSampleCell prepareForTableView:tableView indexPath:indexPath];
             textSampleCell.tableViewBackgroundColor = tableView.backgroundColor;
             return textSampleCell;
-        case 9:
+        case 8:
             textStyleCell = [tableView dequeueReusableCellWithIdentifier:TextStyleCellIdentifier];
             if (textStyleCell == nil) {
                 textStyleCell = [[PrettyCustomViewTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:TextStyleCellIdentifier];
@@ -562,7 +502,7 @@
             [textStyleCell prepareForTableView:tableView indexPath:indexPath];
             textStyleCell.tableViewBackgroundColor = tableView.backgroundColor;
             return textStyleCell;
-        case 10:
+        case 9:
             textStyleCell = [tableView dequeueReusableCellWithIdentifier:TextStyleCellIdentifier];
             if (textStyleCell == nil) {
                 textStyleCell = [[PrettyCustomViewTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:TextStyleCellIdentifier];
@@ -603,7 +543,7 @@
             [textStyleCell prepareForTableView:tableView indexPath:indexPath];
             textStyleCell.tableViewBackgroundColor = tableView.backgroundColor;
             return textStyleCell;
-        case 11:
+        case 10:
             contentStyleCell = [tableView dequeueReusableCellWithIdentifier:ContentStyleCellIdentifier];
             if (contentStyleCell == nil) {
                 contentStyleCell = [[PrettyCustomViewTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:ContentStyleCellIdentifier];
@@ -645,7 +585,7 @@
             [contentStyleCell prepareForTableView:tableView indexPath:indexPath];
             contentStyleCell.tableViewBackgroundColor = tableView.backgroundColor;
             return contentStyleCell;
-        case 12:
+        case 11:
             soundCell = [tableView dequeueReusableCellWithIdentifier:SoundCellIdentifier];
             if (soundCell == nil) {
                 soundCell = [[PrettyCustomViewTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:SoundCellIdentifier];
@@ -669,7 +609,7 @@
             [soundCell prepareForTableView:tableView indexPath:indexPath];
             soundCell.tableViewBackgroundColor = tableView.backgroundColor;
             return soundCell;
-        case 13:
+        case 12:
             anchorCell = [tableView dequeueReusableCellWithIdentifier:AnchorCellIdentifier];
             if (anchorCell == nil) {
                 anchorCell = [[PrettyCustomViewTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:AnchorCellIdentifier];
@@ -694,7 +634,7 @@
             [anchorCell prepareForTableView:tableView indexPath:indexPath];
             anchorCell.tableViewBackgroundColor = tableView.backgroundColor;
             return anchorCell;
-        case 14:
+        case 13:
             marginHeightCell = [tableView dequeueReusableCellWithIdentifier:MarginHeigtCellIdentifier];
             if (marginHeightCell == nil) {
                 marginHeightCell = [[PrettyCustomViewTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:MarginHeigtCellIdentifier];
@@ -720,7 +660,7 @@
             [marginHeightCell prepareForTableView:tableView indexPath:indexPath];
             marginHeightCell.tableViewBackgroundColor = tableView.backgroundColor;
             return marginHeightCell;
-        case 15:
+        case 14:
             maxLenghtCell = [tableView dequeueReusableCellWithIdentifier:MaxLenghtCellIdentifier];
             if (maxLenghtCell == nil) {
                 maxLenghtCell = [[PrettyCustomViewTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:MaxLenghtCellIdentifier];
@@ -837,7 +777,7 @@
 
         }
             break;
-        case 7:
+        case 6:
             [self navBarHidden:nil];
             break;
         default:
@@ -866,19 +806,19 @@
         case 4:
             _icon = sender.selectedSegmentIndex;
             break;
-        case 7:
+        case 6:
             [RZNotificationView hideNotificationForController:self];
             _sampleMessage = sender.selectedSegmentIndex;
             break;
-        case 8:
+        case 7:
             [RZNotificationView hideNotificationForController:self];
             _assetColor = sender.selectedSegmentIndex;
             break;
-        case 9:
+        case 8:
             [RZNotificationView hideNotificationForController:self];
             _textColor = sender.selectedSegmentIndex;
             break;
-        case 10:
+        case 9:
             [RZNotificationView hideNotificationForController:self];
             switch (sender.selectedSegmentIndex) {
                 case 1:{

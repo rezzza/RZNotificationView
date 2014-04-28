@@ -9,9 +9,6 @@
 #import "RZNotificationView.h"
 #import "UIView+Frame.h"
 
-#import <MOOMaskedIconView/MOOMaskedIconView.h>
-#import <MOOMaskedIconView/MOOStyleTrait.h>
-
 #import "UIColor+RZAdditions.h"
 
 #import <AudioToolbox/AudioServices.h>
@@ -85,50 +82,6 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
 }
 
 #pragma mark - Drawings
-
-- (UIImage *)image:(UIImage *)img withColor:(UIColor *)color
-{
-    MOOStyleTrait *iconTrait = [MOOStyleTrait trait];
-    
-    switch(_assetColor)
-    {
-        case RZNotificationContentColorAutomaticLight:
-            iconTrait.gradientColors = [NSArray arrayWithObjects:
-                                        [UIColor lighterColorForColor:color withRgbOffset:0.9],
-                                        [UIColor lighterColorForColor:color withRgbOffset:0.8], nil];
-            iconTrait.shadowColor = [UIColor darkerColorForColor:color withRgbOffset:0.35 andAlphaOffset:0.6];
-            iconTrait.innerShadowColor = [UIColor lighterColorForColor:color withRgbOffset:0.88 andAlphaOffset:0.79];
-            iconTrait.shadowOffset = CGSizeMake(0.0f, -1.0f);
-            iconTrait.innerShadowOffset = CGSizeMake(0.0f, -1.0f);
-            iconTrait.clipsShadow = NO;
-            break;
-        case RZNotificationContentColorAutomaticDark:
-            iconTrait.gradientColors = [NSArray arrayWithObjects:
-                                        [UIColor darkerColorForColor:color withRgbOffset:0.6],
-                                        [UIColor darkerColorForColor:color withRgbOffset:0.4], nil];
-            iconTrait.shadowColor = [UIColor lighterColorForColor:color withRgbOffset:0.4 andAlphaOffset:0.6];
-            iconTrait.innerShadowColor = [UIColor darkerColorForColor:color withRgbOffset:0.6 andAlphaOffset:0.8];
-            iconTrait.shadowOffset = CGSizeMake(0.0f, 1.0f);
-            iconTrait.innerShadowOffset = CGSizeMake(0.0f, 1.0f);
-            iconTrait.clipsShadow = NO;
-            break;
-        case RZNotificationContentColorManual:
-            NSLog(@"Warning, setting RZNotificationContentColorManual for assetColor is not supported. Setting to textColor");
-            if (_textColor != RZNotificationContentColorManual)
-                _assetColor = _textColor;
-            else
-                _assetColor = RZNotificationContentColorAutomaticLight;
-            
-            return [self image:img withColor:color];
-            break;
-    }
-    
-    MOOMaskedIconView *iconView = [MOOMaskedIconView iconWithImage:img];
-    iconView.clipsShadow = YES;
-    [iconView mixInTrait:iconTrait];
-    
-    return [iconView renderImage];
-}
 
 - (void) drawRect:(CGRect)rect
 {
@@ -209,11 +162,6 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
     
     
     //// Subframes
-    
-    _iconView.frame = CGRectMake(CGRectGetMinX(notificationFrame) + 7,
-                                 CGRectGetMinY(notificationFrame) + floor((CGRectGetHeight(notificationFrame) - 22) * 0.5) - ceil((_position == RZNotificationPositionTop ? NOTIFICATION_SHADOW_BLUR_RADIUS : -NOTIFICATION_SHADOW_BLUR_RADIUS)/2),
-                                 21,
-                                 22);
     CGRect contentFrame = CGRectMake(CGRectGetMinX(notificationFrame) + [self getOffsetXLeft],
                                      CGRectGetMinY(notificationFrame) + CGRectGetMinY(notificationFrame) + _contentMarginHeight + (_position == RZNotificationPositionTop ? 0 : NOTIFICATION_SHADOW_BLUR_RADIUS),
                                      CGRectGetWidth(notificationFrame) - [self getOffsetXLeft] - [self getOffsetXRight],
@@ -280,8 +228,7 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
     CGGradientRelease(notificationBackgroundGradient);
     CGColorSpaceRelease(colorSpace);
     
-    _iconView.image = [self image:[self getImageForIcon:_icon] withColor:colorStart];
-    _anchorView.image = [self image:[UIImage imageNamed:@"notif_anchor.png"] withColor:colorStart];
+    //_anchorView.image = [self image:[UIImage imageNamed:@"notif_anchor.png"] withColor:colorStart]; // TODO
     if (_textColor != RZNotificationContentColorManual) {
         _textLabel.textColor = [self adjustTextColor:colorStart];
         if(_textColor == RZNotificationContentColorAutomaticDark)
@@ -567,14 +514,6 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
         _icon = icon;
         _displayAnchor = YES;
         _contentMarginHeight = DEFAULT_CONTENT_MARGIN_HEIGHT;
-        
-        // Add icon view
-        _iconView = [[UIImageView alloc] initWithFrame:CGRectZero];
-        _iconView.clipsToBounds = NO;
-        _iconView.opaque = YES;
-        _iconView.backgroundColor = [UIColor clearColor];
-        _iconView.contentMode = UIViewContentModeCenter;
-        [self addSubview:_iconView];
         
         // Add Anchor view
         _anchorView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"notif_anchor.png"]];
@@ -979,7 +918,6 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
     
     RZ_RELEASE(_highlightedView);
     RZ_RELEASE(_controller);
-    RZ_RELEASE(_iconView);
     RZ_RELEASE(_anchorView);
     RZ_RELEASE(_textLabel);
     RZ_RELEASE(_message);

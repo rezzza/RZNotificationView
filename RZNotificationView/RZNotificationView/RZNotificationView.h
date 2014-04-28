@@ -137,7 +137,6 @@ typedef void (^RZNotificationCompletion)(BOOL touched);
  */
 @interface RZNotificationView : UIControl
 {
-    UIImageView *_iconView;
     UIImageView *_anchorView;
     BOOL _isTouch;
     
