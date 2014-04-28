@@ -6,4 +6,4 @@
 	url = https://github.com/vicpenap/PrettyKit.git
 [submodule "vendor/MCSegmentedControl"]
 	path = vendor/MCSegmentedControl
-	url = https://github.com/oettam/MCSegmentedControl.git
+	url = https://github.com/itruf/MCSegmentedControl.git
