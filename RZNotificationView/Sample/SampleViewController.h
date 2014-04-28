@@ -34,7 +34,8 @@ typedef enum
     RZSampleFormSound,
     RZSampleFormAnchor,
     RZSampleFormMargin,
-    RZSampleFormMaxLength
+    RZSampleFormMaxLength,
+    RZSampleFormIcon
 }RZSampleFormType;
 
 @class PrettyGridTableViewCell;
@@ -60,6 +61,7 @@ typedef enum
     
     RZNotificationColor _color;
     RZNotificationPosition _position;
+    RZNotificationIcon _icon;
     RZNotificationContentColor _assetColor;
     RZNotificationContentColor _textColor;
     

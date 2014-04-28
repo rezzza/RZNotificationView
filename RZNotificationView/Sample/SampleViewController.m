@@ -17,6 +17,8 @@
 
 #import "UIColor+RZAdditions.h"
 
+#import <MOOMaskedIconView/MOOMaskedIconView.h>
+
 @interface SampleViewController ()
 
 @end
@@ -54,6 +56,7 @@
                    @(RZSampleFormDelay),
                    @(RZSampleFormTopBotColors),
                    @(RZSampleFormPredefinedColors),
+                   @(RZSampleFormIcon),
                    @(RZSampleFormPosition),
                    @(RZSampleFormVibrate),
                    @(RZSampleFormHideShowNavBar),
@@ -250,6 +253,9 @@
     static NSString *MaxLenghtCellIdentifier = @"MaxLenghtCellIdentifier";
     PrettyCustomViewTableViewCell *maxLenghtCell;
     
+    static NSString *IconCellIdentifier = @"IconCellIdentifier";
+    PrettyCustomViewTableViewCell *iconCell;
+    
     PrettyCustomViewTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
         cell = [[PrettyCustomViewTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
@@ -361,11 +367,11 @@
                 segmentedControl.selectedItemColor   = [UIColor whiteColor];
                 segmentedControl.unselectedItemColor = [UIColor darkGrayColor];
                 
-                UIView *custumView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, 320, 44 + 15)];
-                custumView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-                [custumView addSubview:segmentedControl];
-                [custumView addSubview:titleLabel];
-                colorCell.customView = custumView;
+                UIView *customView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, 320, 44 + 15)];
+                customView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+                [customView addSubview:segmentedControl];
+                [customView addSubview:titleLabel];
+                colorCell.customView = customView;
             }
             [colorCell prepareForTableView:tableView indexPath:indexPath];
             colorCell.tableViewBackgroundColor = tableView.backgroundColor;
@@ -403,10 +409,10 @@
                 titleLabel.backgroundColor = [UIColor clearColor];
                 titleLabel.font = [UIFont boldSystemFontOfSize:14.0];
                 
-                UIView *custumView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, 320, 44)];
-                [custumView addSubview:segmentedControl];
-                [custumView addSubview:titleLabel];
-                positionCell.customView = custumView;
+                UIView *customView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, 320, 44)];
+                [customView addSubview:segmentedControl];
+                [customView addSubview:titleLabel];
+                positionCell.customView = customView;
             }
             [positionCell prepareForTableView:tableView indexPath:indexPath];
             positionCell.tableViewBackgroundColor = tableView.backgroundColor;
@@ -428,10 +434,10 @@
                 titleLabel.backgroundColor = [UIColor clearColor];
                 titleLabel.font = [UIFont boldSystemFontOfSize:14.0];
                 
-                UIView *custumView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, 320, 44)];
-                [custumView addSubview:switchView];
-                [custumView addSubview:titleLabel];
-                vibrateCell.customView = custumView;
+                UIView *customView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, 320, 44)];
+                [customView addSubview:switchView];
+                [customView addSubview:titleLabel];
+                vibrateCell.customView = customView;
             }
             [vibrateCell prepareForTableView:tableView indexPath:indexPath];
             vibrateCell.tableViewBackgroundColor = tableView.backgroundColor;
@@ -473,10 +479,10 @@
                 titleLabel.backgroundColor = [UIColor clearColor];
                 titleLabel.font = [UIFont boldSystemFontOfSize:14.0];
                 
-                UIView *custumView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, 320, 44)];
-                [custumView addSubview:segmentedControl];
-                [custumView addSubview:titleLabel];
-                textSampleCell.customView = custumView;
+                UIView *customView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, 320, 44)];
+                [customView addSubview:segmentedControl];
+                [customView addSubview:titleLabel];
+                textSampleCell.customView = customView;
             }
             [textSampleCell prepareForTableView:tableView indexPath:indexPath];
             textSampleCell.tableViewBackgroundColor = tableView.backgroundColor;
@@ -513,10 +519,10 @@
                 titleLabel.backgroundColor = [UIColor clearColor];
                 titleLabel.font = [UIFont boldSystemFontOfSize:14.0];
                 
-                UIView *custumView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, 320, 44)];
-                [custumView addSubview:segmentedControl];
-                [custumView addSubview:titleLabel];
-                textStyleCell.customView = custumView;
+                UIView *customView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, 320, 44)];
+                [customView addSubview:segmentedControl];
+                [customView addSubview:titleLabel];
+                textStyleCell.customView = customView;
             }
             [textStyleCell prepareForTableView:tableView indexPath:indexPath];
             textStyleCell.tableViewBackgroundColor = tableView.backgroundColor;
@@ -554,10 +560,10 @@
                 titleLabel.backgroundColor = [UIColor clearColor];
                 titleLabel.font = [UIFont boldSystemFontOfSize:14.0];
                 
-                UIView *custumView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, 320, 44)];
-                [custumView addSubview:segmentedControl];
-                [custumView addSubview:titleLabel];
-                textStyleCell.customView = custumView;
+                UIView *customView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, 320, 44)];
+                [customView addSubview:segmentedControl];
+                [customView addSubview:titleLabel];
+                textStyleCell.customView = customView;
             }
             [textStyleCell prepareForTableView:tableView indexPath:indexPath];
             textStyleCell.tableViewBackgroundColor = tableView.backgroundColor;
@@ -596,10 +602,10 @@
                 titleLabel.backgroundColor = [UIColor clearColor];
                 titleLabel.font = [UIFont boldSystemFontOfSize:14.0];
                 
-                UIView *custumView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, 320, 44)];
-                [custumView addSubview:segmentedControl];
-                [custumView addSubview:titleLabel];
-                contentStyleCell.customView = custumView;
+                UIView *customView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, 320, 44)];
+                [customView addSubview:segmentedControl];
+                [customView addSubview:titleLabel];
+                contentStyleCell.customView = customView;
             }
             [contentStyleCell prepareForTableView:tableView indexPath:indexPath];
             contentStyleCell.tableViewBackgroundColor = tableView.backgroundColor;
@@ -620,10 +626,10 @@
                 titleLabel.backgroundColor = [UIColor clearColor];
                 titleLabel.font = [UIFont boldSystemFontOfSize:14.0];
                 
-                UIView *custumView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, 320, 44)];
-                [custumView addSubview:switchView];
-                [custumView addSubview:titleLabel];
-                soundCell.customView = custumView;
+                UIView *customView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, 320, 44)];
+                [customView addSubview:switchView];
+                [customView addSubview:titleLabel];
+                soundCell.customView = customView;
             }
             [soundCell prepareForTableView:tableView indexPath:indexPath];
             soundCell.tableViewBackgroundColor = tableView.backgroundColor;
@@ -705,6 +711,62 @@
             [maxLenghtCell prepareForTableView:tableView indexPath:indexPath];
             maxLenghtCell.tableViewBackgroundColor = tableView.backgroundColor;
             return maxLenghtCell;
+            
+        case RZSampleFormIcon:
+            iconCell = [tableView dequeueReusableCellWithIdentifier:IconCellIdentifier];
+            if (iconCell == nil) {
+                iconCell = [[PrettyCustomViewTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:IconCellIdentifier];
+                
+                MOOMaskedIconView *iconFacebook= [MOOMaskedIconView iconWithImage:[UIImage imageNamed:@"notif_facebook.png"]];
+                MOOMaskedIconView *iconGift = [MOOMaskedIconView iconWithImage:[UIImage imageNamed:@"notif_gift.png"]];
+                MOOMaskedIconView *iconInfo = [MOOMaskedIconView iconWithImage:[UIImage imageNamed:@"notif_infos.png"]];
+                MOOMaskedIconView *iconSmiley = [MOOMaskedIconView iconWithImage:[UIImage imageNamed:@"notif_smiley.png"]];
+                MOOMaskedIconView *iconTwitter = [MOOMaskedIconView iconWithImage:[UIImage imageNamed:@"notif_twitter.png"]];
+                MOOMaskedIconView *iconWarning = [MOOMaskedIconView iconWithImage:[UIImage imageNamed:@"notif_warning.png"]];
+                
+                NSArray *items = [NSArray arrayWithObjects:
+                                  [iconFacebook renderImage],
+                                  [iconGift renderImage],
+                                  [iconInfo renderImage],
+                                  [iconSmiley renderImage],
+                                  [iconTwitter renderImage],
+                                  [iconWarning renderImage],
+                                  @"No",
+                                  nil];
+                
+                MCSegmentedControl *segmentedControl = [[MCSegmentedControl alloc] initWithItems:items];
+                segmentedControl.tag = 4;
+                segmentedControl.font = [UIFont boldSystemFontOfSize:14.0f];
+                segmentedControl.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
+                
+                // set frame, add to view, set target and action for value change as usual
+                segmentedControl.frame = CGRectMake(90.0, 7.0, 210.0, 30.0);
+                [self.view addSubview:segmentedControl];
+                [segmentedControl addTarget:self action:@selector(segmentedControlDidChange:) forControlEvents:UIControlEventValueChanged];
+                
+                segmentedControl.selectedSegmentIndex = 0;
+                
+                // Set a tint color
+                segmentedControl.tintColor = [UIColor colorWithRed:.6 green:.0 blue:.0 alpha:1.0];
+                
+                // Customize font and items color
+                segmentedControl.selectedItemColor   = [UIColor whiteColor];
+                segmentedControl.unselectedItemColor = [UIColor darkGrayColor];
+                
+                UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(10.0, 0.0, 70.0, 44.0)];
+                titleLabel.text = [NSString stringWithFormat:@"Icon"];
+                titleLabel.backgroundColor = [UIColor clearColor];
+                titleLabel.font = [UIFont boldSystemFontOfSize:14.0];
+                
+                UIView *customView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, 320, 44)];
+                [customView addSubview:segmentedControl];
+                [customView addSubview:titleLabel];
+                iconCell.customView = customView;
+            }
+            [iconCell prepareForTableView:tableView indexPath:indexPath];
+            iconCell.tableViewBackgroundColor = tableView.backgroundColor;
+            return iconCell;
+            
         default:
             break;
     }
@@ -754,7 +816,7 @@
             
             RZNotificationView *notif =
             [[RZNotificationView alloc] initWithController:self
-                                                      icon:RZNotificationIconNone
+                                                      icon:_icon
                                                   position:_position
                                                      color:_color
                                                 assetColor:_assetColor
@@ -833,6 +895,10 @@
         case RZSampleFormTextColor:
             [RZNotificationView hideNotificationForController:self];
             _textColor = sender.selectedSegmentIndex;
+            break;
+        case RZSampleFormIcon:
+            [RZNotificationView hideNotificationForController:self];
+            _icon = sender.selectedSegmentIndex;
             break;
         case RZSampleFormContent:
             [RZNotificationView hideNotificationForController:self];
