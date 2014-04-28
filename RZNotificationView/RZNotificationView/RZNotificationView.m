@@ -628,6 +628,7 @@ alpha:1.0]
 {
     CGRect frame = self.bounds;
     frame.size.width = CGRectGetWidth(controller.view.frame);
+    
     self = [self initWithFrame:frame
                           icon:icon
                       position:position
@@ -767,9 +768,9 @@ alpha:1.0]
         finalOrigin = [(UIViewController<RZNotificationViewProtocol>*)c yOriginForRZNotificationViewForPosition:position];
     } else {
         if (position == RZNotificationPositionTop) {
-            finalOrigin = 0.0f;
+            finalOrigin = [c.topLayoutGuide length];
         } else {
-            finalOrigin = CGRectGetHeight(_controller.view.frame);
+            finalOrigin = CGRectGetHeight(_controller.view.frame) - [c.bottomLayoutGuide length];
         }
     }
     
@@ -781,10 +782,10 @@ alpha:1.0]
     CGFloat yOrigin = 0.0f;
     
     if (_position == RZNotificationPositionTop) {
-        yOrigin = [self _getFinalOriginForPosition:_position]-CGRectGetHeight(self.frame);
+        yOrigin = -CGRectGetHeight(self.frame);
     }
     else {
-        yOrigin = [self _getFinalOriginForPosition:_position];
+        yOrigin = CGRectGetHeight(_controller.view.frame);
     }
     
     [self setYOrigin:yOrigin];
