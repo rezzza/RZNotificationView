@@ -7,12 +7,13 @@
 //
 
 #import "RZNotificationView.h"
-#import "UIView+Frame.h"
 
 #import "UIColor+RZAdditions.h"
 
 #import <MOOMaskedIconView/MOOMaskedIconView.h>
 #import <MOOMaskedIconView/MOOStyleTrait.h>
+
+#import <PPHelpMe/PPHelpMe.h>
 
 #import <AudioToolbox/AudioServices.h>
 

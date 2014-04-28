@@ -140,7 +140,6 @@
 		BE9A6359161E06610064EAF4 /* UIColor+RZAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = BE9A6358161E06610064EAF4 /* UIColor+RZAdditions.m */; };
 		E029B4DE162019F300056ED9 /* UIViewController+RZTopMostController.m in Sources */ = {isa = PBXBuildFile; fileRef = E029B4DD162019F300056ED9 /* UIViewController+RZTopMostController.m */; };
 		E029B4E21620264200056ED9 /* 340119_564053743608283_175259668_o.jpg in Resources */ = {isa = PBXBuildFile; fileRef = E029B4E11620264100056ED9 /* 340119_564053743608283_175259668_o.jpg */; };
-		E041A446161D978B008D46F5 /* UIView+Frame.m in Sources */ = {isa = PBXBuildFile; fileRef = E041A445161D978B008D46F5 /* UIView+Frame.m */; };
 		E041A44A161DC2DB008D46F5 /* SimpleSampleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E041A448161DC2DB008D46F5 /* SimpleSampleViewController.m */; };
 		E041A44B161DC2DB008D46F5 /* SimpleSampleViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E041A449161DC2DB008D46F5 /* SimpleSampleViewController.xib */; };
 		E041A44E161DCE60008D46F5 /* notif_anchor.png in Resources */ = {isa = PBXBuildFile; fileRef = E041A44C161DCE60008D46F5 /* notif_anchor.png */; };
@@ -287,8 +286,6 @@
 		E029B4DC162019F300056ED9 /* UIViewController+RZTopMostController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+RZTopMostController.h"; sourceTree = "<group>"; };
 		E029B4DD162019F300056ED9 /* UIViewController+RZTopMostController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+RZTopMostController.m"; sourceTree = "<group>"; };
 		E029B4E11620264100056ED9 /* 340119_564053743608283_175259668_o.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 340119_564053743608283_175259668_o.jpg; sourceTree = "<group>"; };
-		E041A444161D978B008D46F5 /* UIView+Frame.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+Frame.h"; sourceTree = "<group>"; };
-		E041A445161D978B008D46F5 /* UIView+Frame.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+Frame.m"; sourceTree = "<group>"; };
 		E041A447161DC2DA008D46F5 /* SimpleSampleViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SimpleSampleViewController.h; sourceTree = "<group>"; };
 		E041A448161DC2DB008D46F5 /* SimpleSampleViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SimpleSampleViewController.m; sourceTree = "<group>"; };
 		E041A449161DC2DB008D46F5 /* SimpleSampleViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SimpleSampleViewController.xib; sourceTree = "<group>"; };
@@ -587,8 +584,6 @@
 		E029B4DF1620252E00056ED9 /* Categories */ = {
 			isa = PBXGroup;
 			children = (
-				E041A444161D978B008D46F5 /* UIView+Frame.h */,
-				E041A445161D978B008D46F5 /* UIView+Frame.m */,
 				BE9A6357161E06610064EAF4 /* UIColor+RZAdditions.h */,
 				BE9A6358161E06610064EAF4 /* UIColor+RZAdditions.m */,
 			);
@@ -909,7 +904,6 @@
 				8B13A692161AEC3D0068A9F5 /* OtherViewController.m in Sources */,
 				8B76CF92161B326C00004F2A /* CustomLabel.m in Sources */,
 				8B759954161B429500BDA083 /* CustomImageView.m in Sources */,
-				E041A446161D978B008D46F5 /* UIView+Frame.m in Sources */,
 				E041A44A161DC2DB008D46F5 /* SimpleSampleViewController.m in Sources */,
 				BE9A6359161E06610064EAF4 /* UIColor+RZAdditions.m in Sources */,
 				E0EA8CDF161F1FC500DECF0D /* UITabBarController+RZTopMostControllerProtocol.m in Sources */,
