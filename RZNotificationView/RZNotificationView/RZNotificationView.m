@@ -22,19 +22,18 @@ green:((float)((rgbValue & 0xFF00) >> 8))/255.0           \
 blue:((float)(rgbValue & 0xFF))/255.0                     \
 alpha:1.0]
 
-#define DEFAULT_MAX_MESSAGE_LENGHT 150
-#define MIN_HEIGHT 40
+static const NSInteger kDefaultMaxMessageLength            = 150;
+static const CGFloat kDefaultContentMarginHeight           = 16.0f;
+static const RZNotificationPosition kDefaultPosition       = RZNotificationPositionTop;
+static const RZNotificationColor kDefaultColor             = RZNotificationColorBlue;
+static const BOOL kDefaultVibrate                          = NO;
+static const RZNotificationContentColor kDefaultAssetColor = RZNotificationContentColorAutomaticDark;
+static const RZNotificationContentColor kDefaultTextColor  = RZNotificationContentColorAutomaticLight;
+static const RZNotificationIcon kDefaultIcon               = RZNotificationIconFacebook;
+static const NSTimeInterval kDefaultDelay                  = 3.5;
 
-#define OFFSET_X 35.0
-
-#define DEFAULT_CONTENT_MARGIN_HEIGHT 8.0f
-#define DEFAULT_POSITION RZNotificationPositionTop
-#define DEFAULT_DELAY 3.5
-#define DEFAULT_COLOR RZNotificationColorBlue
-#define DEFAULT_VIBRATE NO
-#define DEFAULT_ASSET_COLOR RZNotificationContentColorAutomaticDark
-#define DEFAULT_TEXT_COLOR RZNotificationContentColorAutomaticLight
-#define DEFAULT_ICON RZNotificationIconFacebook
+static const CGFloat kMinHeight                            = 64.0f;
+static const CGFloat kOffsetX                              = 35.0f;
 
 @interface RZNotificationView ()
 {
@@ -58,7 +57,7 @@ alpha:1.0]
         icontWitdhFree = 21.0;
     }
     
-    return OFFSET_X - icontWitdhFree;
+    return kOffsetX - icontWitdhFree;
 }
 
 - (CGFloat) getOffsetXRight
@@ -68,7 +67,7 @@ alpha:1.0]
         anchorWitdhFree = 0.0;
     }
     
-    return OFFSET_X - anchorWitdhFree;
+    return kOffsetX - anchorWitdhFree;
 }
 
 #pragma mark - Color Adjustements
@@ -308,7 +307,7 @@ alpha:1.0]
     
     NSInteger maxLenght = _messageMaxLenght;
     if (maxLenght == 0)
-        maxLenght = DEFAULT_MAX_MESSAGE_LENGHT;
+        maxLenght = kDefaultMaxMessageLength;
     
     if(maxLenght < [message length])
         tempMessage = [[message substringToIndex:maxLenght] stringByAppendingString:@"..."]; // Tail truncation
@@ -465,7 +464,7 @@ alpha:1.0]
 - (id) initWithFrame:(CGRect)frame icon:(RZNotificationIcon)icon position:(RZNotificationPosition)position color:(RZNotificationColor)color assetColor:(RZNotificationContentColor)assetColor textColor:(RZNotificationContentColor)textColor delay:(NSTimeInterval)delay
 {
     CGRect mFrame = frame;
-    mFrame.size.height = MAX(CGRectGetHeight(frame), MIN_HEIGHT);
+    mFrame.size.height = MAX(CGRectGetHeight(frame), kMinHeight);
     
     self = [super initWithFrame:mFrame];
     if (self)
@@ -477,12 +476,12 @@ alpha:1.0]
         _delay = delay;
         _position = position;
         _color = color;
-        _vibrate = DEFAULT_VIBRATE;
+        _vibrate = kDefaultVibrate;
         _assetColor = assetColor;
         _textColor = textColor;
         _icon = icon;
         _displayAnchor = YES;
-        _contentMarginHeight = DEFAULT_CONTENT_MARGIN_HEIGHT;
+        _contentMarginHeight = kDefaultContentMarginHeight;
         
         // Add icon view
         _iconView = [[UIImageView alloc] initWithFrame:CGRectZero];
@@ -520,12 +519,12 @@ alpha:1.0]
 - (id) initWithFrame:(CGRect)frame
 {
     return [self initWithFrame:frame
-                          icon:DEFAULT_ICON
-                      position:DEFAULT_POSITION
-                         color:DEFAULT_COLOR
-                    assetColor:DEFAULT_ASSET_COLOR
-                     textColor:DEFAULT_TEXT_COLOR
-                         delay:DEFAULT_DELAY];
+                          icon:kDefaultIcon
+                      position:kDefaultPosition
+                         color:kDefaultColor
+                    assetColor:kDefaultAssetColor
+                     textColor:kDefaultTextColor
+                         delay:kDefaultDelay];
 }
 
 - (id) initWithController:(UIViewController*)controller icon:(RZNotificationIcon)icon position:(RZNotificationPosition)position color:(RZNotificationColor)color assetColor:(RZNotificationContentColor)assetColor delay:(NSTimeInterval)delay
@@ -587,7 +586,7 @@ alpha:1.0]
                                                      color:color
                                                 assetColor:assetColor
                                                  textColor:textColor
-                                                     delay:DEFAULT_DELAY
+                                                     delay:kDefaultDelay
                                          addedToController:controller
                                             withCompletion:completionBlock];
 }
@@ -616,7 +615,7 @@ alpha:1.0]
                                                                         color:color
                                                                    assetColor:assetColor
                                                                     textColor:textColor
-                                                                        delay:DEFAULT_DELAY
+                                                                        delay:kDefaultDelay
                                                                withCompletion:completionBlock];
 }
 
@@ -805,7 +804,7 @@ alpha:1.0]
 - (void) adjustHeightAndRedraw:(CGFloat)height
 {
     CGRect frame = self.frame;
-    frame.size.height = MAX(MIN_HEIGHT , height + 2.0*_contentMarginHeight);
+    frame.size.height = MAX(kMinHeight , height + 2.0*_contentMarginHeight);
     self.frame = frame;
     [self setNeedsDisplay];
 }
