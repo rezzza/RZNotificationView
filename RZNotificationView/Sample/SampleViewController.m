@@ -205,7 +205,9 @@
 
 -(CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (indexPath.row == RZSampleFormPredefinedColors) {
+    RZSampleFormType type = [_formArray[indexPath.row] integerValue];
+
+    if (type == RZSampleFormPredefinedColors) {
         return tableView.rowHeight + [PrettyTableViewCell
                                       tableView:tableView neededHeightForIndexPath:indexPath] + 20.0;
     }
@@ -276,7 +278,9 @@
 #pragma clang diagnostic pop
     }
     
-    switch (indexPath.row) {
+    RZSampleFormType type = [_formArray[indexPath.row] integerValue];
+    
+    switch (type) {
         case RZSampleFormShowButton:
             cell.textLabel.text = @"Show notification";
             return cell;
@@ -350,7 +354,7 @@
                                   @"Blue",
                                   nil];
                 MCSegmentedControl *segmentedControl = [[MCSegmentedControl alloc] initWithItems:items];
-                segmentedControl.tag = 2;
+                segmentedControl.tag = type;
                 segmentedControl.font = [UIFont boldSystemFontOfSize:14.0f];
                 segmentedControl.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
 
@@ -386,7 +390,7 @@
                                   @"Bottom",
                                   nil];
                 MCSegmentedControl *segmentedControl = [[MCSegmentedControl alloc] initWithItems:items];
-                segmentedControl.tag = 3;
+                segmentedControl.tag = type;
                 segmentedControl.font = [UIFont boldSystemFontOfSize:14.0f];
                 segmentedControl.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
 
@@ -456,7 +460,7 @@
                                   @"Long",
                                   nil];
                 MCSegmentedControl *segmentedControl = [[MCSegmentedControl alloc] initWithItems:items];
-                segmentedControl.tag = 7;
+                segmentedControl.tag = type;
                 segmentedControl.font = [UIFont boldSystemFontOfSize:14.0f];
                 segmentedControl.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
                 
@@ -497,7 +501,7 @@
                                   @"Dark",
                                   nil];
                 MCSegmentedControl *segmentedControl = [[MCSegmentedControl alloc] initWithItems:items];
-                segmentedControl.tag = 8;
+                segmentedControl.tag = type;
                 segmentedControl.font = [UIFont boldSystemFontOfSize:14.0f];
                 segmentedControl.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
                 // set frame, add to view, set target and action for value change as usual
@@ -538,7 +542,7 @@
                                   @"Manual",
                                   nil];
                 MCSegmentedControl *segmentedControl = [[MCSegmentedControl alloc] initWithItems:items];
-                segmentedControl.tag = 9;
+                segmentedControl.tag = type;
                 segmentedControl.font = [UIFont boldSystemFontOfSize:14.0f];
                 segmentedControl.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
                 // set frame, add to view, set target and action for value change as usual
@@ -579,7 +583,7 @@
                                   @"Image",
                                   nil];
                 MCSegmentedControl *segmentedControl = [[MCSegmentedControl alloc] initWithItems:items];
-                segmentedControl.tag = 10;
+                segmentedControl.tag = type;
                 segmentedControl.font = [UIFont boldSystemFontOfSize:14.0f];
                 segmentedControl.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
                 
@@ -735,7 +739,7 @@
                                   nil];
                 
                 MCSegmentedControl *segmentedControl = [[MCSegmentedControl alloc] initWithItems:items];
-                segmentedControl.tag = 4;
+                segmentedControl.tag = type;
                 segmentedControl.font = [UIFont boldSystemFontOfSize:14.0f];
                 segmentedControl.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
                 
@@ -777,8 +781,10 @@
 #pragma mark - Table view delegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{    
-    switch (indexPath.row) {
+{
+    RZSampleFormType type = [_formArray[indexPath.row] integerValue];
+
+    switch (type) {
         case RZSampleFormShowButton:
         {
             _roundIndex ++;
@@ -869,7 +875,7 @@
 - (void)segmentedControlDidChange:(MCSegmentedControl *)sender
 {
     switch (sender.tag) {
-        case RZSampleFormTopBotColors:
+        case RZSampleFormPredefinedColors:
         {
             _color = sender.selectedSegmentIndex;
             PrettyGridTableViewCell *cell = (PrettyGridTableViewCell*) [self.tableView cellForRowAtIndexPath:_indexPath];
@@ -881,7 +887,7 @@
                 [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:_indexPath] withRowAnimation:UITableViewRowAnimationFade];
         }
             break;
-        case RZSampleFormPredefinedColors:
+        case RZSampleFormPosition:
             _position = sender.selectedSegmentIndex;
             break;
         case RZSampleFormTextSample:
