@@ -66,14 +66,17 @@ typedef enum {
  The color of the notification view content
  */
 typedef enum {
-    /** Text is automatically lighter */
-    RZNotificationContentColorAutomaticLight = 0,
-    /** Text is automatically darker */
-    RZNotificationContentColorAutomaticDark,
+    /** Text is white */
+    RZNotificationContentColorLight = 0,
+    /** Text is grey */
+    RZNotificationContentColorDark,
     /** Text color is set with textColor*/
-    RZNotificationContentColorManual
+    RZNotificationContentColorManual,
+    /** Text is automatically lighter */
+    RZNotificationContentColorAutomaticLight __attribute__((deprecated)),
+    /** Text is automatically darker */
+    RZNotificationContentColorAutomaticDark __attribute__((deprecated)),
 }RZNotificationContentColor;
-
 
 @class RZNotificationView;
 

@@ -47,8 +47,8 @@
     self.title = @"KitchenSink";
     self.navigationController.navigationBar.tintColor = [UIColor colorWithRed:0.6 green:0.0 blue:0.0 alpha:1];
     
-    _assetColor = RZNotificationContentColorAutomaticLight; // == 1
-    _textColor = RZNotificationContentColorAutomaticLight; // == 1
+    _assetColor = RZNotificationContentColorLight; // == 1
+    _textColor = RZNotificationContentColorLight; // == 1
     _anchor = YES;
     
     _formArray = @[
@@ -667,7 +667,7 @@
             marginHeightCell = [tableView dequeueReusableCellWithIdentifier:MarginHeigtCellIdentifier];
             if (marginHeightCell == nil) {
                 marginHeightCell = [[PrettyCustomViewTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:MarginHeigtCellIdentifier];
-                _marginHeigtSlider = [ [ UISlider alloc ] initWithFrame: CGRectMake(120.0, 0.0, 190.0, 44.0) ];
+                _marginHeigtSlider = [[UISlider alloc] initWithFrame: CGRectMake(120.0, 0.0, 190.0, 44.0) ];
                 _marginHeigtSlider.minimumValue = 0.0;
                 _marginHeigtSlider.autoresizingMask = UIViewAutoresizingFlexibleWidth;
                 _marginHeigtSlider.minimumTrackTintColor = [UIColor colorWithRed:.6 green:.0 blue:.0 alpha:1.0];
@@ -693,7 +693,7 @@
             maxLenghtCell = [tableView dequeueReusableCellWithIdentifier:MaxLenghtCellIdentifier];
             if (maxLenghtCell == nil) {
                 maxLenghtCell = [[PrettyCustomViewTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:MaxLenghtCellIdentifier];
-                _maxLenghtSlider = [ [ UISlider alloc ] initWithFrame: CGRectMake(160.0, 0.0, 150.0, 44.0) ];
+                _maxLenghtSlider = [[UISlider alloc] initWithFrame: CGRectMake(160.0, 0.0, 150.0, 44.0) ];
                 _maxLenghtSlider.minimumValue = 0.0;
                 _maxLenghtSlider.autoresizingMask = UIViewAutoresizingFlexibleWidth;
                 _maxLenghtSlider.minimumTrackTintColor = [UIColor colorWithRed:.6 green:.0 blue:.0 alpha:1.0];
@@ -962,13 +962,13 @@
                         }
                     }                    
 
-                    if(_textColor == RZNotificationContentColorAutomaticDark)
+                    if(_textColor == RZNotificationContentColorDark)
                     {
                         customLabel.textColor = [UIColor darkerColorForColor:colorStart withRgbOffset:0.55];
                         customLabel.shadowColor = [UIColor lighterColorForColor:colorStart withRgbOffset:0.4 andAlphaOffset:0.4];
                         customLabel.shadowOffset = CGSizeMake(0.0f, 1.0f);
                     }
-                    else if(_textColor == RZNotificationContentColorAutomaticLight)
+                    else if(_textColor == RZNotificationContentColorLight)
                     {
                         customLabel.textColor = [UIColor lighterColorForColor:colorStart withRgbOffset:0.9];
                         customLabel.shadowColor = [UIColor darkerColorForColor:colorStart withRgbOffset:0.25 andAlphaOffset:0.4];

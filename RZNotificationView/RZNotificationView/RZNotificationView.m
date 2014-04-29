@@ -28,8 +28,8 @@ static const NSInteger kDefaultMaxMessageLength            = 150;
 static const RZNotificationPosition kDefaultPosition       = RZNotificationPositionTop;
 static const RZNotificationColor kDefaultColor             = RZNotificationColorBlue;
 static const BOOL kDefaultVibrate                          = NO;
-static const RZNotificationContentColor kDefaultAssetColor = RZNotificationContentColorAutomaticDark;
-static const RZNotificationContentColor kDefaultTextColor  = RZNotificationContentColorAutomaticLight;
+static const RZNotificationContentColor kDefaultAssetColor = RZNotificationContentColorDark;
+static const RZNotificationContentColor kDefaultTextColor  = RZNotificationContentColorLight;
 static const RZNotificationIcon kDefaultIcon               = RZNotificationIconFacebook;
 static const NSTimeInterval kDefaultDelay                  = 3.5;
 
@@ -84,13 +84,31 @@ static BOOL RZOrientationMaskContainsOrientation(UIInterfaceOrientationMask mask
 
 - (UIColor*) adjustTextColor:(UIColor*)c
 {
-    if(_textColor == RZNotificationContentColorAutomaticDark)
-        return [UIColor darkerColorForColor:c withRgbOffset:0.55];
+    UIColor *colorToReturn = nil;
+    switch (_textColor) {
+        case RZNotificationContentColorLight:
+            colorToReturn = [UIColor whiteColor];
+            break;
+        case RZNotificationContentColorDark:
+            colorToReturn = [UIColor colorWithWhite:76.0f/255.0f alpha:1.0f];
+            break;
+            // Deprecated
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+        case RZNotificationContentColorAutomaticDark:
+            colorToReturn = [UIColor darkerColorForColor:c withRgbOffset:0.55];
+            break;
+        case RZNotificationContentColorAutomaticLight:
+            colorToReturn = [UIColor lighterColorForColor:c withRgbOffset:0.9];
+            break;
+#pragma GCC diagnostic pop
+            
+        default:
+            colorToReturn = c;
+            break;
+    }
     
-    if(_textColor == RZNotificationContentColorAutomaticLight)
-        return [UIColor lighterColorForColor:c withRgbOffset:0.9];
-    
-    return c;
+    return colorToReturn;
 }
 
 #pragma mark - Drawings
@@ -101,10 +119,10 @@ static BOOL RZOrientationMaskContainsOrientation(UIInterfaceOrientationMask mask
     
     switch(_assetColor)
     {
-        case RZNotificationContentColorAutomaticLight:
+        case RZNotificationContentColorLight:
             iconTrait.color = [UIColor whiteColor];
             break;
-        case RZNotificationContentColorAutomaticDark:
+        case RZNotificationContentColorDark:
             iconTrait.color = [UIColor colorWithWhite:76.0f/255.0f alpha:1.0f];
             break;
         case RZNotificationContentColorManual:
@@ -112,13 +130,38 @@ static BOOL RZOrientationMaskContainsOrientation(UIInterfaceOrientationMask mask
             if (_textColor != RZNotificationContentColorManual)
                 _assetColor = _textColor;
             else
-                _assetColor = RZNotificationContentColorAutomaticLight;
+                _assetColor = RZNotificationContentColorLight;
             
             return [self image:img withColor:color];
             break;
+   // Deprecated
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+        case RZNotificationContentColorAutomaticLight:
+            iconTrait.gradientColors = [NSArray arrayWithObjects:
+                                        [UIColor lighterColorForColor:color withRgbOffset:0.9],
+                                        [UIColor lighterColorForColor:color withRgbOffset:0.8], nil];
+            iconTrait.shadowColor = [UIColor darkerColorForColor:color withRgbOffset:0.35 andAlphaOffset:0.6];
+            iconTrait.innerShadowColor = [UIColor lighterColorForColor:color withRgbOffset:0.88 andAlphaOffset:0.79];
+            iconTrait.shadowOffset = CGSizeMake(0.0f, -1.0f);
+            iconTrait.innerShadowOffset = CGSizeMake(0.0f, -1.0f);
+            iconTrait.clipsShadow = NO;
+            break;
+        case RZNotificationContentColorAutomaticDark:
+            iconTrait.gradientColors = [NSArray arrayWithObjects:
+                                        [UIColor darkerColorForColor:color withRgbOffset:0.6],
+                                        [UIColor darkerColorForColor:color withRgbOffset:0.4], nil];
+            iconTrait.shadowColor = [UIColor lighterColorForColor:color withRgbOffset:0.4 andAlphaOffset:0.6];
+            iconTrait.innerShadowColor = [UIColor darkerColorForColor:color withRgbOffset:0.6 andAlphaOffset:0.8];
+            iconTrait.shadowOffset = CGSizeMake(0.0f, 1.0f);
+            iconTrait.innerShadowOffset = CGSizeMake(0.0f, 1.0f);
+            iconTrait.clipsShadow = NO;
+            break;
+#pragma GCC diagnostic pop
     }
     
     MOOMaskedIconView *iconView = [MOOMaskedIconView iconWithImage:img];
+    iconView.clipsShadow = YES;
     [iconView mixInTrait:iconTrait];
     
     return [iconView renderImage];
