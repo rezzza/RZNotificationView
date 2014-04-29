@@ -286,6 +286,33 @@ typedef void (^RZNotificationCompletion)(BOOL touched);
 + (NSArray*) allNotificationsForController:(UIViewController*)controller;
 
 /**---------------------------------------------------------------------------------------
+ * @name Default configurations. Note that it won't redraw the current displayed notifications
+ *  ---------------------------------------------------------------------------------------
+ */
+
+/**
+ *  Register the minimum height for the notifications
+ *  Default is 54.0f
+ *
+ *  @param minimumHeight the min height
+ */
++ (void) registerMinimumHeight:(CGFloat)minimumHeight;
+
+/**
+ *   Adjust margin on top and botton of textLabel or customView. (16px by default)
+ *
+ *  @param contentMarginHeight the margin
+ */
++ (void) registerContentMarginOnHeight:(CGFloat)contentMarginHeight;
+
+/**
+ *  Register the x offset from border. Default is 16px
+ *
+ *  @param defaultXOffset the default x offset
+ */
++ (void) registerDefaultOffsetOnX:(CGFloat)defaultXOffset;
+
+/**---------------------------------------------------------------------------------------
  * @name Properties
  *  ---------------------------------------------------------------------------------------
  */
@@ -371,9 +398,9 @@ typedef void (^RZNotificationCompletion)(BOOL touched);
 @property (nonatomic) BOOL displayAnchor;
 
 /**
- Adjust margin on top and botton of textLabel or customView. (8px by default)
+ Adjust margin on top and botton of textLabel or customView. (16px by default)
  */
-@property (nonatomic) CGFloat contentMarginHeight;
+@property (nonatomic) CGFloat contentMarginHeight DEPRECATED_MSG_ATTRIBUTE("use `+registerContentMarginOnHeight:` instead");
 
 /**
  Set the message lenght max you want to display. 3 char "..." will be added. Defaut value is 150

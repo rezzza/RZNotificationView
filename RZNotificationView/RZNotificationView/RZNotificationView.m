@@ -24,7 +24,7 @@ blue:((float)(rgbValue & 0xFF))/255.0                     \
 alpha:1.0]
 
 static const NSInteger kDefaultMaxMessageLength            = 150;
-static const CGFloat kDefaultContentMarginHeight           = 16.0f;
+
 static const RZNotificationPosition kDefaultPosition       = RZNotificationPositionTop;
 static const RZNotificationColor kDefaultColor             = RZNotificationColorBlue;
 static const BOOL kDefaultVibrate                          = NO;
@@ -33,8 +33,14 @@ static const RZNotificationContentColor kDefaultTextColor  = RZNotificationConte
 static const RZNotificationIcon kDefaultIcon               = RZNotificationIconFacebook;
 static const NSTimeInterval kDefaultDelay                  = 3.5;
 
-static const CGFloat kMinHeight                            = 64.0f;
-static const CGFloat kOffsetX                              = 35.0f;
+static CGFloat kMinHeight                                  = 54.0f;
+static CGFloat kDefaultContentMarginHeight                 = 16.0f;
+static CGFloat kDefaultOffsetX                             = 16.0f;
+//static CGFloat kOffsetBetweenTextAndImages           = 16.0f; // If you change this value, please consider add it as static
+#define kOffsetBetweenTextAndImages                        kDefaultOffsetX
+
+static const CGFloat kIconWidth                            = 21.0f;
+static const CGFloat kIconHeight                           = 22.0f;
 
 static BOOL RZOrientationMaskContainsOrientation(UIInterfaceOrientationMask mask, UIInterfaceOrientation orientation);
 
@@ -55,22 +61,23 @@ static BOOL RZOrientationMaskContainsOrientation(UIInterfaceOrientationMask mask
 
 - (CGFloat) getOffsetXLeft
 {
-    CGFloat icontWitdhFree = 0.0;
-    if (![self getImageForIcon:_icon]) {
-        icontWitdhFree = 21.0;
+    CGFloat offsetX = kDefaultOffsetX;
+    if ([self getImageForIcon:_icon]) {
+        offsetX += (kIconWidth + kOffsetBetweenTextAndImages);
     }
     
-    return kOffsetX - icontWitdhFree;
+    return offsetX;
 }
 
 - (CGFloat) getOffsetXRight
 {
-    CGFloat anchorWitdhFree = 21.0;
+    
+    CGFloat offsetX = kDefaultOffsetX;
     if (_displayAnchor) {
-        anchorWitdhFree = 0.0;
+        offsetX += (kIconWidth + kOffsetBetweenTextAndImages);
     }
     
-    return kOffsetX - anchorWitdhFree;
+    return offsetX;
 }
 
 #pragma mark - Color Adjustements
@@ -205,19 +212,21 @@ static BOOL RZOrientationMaskContainsOrientation(UIInterfaceOrientationMask mask
     CGContextRestoreGState(context);
     
     //// Subframes
-    _iconView.frame = CGRectMake(CGRectGetMinX(notificationFrame) + 7,
-                                 CGRectGetMinY(notificationFrame) + floor((CGRectGetHeight(notificationFrame) - 22) * 0.5),
-                                 21,
-                                 22);
+    _iconView.frame = CGRectMake(0.0f,
+                                 CGRectGetMinY(notificationFrame) + floor((CGRectGetHeight(notificationFrame) - kIconHeight) * 0.5),
+                                 kIconWidth,
+                                 kIconHeight);
+    _iconView.center = CGPointMake(kDefaultOffsetX + kIconWidth * 0.5f, _iconView.center.y);
     
     CGRect contentFrame = CGRectMake(CGRectGetMinX(notificationFrame) + [self getOffsetXLeft],
-                                     CGRectGetMinY(notificationFrame) + CGRectGetMinY(notificationFrame) + _contentMarginHeight,
+                                     CGRectGetMinY(notificationFrame) + _contentMarginHeight,
                                      CGRectGetWidth(notificationFrame) - [self getOffsetXLeft] - [self getOffsetXRight],
                                      CGRectGetHeight(notificationFrame) - 2*_contentMarginHeight);
     _textLabel.frame = contentFrame;
     [_customView setFrame:contentFrame];
-    _anchorView.frame = CGRectMake(CGRectGetMinX(notificationFrame) + CGRectGetWidth(notificationFrame) - 26, CGRectGetMinY(notificationFrame) + floor((CGRectGetHeight(notificationFrame) - 22) * 0.5), 21, 22);
-    
+    _anchorView.frame = CGRectMake(0.0f, CGRectGetMinY(notificationFrame) + floor((CGRectGetHeight(notificationFrame) - kIconHeight) * 0.5), kIconWidth, kIconHeight);
+    _anchorView.center = CGPointMake(CGRectGetMaxX(notificationFrame) - (kDefaultOffsetX + kIconWidth * 0.5f), _anchorView.center.y);
+
     _iconView.image = [self image:[self getImageForIcon:_icon] withColor:colorStart];
     _anchorView.image = [self image:[UIImage imageNamed:@"notif_anchor"] withColor:colorStart];
     
@@ -328,7 +337,7 @@ static BOOL RZOrientationMaskContainsOrientation(UIInterfaceOrientationMask mask
     _textLabel.frame   = frameL;
     [_textLabel sizeToFit];
     
-    _textLabel.text = message;
+    _textLabel.text = message; // FIXME: Why? We should keep the truncated text
     
     [self adjustHeightAndRedraw:CGRectGetHeight(_textLabel.frame)];
 }
@@ -364,21 +373,6 @@ static BOOL RZOrientationMaskContainsOrientation(UIInterfaceOrientationMask mask
         AudioServicesPlaySystemSound (kSystemSoundID_Vibrate);
         _hasVibrate = YES;
     }
-}
-
-- (void) setContentMarginHeight:(CGFloat)contentMarginHeight
-{
-    _contentMarginHeight = contentMarginHeight;
-    
-    CGFloat height;
-    
-    if ([(UIView*)_customView superview]) {
-        height = [_customView resizeForWidth:CGRectGetWidth(self.frame) - [self getOffsetXLeft] - [self getOffsetXRight]];
-    }
-    else{
-        height = CGRectGetHeight(_textLabel.frame);
-    }
-    [self adjustHeightAndRedraw:height];
 }
 
 - (void) setDisplayAnchor:(BOOL)displayAnchor
@@ -430,6 +424,23 @@ static BOOL RZOrientationMaskContainsOrientation(UIInterfaceOrientationMask mask
     if (_message && _textLabel.superview) {
         [self setMessage:_message];
     }
+}
+
+#pragma mark - Default configuration
+
++ (void)registerMinimumHeight:(CGFloat)minimumHeight
+{
+    kMinHeight = minimumHeight;
+}
+
++ (void)registerContentMarginOnHeight:(CGFloat)contentMarginHeight
+{
+    kDefaultContentMarginHeight = contentMarginHeight;
+}
+
++ (void)registerDefaultOffsetOnX:(CGFloat)defaultXOffset
+{
+    kDefaultOffsetX = defaultXOffset;
 }
 
 #pragma mark - Subviews build
@@ -894,6 +905,23 @@ static BOOL RZOrientationMaskContainsOrientation(UIInterfaceOrientationMask mask
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIDeviceOrientationDidChangeNotification object:nil];
     
     AudioServicesDisposeSystemSoundID(_soundFileObject);
+}
+
+#pragma mark - deprecated
+
+- (void) setContentMarginHeight:(CGFloat)contentMarginHeight
+{
+    _contentMarginHeight = contentMarginHeight;
+    
+    CGFloat height;
+    
+    if ([(UIView*)_customView superview]) {
+        height = [_customView resizeForWidth:CGRectGetWidth(self.frame) - [self getOffsetXLeft] - [self getOffsetXRight]];
+    }
+    else{
+        height = CGRectGetHeight(_textLabel.frame);
+    }
+    [self adjustHeightAndRedraw:height];
 }
 
 @end
