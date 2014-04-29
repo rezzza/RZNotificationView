@@ -84,8 +84,8 @@ typedef void (^RZNotificationCompletion)(BOOL touched);
 
 @protocol RZNotificationViewProtocol
 
-- (CGFloat)yOriginForRZNotificationViewForPosition:(RZNotificationPosition)position;
 @optional
+- (CGFloat)yOriginForRZNotificationViewForPosition:(RZNotificationPosition)position;
 - (void)addRZNotificationView:(RZNotificationView*)view;
 
 @end
@@ -410,6 +410,10 @@ typedef void (^RZNotificationCompletion)(BOOL touched);
  */
 @property (nonatomic) NSInteger messageMaxLenght;
 
+/**
+ *  Like the UIViewController property, will adjust the inset on top if on navigation controller. Default is YES;
+ */
+@property (nonatomic) BOOL shouldAutomaticallyAdjustInsetOnTop;
 /**
  completionBlock to execute before hiding. Ability to kwon if notification view as been touched or not
  */

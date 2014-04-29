@@ -36,6 +36,7 @@ static const NSTimeInterval kDefaultDelay                  = 3.5;
 static CGFloat kMinHeight                                  = 54.0f;
 static CGFloat kDefaultContentMarginHeight                 = 16.0f;
 static CGFloat kDefaultOffsetX                             = 16.0f;
+
 //static CGFloat kOffsetBetweenTextAndImages           = 16.0f; // If you change this value, please consider add it as static
 #define kOffsetBetweenTextAndImages                        kDefaultOffsetX
 
@@ -539,6 +540,7 @@ static BOOL RZOrientationMaskContainsOrientation(UIInterfaceOrientationMask mask
         _icon = icon;
         _displayAnchor = YES;
         _contentMarginHeight = kDefaultContentMarginHeight;
+        _shouldAutomaticallyAdjustInsetOnTop = YES;
         
         // Add icon view
         _iconView = [[UIImageView alloc] initWithFrame:CGRectZero];
@@ -742,11 +744,21 @@ static BOOL RZOrientationMaskContainsOrientation(UIInterfaceOrientationMask mask
     UIViewController *c = _controller;
     CGFloat finalOrigin = 0.0f;
     
-    if ([c conformsToProtocol:@protocol(RZNotificationViewProtocol)]) {
+    if ([c conformsToProtocol:@protocol(RZNotificationViewProtocol)] && [c respondsToSelector:@selector(yOriginForRZNotificationViewForPosition:)]) {
         finalOrigin = [(UIViewController<RZNotificationViewProtocol>*)c yOriginForRZNotificationViewForPosition:position];
     } else {
         if (position == RZNotificationPositionTop) {
             finalOrigin = [c.topLayoutGuide length];
+            if (![c.topLayoutGuide length]) {
+                // Try to automatically adjust
+                if (_shouldAutomaticallyAdjustInsetOnTop)
+                {
+                    finalOrigin += PPStatusBarHeight();
+                    if (![c.navigationController isNavigationBarHidden]) {
+                        finalOrigin += PPToolBarHeight();
+                    }
+                }
+            }
         } else {
             finalOrigin = CGRectGetHeight(_controller.view.frame) - [c.bottomLayoutGuide length];
         }
@@ -776,7 +788,7 @@ static BOOL RZOrientationMaskContainsOrientation(UIInterfaceOrientationMask mask
     if (_position == RZNotificationPositionTop) {
         yFinalOrigin = [self _getFinalOriginForPosition:_position];
     } else {
-        yFinalOrigin = [self _getFinalOriginForPosition:_position]-CGRectGetHeight(self.frame);
+        yFinalOrigin = [self _getFinalOriginForPosition:_position] - CGRectGetHeight(self.frame);
     }
     
     [self setYOrigin:yFinalOrigin];
