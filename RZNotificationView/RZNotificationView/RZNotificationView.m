@@ -26,7 +26,7 @@ alpha:1.0]
 static const NSInteger kDefaultMaxMessageLength            = 150;
 
 static const RZNotificationPosition kDefaultPosition       = RZNotificationPositionTop;
-static const RZNotificationColor kDefaultColor             = RZNotificationColorBlue;
+static const RZNotificationColor kDefaultColor             = RZNotificationColorLightBlue;
 static const BOOL kDefaultVibrate                          = NO;
 static const RZNotificationContentColor kDefaultAssetColor = RZNotificationContentColorDark;
 static const RZNotificationContentColor kDefaultTextColor  = RZNotificationContentColorLight;
@@ -191,18 +191,31 @@ static BOOL RZOrientationMaskContainsOrientation(UIInterfaceOrientationMask mask
     }
     else {
         switch (_color) {
+            case RZNotificationColorYellow:
+                colorStart = RZUIColorFromRGB(0xFFBD00);
+                break;
+            case RZNotificationColorRed:
+                colorStart = RZUIColorFromRGB(0xB20000);
+                break;
+            case RZNotificationColorLightBlue:
+                colorStart = RZUIColorFromRGB(0x3699C9);
+                break;
+            case RZNotificationColorDarkBlue:
+                colorStart = RZUIColorFromRGB(0x395799);
+                break;
+            case RZNotificationColorPurple:
+                colorStart = RZUIColorFromRGB(0x704081);
+                break;
+            case RZNotificationColorOrange:
+                colorStart = RZUIColorFromRGB(0xD35400);
+                break;
+                // Deprecated
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
             case RZNotificationColorGrey:
                 colorStart = [UIColor colorWithRed: 162.0/255.0 green: 156.0/255.0 blue: 142.0/255.0 alpha: 1];
                 break;
-            case RZNotificationColorYellow:
-                colorStart = [UIColor colorWithRed: 255.0/255.0 green: 204.0/255.0 blue: 0.0/255.0 alpha: 1];
-                break;
-            case RZNotificationColorRed:
-                colorStart = [UIColor colorWithRed: 227.0/255.0 green: 0.0/255.0 blue: 0.0/255.0 alpha: 1];
-                break;
-            case RZNotificationColorBlue:
-                colorStart = [UIColor colorWithRed: 110.0/255.0 green: 132.0/255.0 blue: 181.0/255.0 alpha: 1];
-                break;
+#pragma GCC diagnostic pop
             default:
                 colorStart = [UIColor colorWithRed: 162.0/255.0 green: 156.0/255.0 blue: 142.0/255.0 alpha: 1];
                 break;
@@ -264,9 +277,9 @@ static BOOL RZOrientationMaskContainsOrientation(UIInterfaceOrientationMask mask
     _iconView.center = CGPointMake(kDefaultOffsetX + kIconWidth * 0.5f, _iconView.center.y);
     
     CGRect contentFrame = CGRectMake(CGRectGetMinX(notificationFrame) + [self getOffsetXLeft],
-                                     CGRectGetMinY(notificationFrame) + _contentMarginHeight,
+                                     CGRectGetMinY(notificationFrame) + kDefaultContentMarginHeight,
                                      CGRectGetWidth(notificationFrame) - [self getOffsetXLeft] - [self getOffsetXRight],
-                                     CGRectGetHeight(notificationFrame) - 2*_contentMarginHeight);
+                                     CGRectGetHeight(notificationFrame) - 2*kDefaultContentMarginHeight);
     _textLabel.frame = contentFrame;
     [_customView setFrame:contentFrame];
 
@@ -514,7 +527,7 @@ static BOOL RZOrientationMaskContainsOrientation(UIInterfaceOrientationMask mask
     if (!_textLabel) {
         _textLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.bounds) - [self getOffsetXLeft] - [self getOffsetXRight], 0)];
         _textLabel.numberOfLines = 0;
-        _textLabel.font = [UIFont fontWithName:@"Helvetica-Bold" size:12.0];
+        _textLabel.font = _labelFont;
         _textLabel.backgroundColor = [UIColor clearColor];
         _textLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
         if (RZSystemVersionGreaterOrEqualThan(6.0))
@@ -559,8 +572,9 @@ static BOOL RZOrientationMaskContainsOrientation(UIInterfaceOrientationMask mask
         _textColor = textColor;
         _icon = icon;
         _anchor = anchor;
+        _labelFont = [UIFont fontWithName:@"Avenir" size:15.0];
         
-        _contentMarginHeight = kDefaultContentMarginHeight;
+        kDefaultContentMarginHeight = kDefaultContentMarginHeight;
         _shouldAutomaticallyAdjustInsetOnTop = YES;
         
         // Add icon view
@@ -885,7 +899,7 @@ static BOOL RZOrientationMaskContainsOrientation(UIInterfaceOrientationMask mask
 - (void) adjustHeightAndRedraw:(CGFloat)height
 {
     CGRect frame = self.frame;
-    frame.size.height = MAX(kMinHeight , height + 2.0*_contentMarginHeight);
+    frame.size.height = MAX(kMinHeight , height + 2.0*kDefaultContentMarginHeight);
     self.frame = frame;
     [self setNeedsDisplay];
 }
@@ -978,7 +992,7 @@ static BOOL RZOrientationMaskContainsOrientation(UIInterfaceOrientationMask mask
 
 - (void) setContentMarginHeight:(CGFloat)contentMarginHeight
 {
-    _contentMarginHeight = contentMarginHeight;
+    kDefaultContentMarginHeight = contentMarginHeight;
     
     CGFloat height;
     

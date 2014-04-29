@@ -50,6 +50,7 @@
     _assetColor = RZNotificationContentColorLight; // == 1
     _textColor = RZNotificationContentColorLight; // == 1
     _anchor = RZNotificationAnchorArrow;
+    _marginHeight = 16.0f;
     
     _formArray = @[
                    @(RZSampleFormShowButton),
@@ -102,6 +103,7 @@
 - (void) sliderMarginHeightValueChanged:(id)sender
 {
     _marginHeigtLabel.text = [NSString stringWithFormat:@"Margin : %.0fpx", _marginHeigtSlider.value];
+    _marginHeight = _marginHeigtSlider.value;
 }
 
 - (void) sliderMaxLenghtValueChanged:(id)sender
@@ -338,10 +340,12 @@
                 titleLabel.font = [UIFont boldSystemFontOfSize:14.0];
                 
                 NSArray *items = [NSArray arrayWithObjects:
-                                  @"Grey",
                                   @"Yellow",
                                   @"Red",
-                                  @"Blue",
+                                  @"LBlue",
+                                  @"DBlue",
+                                  @"Purple",
+                                  @"Orange",
                                   nil];
                 MCSegmentedControl *segmentedControl = [[MCSegmentedControl alloc] initWithItems:items];
                 segmentedControl.tag = type;
@@ -685,7 +689,7 @@
                 _marginHeigtSlider.autoresizingMask = UIViewAutoresizingFlexibleWidth;
                 _marginHeigtSlider.minimumTrackTintColor = [UIColor colorWithRed:.6 green:.0 blue:.0 alpha:1.0];
                 _marginHeigtSlider.maximumValue = 30.0;
-                _marginHeigtSlider.value = 8.0;
+                _marginHeigtSlider.value = _marginHeight;
                 _marginHeigtSlider.continuous = YES;
                 [_marginHeigtSlider addTarget:self action:@selector(sliderMarginHeightValueChanged:) forControlEvents:UIControlEventValueChanged];
                 
@@ -833,7 +837,7 @@
             // We don't want to stack the notifications, so hide before presenting a new one
             [RZNotificationView hideNotificationForController:self];
             
-            [RZNotificationView registerContentMarginOnHeight:_marginHeigtSlider.value];
+            [RZNotificationView registerContentMarginOnHeight:_marginHeight];
 
             RZNotificationView *notif =
             [[RZNotificationView alloc] initWithController:self

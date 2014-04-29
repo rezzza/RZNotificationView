@@ -60,14 +60,23 @@ typedef enum {
  The color of the notification view
  */
 typedef enum {
-    /** Grey color*/
-    RZNotificationColorGrey = 0,
     /** Yellow color*/
-    RZNotificationColorYellow,
+    RZNotificationColorYellow = 0,
     /** Red color*/
     RZNotificationColorRed,
+    /** Light blue color*/
+    RZNotificationColorLightBlue,
+    /** Dark blue color*/
+    RZNotificationColorDarkBlue,
+    /** Purple color*/
+    RZNotificationColorPurple,
+    /** Orange color*/
+    RZNotificationColorOrange,
+    // Deprecations
+    /** Grey color*/
+    RZNotificationColorGrey __attribute__((deprecated)),
     /** Blue color*/
-    RZNotificationColorBlue
+    RZNotificationColorBlue __attribute__((deprecated)) = RZNotificationColorLightBlue,
 }RZNotificationColor;
 
 /**
@@ -427,6 +436,12 @@ typedef void (^RZNotificationCompletion)(BOOL touched);
 /**
  completionBlock to execute before hiding. Ability to kwon if notification view as been touched or not
  */
+
+/**
+ *  Label font when using text. Default is avenir of 15px
+ */
+@property (nonatomic, strong) UIFont *labelFont UI_APPEARANCE_SELECTOR;
+
 @property (nonatomic, strong) RZNotificationCompletion completionBlock;
 
 #pragma mark - Deprecated

@@ -52,6 +52,7 @@ typedef enum
     NSIndexPath *_indexPath;
     SampleMessage _sampleMessage;
     NSInteger _roundIndex;
+    CGFloat _marginHeight;
     
     BOOL _vibrate;
     NSString *_sound;
