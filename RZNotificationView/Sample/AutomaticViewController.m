@@ -50,6 +50,6 @@
 {
     AutomaticModalViewController *m = [[AutomaticModalViewController alloc] initWithNibName:@"AutomaticModalViewController" bundle:nil];
     UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:m];
-    [self presentModalViewController:nav animated:YES];
+    [self presentViewController:nav animated:YES completion:nil];
 }
 @end

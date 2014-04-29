@@ -45,10 +45,11 @@
     
     [RZNotificationView showNotificationWithMessage:@"Yeah that works on a modal view too!"
                                                icon:RZNotificationIconTwitter
+                                             anchor:RZNotificationAnchorX
                                            position:RZNotificationPositionTop
                                               color:RZNotificationColorYellow
-                                         assetColor:RZNotificationContentColorAutomaticLight
-                                          textColor:RZNotificationContentColorAutomaticDark
+                                         assetColor:RZNotificationContentColorLight
+                                          textColor:RZNotificationContentColorDark
                                   addedToController:self
                                      withCompletion:nil];
     

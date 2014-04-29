@@ -51,10 +51,11 @@
 {
     [RZNotificationView showNotificationOnTopMostControllerWithMessage:@"This is a twitter message!"
                                                                   icon:RZNotificationIconTwitter
+                                                                anchor:RZNotificationAnchorX
                                                               position:RZNotificationPositionTop
                                                                  color:RZNotificationColorYellow
-                                                            assetColor:RZNotificationContentColorAutomaticLight
-                                                             textColor:RZNotificationContentColorAutomaticDark
+                                                            assetColor:RZNotificationContentColorLight
+                                                             textColor:RZNotificationContentColorDark
                                                                  withCompletion:nil];
 }
 
@@ -62,10 +63,11 @@
 {
     RZNotificationView *notif = [RZNotificationView showNotificationWithMessage:@"Warning, you did something wrong."
                                                                            icon:RZNotificationIconWarning
+                                                                         anchor:RZNotificationAnchorX
                                                                        position:RZNotificationPositionTop
                                                                           color:RZNotificationColorRed
-                                                                     assetColor:RZNotificationContentColorAutomaticDark
-                                                                      textColor:RZNotificationContentColorAutomaticLight
+                                                                     assetColor:RZNotificationContentColorDark
+                                                                      textColor:RZNotificationContentColorLight
                                                               addedToController:self
                                                                  withCompletion:nil];
     [notif setSound:@"DoorBell-SoundBible.com-1986366504.wav"];
@@ -76,10 +78,11 @@
 {
     [RZNotificationView showNotificationWithMessage:@"Tell your friends that RZNotificationView is awesome."
                                                icon:RZNotificationIconFacebook
+                                             anchor:RZNotificationAnchorArrow
                                            position:RZNotificationPositionBottom
                                               color:RZNotificationColorBlue
-                                         assetColor:RZNotificationContentColorAutomaticDark
-                                          textColor:RZNotificationContentColorAutomaticLight
+                                         assetColor:RZNotificationContentColorDark
+                                          textColor:RZNotificationContentColorLight
                                   addedToController:self
                                      withCompletion:^(BOOL touched) {
                                          if (touched) {
