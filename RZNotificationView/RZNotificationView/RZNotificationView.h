@@ -82,6 +82,7 @@ typedef void (^RZNotificationCompletion)(BOOL touched);
 @protocol RZNotificationViewProtocol
 
 - (CGFloat)yOriginForRZNotificationViewForPosition:(RZNotificationPosition)position;
+@optional
 - (void)addRZNotificationView:(RZNotificationView*)view;
 
 @end

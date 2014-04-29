@@ -747,7 +747,7 @@ static BOOL RZOrientationMaskContainsOrientation(UIInterfaceOrientationMask mask
         self.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
     }
     
-    if ([_controller conformsToProtocol:@protocol(RZNotificationViewProtocol)]) {
+    if ([_controller conformsToProtocol:@protocol(RZNotificationViewProtocol)] && [_controller respondsToSelector:@selector(addRZNotificationView:)]) {
         [(UIViewController<RZNotificationViewProtocol>*)_controller addRZNotificationView:self];
     } else {
         [_controller.view addSubview:self];
