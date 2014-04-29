@@ -16,12 +16,20 @@
 #import <PPHelpMe/PPHelpMe.h>
 
 #import <AudioToolbox/AudioServices.h>
+#import <objc/runtime.h>
 
 #define RZUIColorFromRGB(rgbValue) [UIColor               \
 colorWithRed:((float)((rgbValue & 0xFF0000) >> 16))/255.0 \
 green:((float)((rgbValue & 0xFF00) >> 8))/255.0           \
 blue:((float)(rgbValue & 0xFF))/255.0                     \
 alpha:1.0]
+
+@interface RZNotificationViewManager : NSObject
++ (void) registerNotification:(RZNotificationView*)notification;
++ (void) removeNotification:(RZNotificationView*)notification;
++ (RZNotificationView*) notificationForController:(UIViewController*)controller;
++ (NSArray*) allNotificationsForController:(UIViewController*)controller;
+@end
 
 static const NSInteger kDefaultMaxMessageLength            = 150;
 
@@ -740,28 +748,12 @@ static BOOL RZOrientationMaskContainsOrientation(UIInterfaceOrientationMask mask
 
 + (RZNotificationView*) notificationForController:(UIViewController*)controller
 {
-    RZNotificationView *notification = nil;
-	NSArray *subviews = controller.view.subviews;
-	Class notificationClass = [RZNotificationView class];
-	for (UIView *aView in subviews) {
-		if ([aView isKindOfClass:notificationClass]) {
-			notification = (RZNotificationView *)aView;
-		}
-	}
-	return notification;
+    return [RZNotificationViewManager notificationForController:controller];
 }
 
 + (NSArray*) allNotificationsForController:(UIViewController*)controller
 {
-    NSMutableArray *notifications = [NSMutableArray array];
-	NSArray *subviews = controller.view.subviews;
-	Class notificationClass = [RZNotificationView class];
-	for (UIView *aView in subviews) {
-		if ([aView isKindOfClass:notificationClass]) {
-			[notifications addObject:aView];
-		}
-	}
-	return [NSArray arrayWithArray:notifications];
+    return [RZNotificationViewManager allNotificationsForController:controller];
 }
 
 #pragma mark - Show hide methods
@@ -857,6 +849,7 @@ static BOOL RZOrientationMaskContainsOrientation(UIInterfaceOrientationMask mask
         AudioServicesPlaySystemSound (_soundFileObject);
     }
     
+    [RZNotificationViewManager registerNotification:self];
     
     [UIView animateWithDuration:0.4
                      animations:^{
@@ -883,6 +876,7 @@ static BOOL RZOrientationMaskContainsOrientation(UIInterfaceOrientationMask mask
                      }
                      completion:^(BOOL finished) {
                          [self removeFromSuperview];
+                         [RZNotificationViewManager removeNotification:self];
                          _isShowing = NO;
                      }];
 }
@@ -1076,6 +1070,66 @@ static BOOL RZOrientationMaskContainsOrientation(UIInterfaceOrientationMask mask
     [notification setMessage:message];
     [notification show];
     return notification;
+}
+
+@end
+
+
+#pragma mark - Notification Manager
+
+@interface UIViewController (RZNotificationViewManager)
+@property (nonatomic, strong) NSMutableArray *rzNotifications;
+@end
+
+@implementation UIViewController (RZNotificationViewManager)
+static char rzNotificationsKey;
+
+- (void)setRzNotifications:(NSMutableArray *)rzNotifications
+{
+    objc_setAssociatedObject(self,
+                             &rzNotificationsKey,
+                             rzNotifications,
+                             OBJC_ASSOCIATION_RETAIN);
+}
+
+- (NSMutableArray *) rzNotifications {
+    id notifications = objc_getAssociatedObject(self,
+                                             &rzNotificationsKey);
+    
+    if (!notifications)
+    {
+        notifications = [NSMutableArray array];
+        self.rzNotifications = notifications;
+    }
+    return notifications;
+}
+
+@end
+
+@implementation RZNotificationViewManager
+
++ (void)registerNotification:(RZNotificationView *)notification
+{
+    NSAssert(notification, @"`notification should not be nil`");
+    [notification.controller.rzNotifications addObject:notification];
+}
+
++ (void)removeNotification:(RZNotificationView*)notification
+{
+    NSAssert(notification, @"`notification should not be nil`");
+    if ([notification.controller.rzNotifications containsObject:notification]) {
+        [notification.controller.rzNotifications removeObject:notification];
+    }
+}
+
++ (RZNotificationView *)notificationForController:(UIViewController *)controller
+{
+    return [controller.rzNotifications lastObject];
+}
+
++(NSArray *)allNotificationsForController:(UIViewController *)controller
+{
+    return [NSArray arrayWithArray:controller.rzNotifications];
 }
 
 @end
