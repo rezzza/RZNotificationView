@@ -49,7 +49,7 @@
     
     _assetColor = RZNotificationContentColorLight; // == 1
     _textColor = RZNotificationContentColorLight; // == 1
-    _anchor = YES;
+    _anchor = RZNotificationAnchorArrow;
     
     _formArray = @[
                    @(RZSampleFormShowButton),
@@ -57,6 +57,7 @@
                    @(RZSampleFormTopBotColors),
                    @(RZSampleFormPredefinedColors),
                    @(RZSampleFormIcon),
+                   @(RZSampleFormAnchor),
                    @(RZSampleFormPosition),
                    @(RZSampleFormVibrate),
                    @(RZSampleFormHideShowNavBar),
@@ -65,7 +66,6 @@
                    @(RZSampleFormTextColor),
                    @(RZSampleFormContent),
                    @(RZSampleFormSound),
-                   @(RZSampleFormAnchor),
                    @(RZSampleFormMargin),
                    @(RZSampleFormMaxLength)
                    ];
@@ -162,16 +162,6 @@
     }
     else{
         _sound = nil;
-    }
-}
-
-- (void) switchChangeAnchor:(UISwitch*)sender
-{
-    if (sender.on){
-        _anchor = YES;
-    }
-    else{
-        _anchor = NO;
     }
 }
 
@@ -643,25 +633,48 @@
             if (anchorCell == nil) {
                 anchorCell = [[PrettyCustomViewTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:AnchorCellIdentifier];
                 
-                UISwitch *switchView = [[UISwitch alloc] initWithFrame:CGRectZero];
-                switchView.center = CGPointMake(220.0, 22.0);
-                switchView.onTintColor = [UIColor colorWithRed:.6 green:.0 blue:.0 alpha:1.0];
-                switchView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
-                switchView.on = _anchor;
-                [switchView addTarget:self action:@selector(switchChangeAnchor:) forControlEvents:UIControlEventValueChanged];
+                MOOMaskedIconView *iconArrow = [MOOMaskedIconView iconWithImage:[UIImage imageNamed:@"notif_anchor_arrow.png"]];
+                MOOMaskedIconView *iconX = [MOOMaskedIconView iconWithImage:[UIImage imageNamed:@"notif_anchor_cross.png"]];
+                
+                NSArray *items = @[
+                                  [iconArrow renderImage],
+                                  [iconX renderImage],
+                                  @"No"
+                                  ];
+                
+                MCSegmentedControl *segmentedControl = [[MCSegmentedControl alloc] initWithItems:items];
+                segmentedControl.tag = type;
+                segmentedControl.font = [UIFont boldSystemFontOfSize:14.0f];
+                segmentedControl.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
+                
+                // set frame, add to view, set target and action for value change as usual
+                segmentedControl.frame = CGRectMake(90.0, 7.0, 210.0, 30.0);
+                [self.view addSubview:segmentedControl];
+                [segmentedControl addTarget:self action:@selector(segmentedControlDidChange:) forControlEvents:UIControlEventValueChanged];
+                
+                segmentedControl.selectedSegmentIndex = 0;
+                
+                // Set a tint color
+                segmentedControl.tintColor = [UIColor colorWithRed:.6 green:.0 blue:.0 alpha:1.0];
+                
+                // Customize font and items color
+                segmentedControl.selectedItemColor   = [UIColor whiteColor];
+                segmentedControl.unselectedItemColor = [UIColor darkGrayColor];
                 
                 UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(10.0, 0.0, 70.0, 44.0)];
                 titleLabel.text = [NSString stringWithFormat:@"Anchor"];
                 titleLabel.backgroundColor = [UIColor clearColor];
                 titleLabel.font = [UIFont boldSystemFontOfSize:14.0];
                 
-                UIView *anchorView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, 320, 44)];
-                [anchorView addSubview:switchView];
-                [anchorView addSubview:titleLabel];
-                anchorCell.customView = anchorView;
+                UIView *customView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, 320, 44)];
+                [customView addSubview:segmentedControl];
+                [customView addSubview:titleLabel];
+                anchorCell.customView = customView;
             }
             [anchorCell prepareForTableView:tableView indexPath:indexPath];
             anchorCell.tableViewBackgroundColor = tableView.backgroundColor;
+            return anchorCell;
+
             return anchorCell;
         case RZSampleFormMargin:
             marginHeightCell = [tableView dequeueReusableCellWithIdentifier:MarginHeigtCellIdentifier];
@@ -820,9 +833,12 @@
             // We don't want to stack the notifications, so hide before presenting a new one
             [RZNotificationView hideNotificationForController:self];
             
+            [RZNotificationView registerContentMarginOnHeight:_marginHeigtSlider.value];
+
             RZNotificationView *notif =
             [[RZNotificationView alloc] initWithController:self
                                                       icon:_icon
+                                                    anchor:_anchor
                                                   position:_position
                                                      color:_color
                                                 assetColor:_assetColor
@@ -854,8 +870,6 @@
             [notif setAssetColor:_assetColor];
             [notif setTextColor:_textColor];
             [notif setCustomView:_customView];
-            [notif setDisplayAnchor:_anchor];
-            [notif setContentMarginHeight:_marginHeigtSlider.value];
             [notif setMessageMaxLenght:(int)_maxLenghtSlider.value];
             notif.customTopColor = _customTopColor;
             notif.customBottomColor = _customBottomColor;
@@ -905,6 +919,10 @@
         case RZSampleFormIcon:
             [RZNotificationView hideNotificationForController:self];
             _icon = sender.selectedSegmentIndex;
+            break;
+        case RZSampleFormAnchor:
+            [RZNotificationView hideNotificationForController:self];
+            _anchor = sender.selectedSegmentIndex;
             break;
         case RZSampleFormContent:
             [RZNotificationView hideNotificationForController:self];

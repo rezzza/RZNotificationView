@@ -55,13 +55,14 @@ typedef enum
     
     BOOL _vibrate;
     NSString *_sound;
-    BOOL _anchor;
     
     UIColor *_customTopColor, *_customBottomColor;
     
     RZNotificationColor _color;
     RZNotificationPosition _position;
     RZNotificationIcon _icon;
+    RZNotificationAnchor _anchor;
+
     RZNotificationContentColor _assetColor;
     RZNotificationContentColor _textColor;
     
