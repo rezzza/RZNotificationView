@@ -1041,6 +1041,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 44AD4392943448DD9381F41A /* Pods.xcconfig */;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "RZNotificationView/RZNotificationView-Prefix.pch";
 				INFOPLIST_FILE = "RZNotificationView/RZNotificationView-Info.plist";
@@ -1055,6 +1056,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 44AD4392943448DD9381F41A /* Pods.xcconfig */;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "RZNotificationView/RZNotificationView-Prefix.pch";
 				INFOPLIST_FILE = "RZNotificationView/RZNotificationView-Info.plist";

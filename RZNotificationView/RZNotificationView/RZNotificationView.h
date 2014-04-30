@@ -6,10 +6,10 @@
 //  Copyright (c) 2012 Rezzza. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
-#import "RZNotificationLabelProtocol.h"
-#include <AudioToolbox/AudioToolbox.h>
+@import UIKit;
+@import AudioToolbox;
 
+#import "RZNotificationLabelProtocol.h"
 #import "UIViewController+RZTopMostController.h"
 
 /**

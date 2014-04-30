@@ -8,15 +8,15 @@
 
 #import "RZNotificationView.h"
 
+@import AudioToolbox.AudioServices;
+@import ObjectiveC.runtime;
+
 #import "UIColor+RZAdditions.h"
 
 #import <MOOMaskedIconView/MOOMaskedIconView.h>
 #import <MOOMaskedIconView/MOOStyleTrait.h>
 
 #import <PPHelpMe/PPHelpMe.h>
-
-#import <AudioToolbox/AudioServices.h>
-#import <objc/runtime.h>
 
 #define RZUIColorFromRGB(rgbValue) [UIColor               \
 colorWithRed:((float)((rgbValue & 0xFF0000) >> 16))/255.0 \
