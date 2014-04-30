@@ -73,7 +73,7 @@ static CGFloat kDefaultOffsetX                             = 16.0f;
 static const CGFloat kIconWidth                            = 21.0f;
 static const CGFloat kIconHeight                           = 22.0f;
 
-static BOOL RZOrientationMaskContainsOrientation(UIInterfaceOrientationMask mask, UIInterfaceOrientation orientation);
+static BOOL RZOrientationMaskContainsOrientation(UIInterfaceOrientationMask mask, UIDeviceOrientation orientation);
 
 @interface RZNotificationView ()
 {
@@ -621,7 +621,6 @@ static BOOL RZOrientationMaskContainsOrientation(UIInterfaceOrientationMask mask
         _labelFont = [UIFont fontWithName:@"Avenir" size:15.0];
         
         kDefaultContentMarginHeight = kDefaultContentMarginHeight;
-        _shouldAutomaticallyAdjustInsetOnTop = YES;
         
         // Add icon view
         _iconView = [[UIImageView alloc] initWithFrame:CGRectZero];
@@ -838,16 +837,6 @@ static BOOL RZOrientationMaskContainsOrientation(UIInterfaceOrientationMask mask
         } else {
             if (position == RZNotificationPositionTop) {
                 finalOrigin = [c.topLayoutGuide length];
-                if (![c.topLayoutGuide length]) {
-                    // Try to automatically adjust
-                    if (_shouldAutomaticallyAdjustInsetOnTop)
-                    {
-                        finalOrigin += PPStatusBarHeight();
-                        if (![c.navigationController isNavigationBarHidden]) {
-                            finalOrigin += PPToolBarHeight();
-                        }
-                    }
-                }
             } else {
                 finalOrigin = CGRectGetHeight(c.view.frame) - [c.bottomLayoutGuide length];
             }
@@ -1030,7 +1019,7 @@ static BOOL RZOrientationMaskContainsOrientation(UIInterfaceOrientationMask mask
     if(self.superview){
         if ([_container isKindOfClass:[UIViewController class]]) {
             UIViewController *c = (UIViewController*)_container;
-            
+
             UIDevice *device = (UIDevice*)notification.object;
             if ([c shouldAutorotate] && (RZOrientationMaskContainsOrientation([c supportedInterfaceOrientations], device.orientation))) {
                 if(_textLabel){
@@ -1338,6 +1327,26 @@ static char rzNotificationsKey;
 
 @end
 
-static BOOL RZOrientationMaskContainsOrientation(UIInterfaceOrientationMask mask, UIInterfaceOrientation orientation) {
-    return (mask & (1 << orientation)) != 0;
+static BOOL RZOrientationMaskContainsOrientation(UIInterfaceOrientationMask mask, UIDeviceOrientation orientation) {
+    
+    UIInterfaceOrientation iOrientation = UIInterfaceOrientationPortrait;
+    
+    switch (orientation) {
+        case UIDeviceOrientationPortrait:
+            iOrientation = UIInterfaceOrientationPortrait;
+            break;
+        case UIDeviceOrientationLandscapeLeft:
+            iOrientation = UIInterfaceOrientationLandscapeLeft;
+            break;
+        case UIDeviceOrientationLandscapeRight:
+            iOrientation = UIInterfaceOrientationLandscapeRight;
+            break;
+        case UIDeviceOrientationPortraitUpsideDown:
+            iOrientation = UIInterfaceOrientationPortraitUpsideDown;
+            break;
+        default:
+            break;
+    }
+    
+    return (mask & (1 << iOrientation)) != 0;
 }

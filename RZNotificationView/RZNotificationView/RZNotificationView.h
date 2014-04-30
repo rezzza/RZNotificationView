@@ -449,11 +449,6 @@ typedef void (^RZNotificationCompletion)(BOOL touched);
 @property (nonatomic) NSInteger messageMaxLenght;
 
 /**
- *  Like the UIViewController property, will adjust the inset on top if on navigation controller. Default is YES;
- */
-@property (nonatomic) BOOL shouldAutomaticallyAdjustInsetOnTop;
-
-/**
  *  Label font when using text. Default is avenir of 15px
  */
 @property (nonatomic, strong) UIFont *labelFont UI_APPEARANCE_SELECTOR;
