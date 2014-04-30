@@ -96,6 +96,19 @@ typedef enum {
     RZNotificationContentColorAutomaticDark __attribute__((deprecated)),
 }RZNotificationContentColor;
 
+/**
+ @enum RZNotificationContext
+ The context for displaying the notification
+ */
+typedef enum {
+    /** Will take the controller displayed automatically */
+    RZNotificationContextTopMostController,
+    /** Will place the notification under the status bar */
+    RZNotificationContextBelowStatusBar,
+    /** Will place the notification above the status bar */
+    RZNotificationContextAboveStatusBar
+}RZNotificationContext;
+
 @class RZNotificationView;
 
 typedef void (^RZNotificationCompletion)(BOOL touched);
@@ -205,6 +218,7 @@ typedef void (^RZNotificationCompletion)(BOOL touched);
 
 /**
  Show a notification on top most controller (the controller currently displayed)
+ @param context The context for presenting the notification
  @param message The message
  @param icon The icon
  @param anchor The anchor
@@ -215,10 +229,11 @@ typedef void (^RZNotificationCompletion)(BOOL touched);
  @param completionBlock The completionBlock to execute
  @return RZNotificationView intialized by given parameters
  */
-+ (RZNotificationView*) showNotificationOnTopMostControllerWithMessage:(NSString*)message icon:(RZNotificationIcon)icon anchor:(RZNotificationAnchor)anchor position:(RZNotificationPosition)position color:(RZNotificationColor)color assetColor:(RZNotificationContentColor)assetColor textColor:(RZNotificationContentColor)textColor withCompletion:(RZNotificationCompletion)completionBlock;
++ (RZNotificationView*) showNotificationOn:(RZNotificationContext)context message:(NSString*)message icon:(RZNotificationIcon)icon anchor:(RZNotificationAnchor)anchor position:(RZNotificationPosition)position color:(RZNotificationColor)color assetColor:(RZNotificationContentColor)assetColor textColor:(RZNotificationContentColor)textColor withCompletion:(RZNotificationCompletion)completionBlock;
 
 /**
  Show a notification on top most controller (the controller currently displayed)
+ @param context The context for presenting the notification
  @param message The message
  @param icon The icon
  @param anchor The anchor
@@ -230,7 +245,7 @@ typedef void (^RZNotificationCompletion)(BOOL touched);
  @param completionBlock The completionBlock to execute
  @return RZNotificationView intialized by given parameters
  */
-+ (RZNotificationView*) showNotificationOnTopMostControllerWithMessage:(NSString*)message icon:(RZNotificationIcon)icon anchor:(RZNotificationAnchor)anchor position:(RZNotificationPosition)position color:(RZNotificationColor)color assetColor:(RZNotificationContentColor)assetColor textColor:(RZNotificationContentColor)textColor delay:(NSTimeInterval)delay withCompletion:(RZNotificationCompletion)completionBlock;
++ (RZNotificationView*) showNotificationOn:(RZNotificationContext)context message:(NSString*)message icon:(RZNotificationIcon)icon anchor:(RZNotificationAnchor)anchor position:(RZNotificationPosition)position color:(RZNotificationColor)color assetColor:(RZNotificationContentColor)assetColor textColor:(RZNotificationContentColor)textColor delay:(NSTimeInterval)delay withCompletion:(RZNotificationCompletion)completionBlock;
 
 /**---------------------------------------------------------------------------------------
  * @name Showing methods
@@ -239,10 +254,12 @@ typedef void (^RZNotificationCompletion)(BOOL touched);
 
 /**
  Hide notification view for a specific controller
+ If the context is not top most, then it will automatically take the top most controller
+ 
  @param controller The controller expected to display a notification
  @return YES if a notification has been hidden, NO if there wasn't any notification view on controller
  */
-+ (BOOL) hideNotificationForController:(UIViewController*)controller;
++ (BOOL) hideLastNotificationForController:(UIViewController*)controller;
 
 /**
  Hide all notifications view for a specific controller
@@ -433,15 +450,15 @@ typedef void (^RZNotificationCompletion)(BOOL touched);
  *  Like the UIViewController property, will adjust the inset on top if on navigation controller. Default is YES;
  */
 @property (nonatomic) BOOL shouldAutomaticallyAdjustInsetOnTop;
-/**
- completionBlock to execute before hiding. Ability to kwon if notification view as been touched or not
- */
 
 /**
  *  Label font when using text. Default is avenir of 15px
  */
 @property (nonatomic, strong) UIFont *labelFont UI_APPEARANCE_SELECTOR;
 
+/**
+ completionBlock to execute before hiding. Ability to kwon if notification view as been touched or not
+ */
 @property (nonatomic, strong) RZNotificationCompletion completionBlock;
 
 #pragma mark - Deprecated
@@ -461,6 +478,8 @@ typedef void (^RZNotificationCompletion)(BOOL touched);
 + (RZNotificationView*) showNotificationOnTopMostControllerWithMessage:(NSString*)message icon:(RZNotificationIcon)icon position:(RZNotificationPosition)position color:(RZNotificationColor)color assetColor:(RZNotificationContentColor)assetColor textColor:(RZNotificationContentColor)textColor withCompletion:(RZNotificationCompletion)completionBlock DEPRECATED_ATTRIBUTE;
 + (RZNotificationView*) showNotificationOnTopMostControllerWithMessage:(NSString*)message icon:(RZNotificationIcon)icon position:(RZNotificationPosition)position color:(RZNotificationColor)color assetColor:(RZNotificationContentColor)assetColor textColor:(RZNotificationContentColor)textColor delay:(NSTimeInterval)delay withCompletion:(RZNotificationCompletion)completionBlock DEPRECATED_ATTRIBUTE;
 - (id) initWithController:(UIViewController*)controller icon:(RZNotificationIcon)icon position:(RZNotificationPosition)position color:(RZNotificationColor)color assetColor:(RZNotificationContentColor)assetColor textColor:(RZNotificationContentColor)textColor delay:(NSTimeInterval)delay completion:(RZNotificationCompletion)completionBlock DEPRECATED_ATTRIBUTE;
+
++ (BOOL) hideNotificationForController:(UIViewController*)controller DEPRECATED_MSG_ATTRIBUTE("use `hideLastNotificationForController` instead");
 
 @end
 

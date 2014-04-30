@@ -52,4 +52,10 @@
     UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:m];
     [self presentViewController:nav animated:YES completion:nil];
 }
+
+- (void)dealloc
+{
+    NSLog(@"AutomaticViewController dealloc");
+}
+
 @end

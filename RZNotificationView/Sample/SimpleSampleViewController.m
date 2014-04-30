@@ -49,14 +49,15 @@
 
 - (IBAction)showTwitter:(id)sender
 {
-    [RZNotificationView showNotificationOnTopMostControllerWithMessage:@"This is a twitter message!"
-                                                                  icon:RZNotificationIconTwitter
-                                                                anchor:RZNotificationAnchorX
-                                                              position:RZNotificationPositionTop
-                                                                 color:RZNotificationColorYellow
-                                                            assetColor:RZNotificationContentColorLight
-                                                             textColor:RZNotificationContentColorDark
-                                                                 withCompletion:nil];
+    [RZNotificationView showNotificationOn:RZNotificationContextTopMostController
+                                   message:@"This is a twitter message!"
+                                      icon:RZNotificationIconTwitter
+                                    anchor:RZNotificationAnchorX
+                                  position:RZNotificationPositionTop
+                                     color:RZNotificationColorYellow
+                                assetColor:RZNotificationContentColorLight
+                                 textColor:RZNotificationContentColorDark
+                            withCompletion:nil];
 }
 
 - (IBAction)showWarning:(id)sender
@@ -80,7 +81,7 @@
                                                icon:RZNotificationIconFacebook
                                              anchor:RZNotificationAnchorArrow
                                            position:RZNotificationPositionBottom
-                                              color:RZNotificationColorBlue
+                                              color:RZNotificationColorDarkBlue
                                          assetColor:RZNotificationContentColorDark
                                           textColor:RZNotificationContentColorLight
                                   addedToController:self
@@ -105,7 +106,7 @@
 {
     ModalViewController *modal = [[ModalViewController alloc] initWithNibName:@"ModalViewController" bundle:nil];
     UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:modal];
-    [self presentModalViewController:nav animated:YES];
+    [self presentViewController:nav animated:YES completion:nil];
 }
 
 - (void)viewDidUnload {

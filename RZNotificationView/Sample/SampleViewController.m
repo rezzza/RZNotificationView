@@ -60,6 +60,7 @@
                    @(RZSampleFormIcon),
                    @(RZSampleFormAnchor),
                    @(RZSampleFormPosition),
+                   @(RZSampleFormContext),
                    @(RZSampleFormVibrate),
                    @(RZSampleFormHideShowNavBar),
                    @(RZSampleFormTextSample),
@@ -249,6 +250,9 @@
     
     static NSString *IconCellIdentifier = @"IconCellIdentifier";
     PrettyCustomViewTableViewCell *iconCell;
+    
+    static NSString *ContextCellIdentifier = @"ContextCellIdentifier";
+    PrettyCustomViewTableViewCell *contextCell;
     
     PrettyCustomViewTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
@@ -787,7 +791,49 @@
             [iconCell prepareForTableView:tableView indexPath:indexPath];
             iconCell.tableViewBackgroundColor = tableView.backgroundColor;
             return iconCell;
-            
+            case RZSampleFormContext:
+            contextCell = [tableView dequeueReusableCellWithIdentifier:ContextCellIdentifier];
+            if (contextCell == nil) {
+                contextCell = [[PrettyCustomViewTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:ContextCellIdentifier];
+                
+                NSArray *items = @[
+                                  @"Top VC",
+                                  @"Below",
+                                  @"Above"
+                                  ];
+                MCSegmentedControl *segmentedControl = [[MCSegmentedControl alloc] initWithItems:items];
+                segmentedControl.tag = type;
+                segmentedControl.font = [UIFont boldSystemFontOfSize:14.0f];
+                segmentedControl.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
+                
+                // set frame, add to view, set target and action for value change as usual
+                segmentedControl.frame = CGRectMake(140.0, 7.0, 160.0, 30.0);
+                [self.view addSubview:segmentedControl];
+                [segmentedControl addTarget:self action:@selector(segmentedControlDidChange:) forControlEvents:UIControlEventValueChanged];
+                
+                segmentedControl.selectedSegmentIndex = 0;
+                
+                // Set a tint color
+                segmentedControl.tintColor = [UIColor colorWithRed:.6 green:.0 blue:.0 alpha:1.0];
+                
+                // Customize font and items color
+                segmentedControl.selectedItemColor   = [UIColor whiteColor];
+                segmentedControl.unselectedItemColor = [UIColor darkGrayColor];
+                
+                UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(10.0, 0.0, 100.0, 44.0)];
+                titleLabel.text = [NSString stringWithFormat:@"Context"];
+                titleLabel.backgroundColor = [UIColor clearColor];
+                titleLabel.font = [UIFont boldSystemFontOfSize:14.0];
+                
+                UIView *customView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, 320, 44)];
+                [customView addSubview:segmentedControl];
+                [customView addSubview:titleLabel];
+                contextCell.customView = customView;
+            }
+            [contextCell prepareForTableView:tableView indexPath:indexPath];
+            contextCell.tableViewBackgroundColor = tableView.backgroundColor;
+            return contextCell;
+
         default:
             break;
     }
@@ -835,50 +881,73 @@
             }
             
             // We don't want to stack the notifications, so hide before presenting a new one
-            [RZNotificationView hideNotificationForController:self];
+            [RZNotificationView hideLastNotificationForController:self];
             
             [RZNotificationView registerContentMarginOnHeight:_marginHeight];
-
-            RZNotificationView *notif =
-            [[RZNotificationView alloc] initWithController:self
-                                                      icon:_icon
-                                                    anchor:_anchor
-                                                  position:_position
-                                                     color:_color
-                                                assetColor:_assetColor
-                                                 textColor:_textColor
-                                                     delay:_delaySlider.value
-                                                completion:^(BOOL touched) {
-                                                    if (touched) {
-                                                        UIAlertView *alert =
-                                                        [[UIAlertView alloc] initWithTitle:@"Message"
-                                                                                   message:@"Anything you want"
-                                                                                  delegate:nil
-                                                                         cancelButtonTitle:@"That's cool man"
-                                                                         otherButtonTitles:nil];
-                                                        [alert show];
-                                                        // Add an URL to define custom action in you app
-                                                        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"rzn://OtherViewController?the%20awesome%20message"]];
-                                                    }
-                                                }];
             
-            [notif setMessage:[round objectAtIndex:_roundIndex%[round count]]];
-            
-            if (_textColor == RZNotificationContentColorManual) {
-                notif.textLabel.textColor = [UIColor greenColor];
-                notif.textLabel.shadowColor = [UIColor redColor];
+            if (_context != RZNotificationContextTopMostController) {
+                [RZNotificationView showNotificationOn:_context
+                                               message:[round objectAtIndex:_roundIndex%[round count]]
+                                                  icon:_icon
+                                                anchor:_anchor
+                                              position:_position
+                                                 color:_color
+                                            assetColor:_assetColor
+                                             textColor:_textColor
+                                        withCompletion:^(BOOL touched) {
+                                            if (touched) {
+                                                UIAlertView *alert =
+                                                [[UIAlertView alloc] initWithTitle:@"Message"
+                                                                           message:@"Anything you want"
+                                                                          delegate:nil
+                                                                 cancelButtonTitle:@"That's cool man"
+                                                                 otherButtonTitles:nil];
+                                                [alert show];
+                                                // Add an URL to define custom action in you app
+                                                [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"rzn://OtherViewController?the%20awesome%20message"]];
+                                            }
+                                            
+                                        }];
             }
-            
-            [notif setVibrate:_vibrate];
-            [notif setSound:_sound];
-            [notif setAssetColor:_assetColor];
-            [notif setTextColor:_textColor];
-            [notif setCustomView:_customView];
-            [notif setMessageMaxLenght:(int)_maxLenghtSlider.value];
-            notif.customTopColor = _customTopColor;
-            notif.customBottomColor = _customBottomColor;
-            
-            [notif show];
+            else
+            {
+                RZNotificationView *notif = [[RZNotificationView alloc] initWithController:self
+                                                                                      icon:_icon
+                                                                                    anchor:_anchor
+                                                                                  position:_position
+                                                                                     color:_color
+                                                                                assetColor:_assetColor
+                                                                                 textColor:_textColor
+                                                                                     delay:_delaySlider.value
+                                                                                completion:^(BOOL touched) {
+                                                                                    if (touched) {
+                                                                                        UIAlertView *alert =
+                                                                                        [[UIAlertView alloc] initWithTitle:@"Message"
+                                                                                                                   message:@"Anything you want"
+                                                                                                                  delegate:nil
+                                                                                                         cancelButtonTitle:@"That's cool man"
+                                                                                                         otherButtonTitles:nil];
+                                                                                        [alert show];
+                                                                                        // Add an URL to define custom action in you app
+                                                                                        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"rzn://OtherViewController?the%20awesome%20message"]];
+                                                                                    }
+                                                                                }];
+                [notif setMessage:[round objectAtIndex:_roundIndex%[round count]]];
+                
+                if (_textColor == RZNotificationContentColorManual) {
+                    notif.textLabel.textColor = [UIColor greenColor];
+                    notif.textLabel.shadowColor = [UIColor redColor];
+                }
+                
+                [notif setVibrate:_vibrate];
+                [notif setSound:_sound];
+                [notif setCustomView:_customView];
+                [notif setMessageMaxLenght:(int)_maxLenghtSlider.value];
+                notif.customTopColor = _customTopColor;
+                notif.customBottomColor = _customBottomColor;
+                
+                [notif show];
+            }
 
         }
             break;
@@ -909,27 +978,31 @@
             _position = sender.selectedSegmentIndex;
             break;
         case RZSampleFormTextSample:
-            [RZNotificationView hideNotificationForController:self];
+            [RZNotificationView hideLastNotificationForController:self];
             _sampleMessage = sender.selectedSegmentIndex;
             break;
         case RZSampleFormAssetColor:
-            [RZNotificationView hideNotificationForController:self];
+            [RZNotificationView hideLastNotificationForController:self];
             _assetColor = sender.selectedSegmentIndex;
             break;
         case RZSampleFormTextColor:
-            [RZNotificationView hideNotificationForController:self];
+            [RZNotificationView hideLastNotificationForController:self];
             _textColor = sender.selectedSegmentIndex;
             break;
         case RZSampleFormIcon:
-            [RZNotificationView hideNotificationForController:self];
+            [RZNotificationView hideLastNotificationForController:self];
             _icon = sender.selectedSegmentIndex;
             break;
         case RZSampleFormAnchor:
-            [RZNotificationView hideNotificationForController:self];
+            [RZNotificationView hideLastNotificationForController:self];
             _anchor = sender.selectedSegmentIndex;
             break;
+        case RZSampleFormContext:
+            [RZNotificationView hideLastNotificationForController:self];
+            _context = sender.selectedSegmentIndex;
+            break;
         case RZSampleFormContent:
-            [RZNotificationView hideNotificationForController:self];
+            [RZNotificationView hideLastNotificationForController:self];
             switch (sender.selectedSegmentIndex) {
                 case 1:{
                     CustomLabel *customLabel = [[CustomLabel alloc] initWithFrame:CGRectZero];
@@ -1026,10 +1099,10 @@
                     _customView = customImageView;
                 }
                     break;
-                default:
                     _customView = nil;
                     break;
             }
+            default:
             break;
     }
 }

@@ -50,4 +50,10 @@
     AutomaticModalViewController *m = [[AutomaticModalViewController alloc] initWithNibName:@"AutomaticModalViewController" bundle:nil];
     [self.navigationController pushViewController:m animated:YES];
 }
+
+- (void)dealloc
+{
+    NSLog(@"AutomaticModalViewController dealloc");
+}
+
 @end
