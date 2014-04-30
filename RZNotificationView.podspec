@@ -8,7 +8,7 @@ Pod::Spec.new do |s|
   s.author       = { "Rezzza" => "contact@verylastroom.com" }
   s.source       = { :git => "https://github.com/rezzza/RZNotificationView.git", :tag => "1.0.0" }
   s.platform     = :ios, '7.0'
-
+  s.resource = 'RZNotificationView/Icons/*'
   s.dependency 'MOOMaskedIconView', '>= 0.1.0'
   s.dependency 'PPHelpMe', '>= 1.0.0'
 
