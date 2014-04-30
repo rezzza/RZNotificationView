@@ -75,10 +75,11 @@
                                      color:arc4random()%4
                                 assetColor:RZNotificationContentColorDark
                                  textColor:RZNotificationContentColorDark
-                                     delay:3.0 withCompletion:^(BOOL touched) {
-                                         if (touched)
-                                             [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"rzn://OtherViewController?the%20awesome%20message"]];
-                                     }];
+                                  duration:3.0
+                            withCompletion:^(BOOL touched) {
+                                      if (touched)
+                                          [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"rzn://OtherViewController?the%20awesome%20message"]];
+                                  }];
     [self prepareForNextNotification];
 }
 

@@ -918,7 +918,7 @@
                                                                                      color:_color
                                                                                 assetColor:_assetColor
                                                                                  textColor:_textColor
-                                                                                     delay:_delaySlider.value
+                                                                                  duration:_delaySlider.value
                                                                                 completion:^(BOOL touched) {
                                                                                     if (touched) {
                                                                                         UIAlertView *alert =

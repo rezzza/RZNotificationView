@@ -211,12 +211,12 @@ typedef void (^RZNotificationCompletion)(BOOL touched);
  @param color The notification color
  @param assetColor The asset color
  @param textColor The text color
- @param delay The delay before hiding the notification view
+ @param duration The delay before hiding the notification view
  @param controller The specific controller that display the notification
  @param completionBlock The completionBlock to execute
  @return RZNotificationView intialized by given parameters
  */
-+ (RZNotificationView*) showNotificationWithMessage:(NSString*)message icon:(RZNotificationIcon)icon anchor:(RZNotificationAnchor)anchor position:(RZNotificationPosition)position color:(RZNotificationColor)color assetColor:(RZNotificationContentColor)assetColor textColor:(RZNotificationContentColor)textColor delay:(NSTimeInterval)delay addedToController:(UIViewController*)controller withCompletion:(RZNotificationCompletion)completionBlock;
++ (RZNotificationView*) showNotificationWithMessage:(NSString*)message icon:(RZNotificationIcon)icon anchor:(RZNotificationAnchor)anchor position:(RZNotificationPosition)position color:(RZNotificationColor)color assetColor:(RZNotificationContentColor)assetColor textColor:(RZNotificationContentColor)textColor duration:(NSTimeInterval)duration addedToController:(UIViewController*)controller withCompletion:(RZNotificationCompletion)completionBlock;
 
 /**
  Show a notification on top most controller (the controller currently displayed)
@@ -243,11 +243,11 @@ typedef void (^RZNotificationCompletion)(BOOL touched);
  @param color The notification color
  @param assetColor The asset color
  @param textColor The text color
- @param delay The delay before hiding the notification view
+ @param duration The delay before hiding the notification view
  @param completionBlock The completionBlock to execute
  @return RZNotificationView intialized by given parameters
  */
-+ (RZNotificationView*) showNotificationOn:(RZNotificationContext)context message:(NSString*)message icon:(RZNotificationIcon)icon anchor:(RZNotificationAnchor)anchor position:(RZNotificationPosition)position color:(RZNotificationColor)color assetColor:(RZNotificationContentColor)assetColor textColor:(RZNotificationContentColor)textColor delay:(NSTimeInterval)delay withCompletion:(RZNotificationCompletion)completionBlock;
++ (RZNotificationView*) showNotificationOn:(RZNotificationContext)context message:(NSString*)message icon:(RZNotificationIcon)icon anchor:(RZNotificationAnchor)anchor position:(RZNotificationPosition)position color:(RZNotificationColor)color assetColor:(RZNotificationContentColor)assetColor textColor:(RZNotificationContentColor)textColor duration:(NSTimeInterval)duration withCompletion:(RZNotificationCompletion)completionBlock;
 
 /**---------------------------------------------------------------------------------------
  * @name Showing methods
@@ -295,7 +295,7 @@ typedef void (^RZNotificationCompletion)(BOOL touched);
  @param completionBlock The completionBlock to execute
  return the notification view initialized
  */
-- (id) initWithController:(UIViewController*)controller icon:(RZNotificationIcon)icon anchor:(RZNotificationAnchor)anchor position:(RZNotificationPosition)position color:(RZNotificationColor)color assetColor:(RZNotificationContentColor)assetColor textColor:(RZNotificationContentColor)textColor delay:(NSTimeInterval)delay completion:(RZNotificationCompletion)completionBlock;
+- (id) initWithController:(UIViewController*)controller icon:(RZNotificationIcon)icon anchor:(RZNotificationAnchor)anchor position:(RZNotificationPosition)position color:(RZNotificationColor)color assetColor:(RZNotificationContentColor)assetColor textColor:(RZNotificationContentColor)textColor duration:(NSTimeInterval)delay completion:(RZNotificationCompletion)completionBlock;
 
 /**---------------------------------------------------------------------------------------
  * @name Other methods
