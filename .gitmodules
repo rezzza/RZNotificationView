@@ -3,16 +3,7 @@
 	url = https://github.com/jeremylagrue/ColorPopover.git
 [submodule "vendor/PrettyKit"]
 	path = vendor/PrettyKit
-	url = git://github.com/vicpenap/PrettyKit.git
+	url = https://github.com/vicpenap/PrettyKit.git
 [submodule "vendor/MCSegmentedControl"]
 	path = vendor/MCSegmentedControl
-	url = git://github.com/oettam/MCSegmentedControl.git
-[submodule "vendor/TTTAttributedLabel"]
-	path = vendor/TTTAttributedLabel
-	url = git://github.com/mattt/TTTAttributedLabel.git
-[submodule "vendor/MOOMaskedIconView"]
-	path = vendor/MOOMaskedIconView
-	url = https://github.com/peyton/MOOMaskedIconView.git
-[submodule "vendor/BButton"]
-	path = vendor/BButton
-	url = https://github.com/mattlawer/BButton.git
+	url = https://github.com/itruf/MCSegmentedControl.git

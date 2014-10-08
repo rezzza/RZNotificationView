@@ -66,16 +66,20 @@
 
 - (void) showNotification
 {
-    [RZNotificationView showNotificationOnTopMostControllerWithMessage:@"This is an automatic notification. Triggered only from AppDelegate! Great isn't it?"
-                                                                  icon:arc4random()%6
-                                                              position:arc4random()%2
-                                                                 color:arc4random()%4
-                                                            assetColor:RZNotificationContentColorAutomaticDark
-                                                             textColor:RZNotificationContentColorAutomaticDark
-                                                                 delay:3.0 withCompletion:^(BOOL touched) {
-                                                                     if (touched)
-                                                                         [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"rzn://OtherViewController?the%20awesome%20message"]];
-                                                                 }];
+    [RZNotificationView showNotificationOn:RZNotificationContextTopMostController
+                                   message: @"This is an automatic notification. Triggered only from AppDelegate! Great isn't it?"
+                                      icon:arc4random()%6
+                                    anchor:RZNotificationAnchorArrow
+     
+                                  position:arc4random()%2
+                                     color:arc4random()%4
+                                assetColor:RZNotificationContentColorDark
+                                 textColor:RZNotificationContentColorDark
+                                  duration:3.0
+                            withCompletion:^(BOOL touched) {
+                                      if (touched)
+                                          [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"rzn://OtherViewController?the%20awesome%20message"]];
+                                  }];
     [self prepareForNextNotification];
 }
 

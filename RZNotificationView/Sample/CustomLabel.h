@@ -6,7 +6,7 @@
 //  Copyright (c) 2012 Rezzza. All rights reserved.
 //
 
-#import "TTTAttributedLabel.h"
+#import <TTTAttributedLabel/TTTAttributedLabel.h>
 #import "RZNotificationLabelProtocol.h"
 
 @interface CustomLabel : TTTAttributedLabel <RZNotificationLabelProtocol>

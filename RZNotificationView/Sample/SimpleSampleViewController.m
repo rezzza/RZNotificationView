@@ -11,7 +11,7 @@
 #import "ModalViewController.h"
 
 #import "RZNotificationView.h"
-#import "BButton.h"
+#import <BButton/BButton.h>
 
 @interface SimpleSampleViewController ()
 
@@ -49,23 +49,26 @@
 
 - (IBAction)showTwitter:(id)sender
 {
-    [RZNotificationView showNotificationOnTopMostControllerWithMessage:@"This is a twitter message!"
-                                                                  icon:RZNotificationIconTwitter
-                                                              position:RZNotificationPositionTop
-                                                                 color:RZNotificationColorYellow
-                                                            assetColor:RZNotificationContentColorAutomaticLight
-                                                             textColor:RZNotificationContentColorAutomaticDark
-                                                                 withCompletion:nil];
+    [RZNotificationView showNotificationOn:RZNotificationContextTopMostController
+                                   message:@"This is a twitter message!"
+                                      icon:RZNotificationIconTwitter
+                                    anchor:RZNotificationAnchorX
+                                  position:RZNotificationPositionTop
+                                     color:RZNotificationColorYellow
+                                assetColor:RZNotificationContentColorLight
+                                 textColor:RZNotificationContentColorDark
+                            withCompletion:nil];
 }
 
 - (IBAction)showWarning:(id)sender
 {
     RZNotificationView *notif = [RZNotificationView showNotificationWithMessage:@"Warning, you did something wrong."
                                                                            icon:RZNotificationIconWarning
+                                                                         anchor:RZNotificationAnchorX
                                                                        position:RZNotificationPositionTop
                                                                           color:RZNotificationColorRed
-                                                                     assetColor:RZNotificationContentColorAutomaticDark
-                                                                      textColor:RZNotificationContentColorAutomaticLight
+                                                                     assetColor:RZNotificationContentColorDark
+                                                                      textColor:RZNotificationContentColorLight
                                                               addedToController:self
                                                                  withCompletion:nil];
     [notif setSound:@"DoorBell-SoundBible.com-1986366504.wav"];
@@ -76,10 +79,11 @@
 {
     [RZNotificationView showNotificationWithMessage:@"Tell your friends that RZNotificationView is awesome."
                                                icon:RZNotificationIconFacebook
+                                             anchor:RZNotificationAnchorArrow
                                            position:RZNotificationPositionBottom
-                                              color:RZNotificationColorBlue
-                                         assetColor:RZNotificationContentColorAutomaticDark
-                                          textColor:RZNotificationContentColorAutomaticLight
+                                              color:RZNotificationColorDarkBlue
+                                         assetColor:RZNotificationContentColorDark
+                                          textColor:RZNotificationContentColorLight
                                   addedToController:self
                                      withCompletion:^(BOOL touched) {
                                          if (touched) {
@@ -102,7 +106,7 @@
 {
     ModalViewController *modal = [[ModalViewController alloc] initWithNibName:@"ModalViewController" bundle:nil];
     UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:modal];
-    [self presentModalViewController:nav animated:YES];
+    [self presentViewController:nav animated:YES completion:nil];
 }
 
 - (void)viewDidUnload {

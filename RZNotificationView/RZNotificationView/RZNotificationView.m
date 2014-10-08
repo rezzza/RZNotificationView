@@ -7,33 +7,73 @@
 //
 
 #import "RZNotificationView.h"
-#import "UIView+Frame.h"
 
-#import "MOOMaskedIconView.h"
-#import "MOOStyleTrait.h"
+@import AudioToolbox.AudioServices;
+@import ObjectiveC.runtime;
+
 #import "UIColor+RZAdditions.h"
 
-#import <AudioToolbox/AudioServices.h>
+#import <MOOMaskedIconView/MOOMaskedIconView.h>
+#import <MOOMaskedIconView/MOOStyleTrait.h>
 
-#define UIColorFromRGB(rgbValue) [UIColor \
+#import <PPHelpMe/PPHelpMe.h>
+
+#define RZUIColorFromRGB(rgbValue) [UIColor               \
 colorWithRed:((float)((rgbValue & 0xFF0000) >> 16))/255.0 \
-green:((float)((rgbValue & 0xFF00) >> 8))/255.0 \
-blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
+green:((float)((rgbValue & 0xFF00) >> 8))/255.0           \
+blue:((float)(rgbValue & 0xFF))/255.0                     \
+alpha:1.0]
 
-#define DEFAULT_MAX_MESSAGE_LENGHT 150
-#define MIN_HEIGHT 40
-#define NOTIFICATION_SHADOW_BLUR_RADIUS 3.0f
+#pragma mark -
 
-#define OFFSET_X 35.0
+@protocol RZNotificationViewManagerProtocol <NSObject>
+@property (nonatomic, strong) NSMutableArray *rzNotifications;
+@end
 
-#define DEFAULT_CONTENT_MARGIN_HEIGHT 8.0f
-#define DEFAULT_POSITION RZNotificationPositionTop
-#define DEFAULT_DELAY 3.5
-#define DEFAULT_COLOR RZNotificationColorBlue
-#define DEFAULT_VIBRATE NO
-#define DEFAULT_ASSET_COLOR RZNotificationContentColorAutomaticDark
-#define DEFAULT_TEXT_COLOR RZNotificationContentColorAutomaticLight
-#define DEFAULT_ICON RZNotificationIconFacebook
+/**
+ *  Default containers for notification view. We could do this on NSObject. Just avoiding to do anything but messing around
+ */
+@interface UIViewController (RZNotificationViewManager) <RZNotificationViewManagerProtocol>
+@end
+
+@interface UIWindow (RZNotificationViewManager) <RZNotificationViewManagerProtocol>
+@end
+
+#pragma mark -
+
+@interface RZNotificationViewManager : NSObject
+
++ (UIWindow *) notificationWindow;
+
++ (void) registerNotification:(RZNotificationView*)notification;
++ (void) removeNotification:(RZNotificationView*)notification;
++ (RZNotificationView *) notificationForContainer:(id<RZNotificationViewManagerProtocol>)container;
++(NSArray *) allNotificationsForContainer:(id<RZNotificationViewManagerProtocol>)container;
+@end
+
+static const NSInteger kDefaultMaxMessageLength            = 150;
+
+static const RZNotificationPosition kDefaultPosition       = RZNotificationPositionTop;
+static const RZNotificationColor kDefaultColor             = RZNotificationColorLightBlue;
+static const BOOL kDefaultVibrate                          = NO;
+static const RZNotificationContentColor kDefaultAssetColor = RZNotificationContentColorDark;
+static const RZNotificationContentColor kDefaultTextColor  = RZNotificationContentColorLight;
+static const RZNotificationIcon kDefaultIcon               = RZNotificationIconFacebook;
+static const RZNotificationAnchor kDefaultAnchor           = RZNotificationAnchorArrow;
+
+static const NSTimeInterval kDefaultDuration               = 3.5;
+
+static CGFloat kMinHeight                                  = 54.0f;
+static CGFloat kDefaultContentMarginHeight                 = 16.0f;
+static CGFloat kDefaultOffsetX                             = 16.0f;
+
+//static CGFloat kOffsetBetweenTextAndImages           = 16.0f; // If you change this value, please consider add it as static
+#define kOffsetBetweenTextAndImages                        kDefaultOffsetX
+
+static const CGFloat kIconWidth                            = 21.0f;
+static const CGFloat kIconHeight                           = 22.0f;
+
+static BOOL RZOrientationMaskContainsOrientation(UIInterfaceOrientationMask mask, UIDeviceOrientation orientation);
 
 @interface RZNotificationView ()
 {
@@ -42,8 +82,12 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
     BOOL _hasVibrate;
     
     UIView *_highlightedView;
+    
+    CGFloat _topOffset; // For below status bar
 }
-@property (nonatomic, strong) UIViewController *controller;
+@property (nonatomic, strong) id <RZNotificationViewManagerProtocol> container;
+@property (nonatomic, strong) UIViewController *contextController;
+@property (nonatomic, assign) RZNotificationContext context;
 @end
 
 @implementation RZNotificationView
@@ -52,35 +96,53 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
 
 - (CGFloat) getOffsetXLeft
 {
-    CGFloat icontWitdhFree = 0.0;
-    if (![self getImageForIcon:_icon]) {
-        icontWitdhFree = 21.0;
+    CGFloat offsetX = kDefaultOffsetX;
+    if ([self getImageForIcon:_icon]) {
+        offsetX += (kIconWidth + kOffsetBetweenTextAndImages);
     }
     
-    return OFFSET_X - icontWitdhFree;
+    return offsetX;
 }
 
 - (CGFloat) getOffsetXRight
 {
-    CGFloat anchorWitdhFree = 21.0;
-    if (_displayAnchor) {
-        anchorWitdhFree = 0.0;
+    CGFloat offsetX = kDefaultOffsetX;
+    if ([self getImageForAnchor:_anchor]) {
+        offsetX += (kIconWidth + kOffsetBetweenTextAndImages);
     }
     
-    return OFFSET_X - anchorWitdhFree;
+    return offsetX;
 }
 
 #pragma mark - Color Adjustements
 
 - (UIColor*) adjustTextColor:(UIColor*)c
 {
-    if(_textColor == RZNotificationContentColorAutomaticDark)
-        return [UIColor darkerColorForColor:c withRgbOffset:0.55];
+    UIColor *colorToReturn = nil;
+    switch (_textColor) {
+        case RZNotificationContentColorLight:
+            colorToReturn = [UIColor whiteColor];
+            break;
+        case RZNotificationContentColorDark:
+            colorToReturn = [UIColor colorWithWhite:76.0f/255.0f alpha:1.0f];
+            break;
+            // Deprecated
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+        case RZNotificationContentColorAutomaticDark:
+            colorToReturn = [UIColor darkerColorForColor:c withRgbOffset:0.55];
+            break;
+        case RZNotificationContentColorAutomaticLight:
+            colorToReturn = [UIColor lighterColorForColor:c withRgbOffset:0.9];
+            break;
+#pragma GCC diagnostic pop
+            
+        default:
+            colorToReturn = c;
+            break;
+    }
     
-    if(_textColor == RZNotificationContentColorAutomaticLight)
-        return [UIColor lighterColorForColor:c withRgbOffset:0.9];
-    
-    return c;
+    return colorToReturn;
 }
 
 #pragma mark - Drawings
@@ -91,6 +153,24 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
     
     switch(_assetColor)
     {
+        case RZNotificationContentColorLight:
+            iconTrait.color = [UIColor whiteColor];
+            break;
+        case RZNotificationContentColorDark:
+            iconTrait.color = [UIColor colorWithWhite:76.0f/255.0f alpha:1.0f];
+            break;
+        case RZNotificationContentColorManual:
+            NSLog(@"Warning, setting RZNotificationContentColorManual for assetColor is not supported. Setting to textColor");
+            if (_textColor != RZNotificationContentColorManual)
+                _assetColor = _textColor;
+            else
+                _assetColor = RZNotificationContentColorLight;
+            
+            return [self image:img withColor:color];
+            break;
+   // Deprecated
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
         case RZNotificationContentColorAutomaticLight:
             iconTrait.gradientColors = [NSArray arrayWithObjects:
                                         [UIColor lighterColorForColor:color withRgbOffset:0.9],
@@ -111,15 +191,7 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
             iconTrait.innerShadowOffset = CGSizeMake(0.0f, 1.0f);
             iconTrait.clipsShadow = NO;
             break;
-        case RZNotificationContentColorManual:
-            NSLog(@"Warning, setting RZNotificationContentColorManual for assetColor is not supported. Setting to textColor");
-            if (_textColor != RZNotificationContentColorManual)
-                _assetColor = _textColor;
-            else
-                _assetColor = RZNotificationContentColorAutomaticLight;
-            
-            return [self image:img withColor:color];
-            break;
+#pragma GCC diagnostic pop
     }
     
     MOOMaskedIconView *iconView = [MOOMaskedIconView iconWithImage:img];
@@ -132,15 +204,12 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
 - (void) drawRect:(CGRect)rect
 {
     //// General Declarations
-    CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
     CGContextRef context = UIGraphicsGetCurrentContext();
     
     //// Color Declarations
-    UIColor* outerShadowColor = [UIColor colorWithRed: 0 green: 0 blue: 0 alpha: 0.75];
-    UIColor* innerShadowColor = [UIColor colorWithRed: 1 green: 1 blue: 1 alpha: 0.5];
     
-    UIColor* colorStart;
-    UIColor* colorEnd;
+    UIColor* colorStart = nil;
+    UIColor* colorEnd = nil;
     
     if( _customTopColor || _customBottomColor) {
         if( !_customTopColor)
@@ -154,145 +223,107 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
     }
     else {
         switch (_color) {
-            case RZNotificationColorGrey:
-                colorStart = [UIColor colorWithRed: 162.0/255.0 green: 156.0/255.0 blue: 142.0/255.0 alpha: 1];
-                colorEnd   = [UIColor colorWithRed: 123.0/255.0 green: 117.0/255.0 blue: 104.0/255.0 alpha: 1];
-                break;
             case RZNotificationColorYellow:
-                colorStart = [UIColor colorWithRed: 255.0/255.0 green: 204.0/255.0 blue: 0.0/255.0 alpha: 1];
-                colorEnd   = [UIColor colorWithRed: 255.0/255.0 green: 174.0/255.0 blue: 0.0/255.0 alpha: 1];
+                colorStart = RZUIColorFromRGB(0xFFBD00);
                 break;
             case RZNotificationColorRed:
-                colorStart = [UIColor colorWithRed: 227.0/255.0 green: 0.0/255.0 blue: 0.0/255.0 alpha: 1];
-                colorEnd   = [UIColor colorWithRed: 146.0/255.0 green: 20.0/255.0 blue: 20.0/255.0 alpha: 1];
+                colorStart = RZUIColorFromRGB(0xB20000);
                 break;
-            case RZNotificationColorBlue:
-                colorStart = [UIColor colorWithRed: 110.0/255.0 green: 132.0/255.0 blue: 181.0/255.0 alpha: 1];
-                colorEnd   = [UIColor colorWithRed: 59.0/255.0 green: 89.0/255.0 blue: 153.0/255.0 alpha: 1];
+            case RZNotificationColorLightBlue:
+                colorStart = RZUIColorFromRGB(0x3699C9);
                 break;
+            case RZNotificationColorDarkBlue:
+                colorStart = RZUIColorFromRGB(0x395799);
+                break;
+            case RZNotificationColorPurple:
+                colorStart = RZUIColorFromRGB(0x704081);
+                break;
+            case RZNotificationColorOrange:
+                colorStart = RZUIColorFromRGB(0xD35400);
+                break;
+                // Deprecated
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+            case RZNotificationColorGrey:
+                colorStart = [UIColor colorWithRed: 162.0/255.0 green: 156.0/255.0 blue: 142.0/255.0 alpha: 1];
+                break;
+#pragma GCC diagnostic pop
             default:
                 colorStart = [UIColor colorWithRed: 162.0/255.0 green: 156.0/255.0 blue: 142.0/255.0 alpha: 1];
-                colorEnd   = [UIColor colorWithRed: 123.0/255.0 green: 117.0/255.0 blue: 104.0/255.0 alpha: 1];
                 break;
         }
     }
     
-    //// Gradient Declarations
-    NSArray* notificationBackgroundGradientColors = [NSArray arrayWithObjects:
-                                                     (id)colorStart.CGColor,
-                                                     (id)colorEnd.CGColor, nil];
-    CGFloat notificationBackgroundGradientLocations[] = {0, 1};
-    CGGradientRef notificationBackgroundGradient = CGGradientCreateWithColors(colorSpace, (__bridge CFArrayRef)notificationBackgroundGradientColors, notificationBackgroundGradientLocations);
-    
-    //// Shadow Declarations
-    UIColor* outerShadow = outerShadowColor;
-    CGSize outerShadowOffset;
-    CGFloat outerShadowBlurRadius = NOTIFICATION_SHADOW_BLUR_RADIUS;
-    UIColor* innerShadow = innerShadowColor;
-    CGSize innerShadowOffset;;
-    
-    
-    if (_position == RZNotificationPositionTop) {
-        outerShadowOffset = CGSizeMake(0, 1);
-        innerShadowOffset = CGSizeMake(0, -1);
-    }
-    else {
-        outerShadowOffset = CGSizeMake(0, -1);
-        innerShadowOffset = CGSizeMake(0, 1);
-    }
-    
-    CGFloat innerShadowBlurRadius = 0;
     
     //// Frames
     CGRect notificationFrame = rect;
     
+    CGContextSaveGState(context);
+
+    if (colorEnd) {
+        CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
+        
+        //// Gradient Declarations
+        NSArray* notificationBackgroundGradientColors = [NSArray arrayWithObjects:
+                                                         (id)colorStart.CGColor,
+                                                         (id)colorEnd.CGColor, nil];
+        CGFloat notificationBackgroundGradientLocations[] = {0, 1};
+        CGGradientRef notificationBackgroundGradient = CGGradientCreateWithColors(colorSpace, (__bridge CFArrayRef)notificationBackgroundGradientColors, notificationBackgroundGradientLocations);
+        
+        //// NotificationZone Drawing
+        CGRect notificationZoneRect = notificationFrame;
+        CGRect notificationZoneRectExt = notificationFrame;
+        
+        UIBezierPath* notificationZonePathExt = [UIBezierPath bezierPathWithRect: notificationZoneRectExt];
+        
+        CGContextBeginTransparencyLayer(context, NULL);
+        [notificationZonePathExt addClip];
+        CGContextDrawLinearGradient(context, notificationBackgroundGradient,
+                                    CGPointMake(CGRectGetMidX(notificationZoneRect), CGRectGetMinY(notificationZoneRect)),
+                                    CGPointMake(CGRectGetMidX(notificationZoneRect), CGRectGetMaxY(notificationZoneRect)),
+                                    0);
+        CGContextEndTransparencyLayer(context);
+        
+        //// Cleanup
+        CGGradientRelease(notificationBackgroundGradient);
+        CGColorSpaceRelease(colorSpace);
+    }
+    else {
+        CGContextSetFillColorWithColor(context, colorStart.CGColor);
+        CGContextFillRect(context, notificationFrame);
+        
+        // Draw stroke
+        UIColor *strokeColor = [UIColor lighterColorForColor:colorStart withRgbOffset:0.1f];
+        CGContextSetLineWidth(context, 1.0f);
+        CGContextSetStrokeColorWithColor(context, strokeColor.CGColor);
+        CGContextStrokeRect(context, notificationFrame);
+    }
+    
+    CGContextRestoreGState(context);
     
     //// Subframes
+    _iconView.frame = CGRectMake(0.0f,
+                                 CGRectGetMinY(notificationFrame) + _topOffset + floor((CGRectGetHeight(notificationFrame) - kIconHeight) * 0.5),
+                                 kIconWidth,
+                                 kIconHeight);
+    _iconView.center = CGPointMake(kDefaultOffsetX + kIconWidth * 0.5f, _iconView.center.y);
     
-    _iconView.frame = CGRectMake(CGRectGetMinX(notificationFrame) + 7,
-                                 CGRectGetMinY(notificationFrame) + floor((CGRectGetHeight(notificationFrame) - 22) * 0.5) - ceil((_position == RZNotificationPositionTop ? NOTIFICATION_SHADOW_BLUR_RADIUS : -NOTIFICATION_SHADOW_BLUR_RADIUS)/2),
-                                 21,
-                                 22);
     CGRect contentFrame = CGRectMake(CGRectGetMinX(notificationFrame) + [self getOffsetXLeft],
-                                     CGRectGetMinY(notificationFrame) + CGRectGetMinY(notificationFrame) + _contentMarginHeight + (_position == RZNotificationPositionTop ? 0 : NOTIFICATION_SHADOW_BLUR_RADIUS),
+                                     CGRectGetMinY(notificationFrame) + kDefaultContentMarginHeight + _topOffset,
                                      CGRectGetWidth(notificationFrame) - [self getOffsetXLeft] - [self getOffsetXRight],
-                                     CGRectGetHeight(notificationFrame) - 2*_contentMarginHeight - NOTIFICATION_SHADOW_BLUR_RADIUS);
+                                     CGRectGetHeight(notificationFrame) - 2*kDefaultContentMarginHeight);
     _textLabel.frame = contentFrame;
     [_customView setFrame:contentFrame];
-    _anchorView.frame = CGRectMake(CGRectGetMinX(notificationFrame) + CGRectGetWidth(notificationFrame) - 26, CGRectGetMinY(notificationFrame) + floor((CGRectGetHeight(notificationFrame) - 22) * 0.5) - ceil((_position == RZNotificationPositionTop ? NOTIFICATION_SHADOW_BLUR_RADIUS : -NOTIFICATION_SHADOW_BLUR_RADIUS)/2), 21, 22);
-    
-    
-    //// NotificationZone Drawing
-    CGRect notificationZoneRect = CGRectMake(CGRectGetMinX(notificationFrame) + 0,
-                                             CGRectGetMinY(notificationFrame) + (_position == RZNotificationPositionTop ? 0 : outerShadowBlurRadius),
-                                             CGRectGetWidth(notificationFrame) - 0,
-                                             CGRectGetHeight(notificationFrame) - (_position == RZNotificationPositionTop ?outerShadowBlurRadius : 0));
-    
-    CGRect notificationZoneRectExt = CGRectMake(CGRectGetMinX(notificationFrame) + 0,
-                                                CGRectGetMinY(notificationFrame) + (_position == RZNotificationPositionTop ? 0 : -outerShadowBlurRadius),
-                                                CGRectGetWidth(notificationFrame) - 0,
-                                                CGRectGetHeight(notificationFrame) + (_position == RZNotificationPositionTop ? outerShadowBlurRadius : +outerShadowBlurRadius));
-    
-    UIBezierPath* notificationZonePath = [UIBezierPath bezierPathWithRect: notificationZoneRect];
-    UIBezierPath* notificationZonePathExt = [UIBezierPath bezierPathWithRect: notificationZoneRectExt];
-    CGContextSaveGState(context);
-    CGContextSetShadowWithColor(context, outerShadowOffset, outerShadowBlurRadius, outerShadow.CGColor);
-    CGContextBeginTransparencyLayer(context, NULL);
-    [notificationZonePathExt addClip];
-    CGContextDrawLinearGradient(context, notificationBackgroundGradient,
-                                CGPointMake(CGRectGetMidX(notificationZoneRect), CGRectGetMinY(notificationZoneRect)),
-                                CGPointMake(CGRectGetMidX(notificationZoneRect), CGRectGetMaxY(notificationZoneRect)),
-                                0);
-    CGContextEndTransparencyLayer(context);
-    
-    ////// NotificationZone Inner Shadow
-    CGRect notificationZoneBorderRect = CGRectInset([notificationZonePath bounds], -innerShadowBlurRadius, -innerShadowBlurRadius);
-    notificationZoneBorderRect = CGRectOffset(notificationZoneBorderRect, -innerShadowOffset.width, -innerShadowOffset.height);
-    notificationZoneBorderRect = CGRectInset(CGRectUnion(notificationZoneBorderRect, [notificationZonePath bounds]), -1, -1);
-    
-    UIBezierPath* notificationZoneNegativePath = [UIBezierPath bezierPathWithRect: notificationZoneBorderRect];
-    [notificationZoneNegativePath appendPath: notificationZonePath];
-    notificationZoneNegativePath.usesEvenOddFillRule = YES;
-    
-    CGContextSaveGState(context);
-    {
-        CGFloat xOffset = innerShadowOffset.width + round(notificationZoneBorderRect.size.width);
-        CGFloat yOffset = innerShadowOffset.height;
-        UIColor *bottomColor = [innerShadow colorWithAlphaComponent:0.2];
-        
-        CGContextSetShadowWithColor(context,
-                                    CGSizeMake(xOffset + copysign(0.1, xOffset), yOffset + copysign(0.1, yOffset)),
-                                    innerShadowBlurRadius,
-                                    bottomColor.CGColor);
-        
-        [notificationZonePath addClip];
-        CGAffineTransform transform = CGAffineTransformMakeTranslation(-round(notificationZoneBorderRect.size.width), 0);
-        [notificationZoneNegativePath applyTransform: transform];
-        [[UIColor grayColor] setFill];
-        [notificationZoneNegativePath fill];
-    }
-    CGContextRestoreGState(context);
-    
-    CGContextRestoreGState(context);
-    
-    //// Cleanup
-    CGGradientRelease(notificationBackgroundGradient);
-    CGColorSpaceRelease(colorSpace);
-    
+
     _iconView.image = [self image:[self getImageForIcon:_icon] withColor:colorStart];
-    _anchorView.image = [self image:[UIImage imageNamed:@"notif_anchor.png"] withColor:colorStart];
+    _anchorView.image = [self image:[self getImageForAnchor:_anchor] withColor:colorStart];
+    [_anchorView setSize:_anchorView.image.size];
+    
+    _anchorView.frame = CGRectMake(0.0f, CGRectGetMinY(notificationFrame) + _topOffset + floor((CGRectGetHeight(notificationFrame) - kIconHeight) * 0.5), kIconWidth, kIconHeight);
+    _anchorView.center = CGPointMake(CGRectGetMaxX(notificationFrame) - (kDefaultOffsetX + kIconWidth * 0.5f), _anchorView.center.y);
+
     if (_textColor != RZNotificationContentColorManual) {
         _textLabel.textColor = [self adjustTextColor:colorStart];
-        if(_textColor == RZNotificationContentColorAutomaticDark)
-        {
-            _textLabel.shadowColor = [UIColor lighterColorForColor:colorStart withRgbOffset:0.4 andAlphaOffset:0.4];
-            _textLabel.shadowOffset = CGSizeMake(0.0f, 1.0f);
-        }
-        else if(_textColor == RZNotificationContentColorAutomaticLight)
-        {
-            _textLabel.shadowColor = [UIColor darkerColorForColor:colorStart withRgbOffset:0.25 andAlphaOffset:0.4];
-            _textLabel.shadowOffset = CGSizeMake(0.0f, -1.0f);
-        }
     }
 }
 
@@ -300,42 +331,57 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
 
 - (UIImage *) getImageForIcon:(RZNotificationIcon)icon
 {
-    UIImage *image = nil;
+    NSString *imageName = nil;
     switch (_icon) {
         case RZNotificationIconFacebook:
-            image = [UIImage imageNamed:@"notif_facebook.png"];
+            imageName = @"notif_facebook";
             break;
         case RZNotificationIconGift:
-            image = [UIImage imageNamed:@"notif_gift.png"];
+            imageName = @"notif_gift";
             break;
         case RZNotificationIconInfo:
-            image = [UIImage imageNamed:@"notif_infos.png"];
+            imageName = @"notif_infos";
             break;
         case RZNotificationIconSmiley:
-            image = [UIImage imageNamed:@"notif_smiley.png"];
+            imageName = @"notif_smiley";
             break;
         case RZNotificationIconTwitter:
-            image = [UIImage imageNamed:@"notif_twitter.png"];
+            imageName = @"notif_twitter";
             break;
         case RZNotificationIconWarning:
-            image = [UIImage imageNamed:@"notif_warning.png"];
+            imageName = @"notif_warning";
             break;
         case RZNotificationIconCustom:
-            image = [UIImage imageNamed:_customIcon];
+            imageName = _customIcon;
             break;
         case RZNotificationIconNone:
-            image = nil;
+            imageName = nil;
             break;
         default:
             break;
     }
-    return image;
+    return [UIImage imageNamed:imageName];
+}
+
+- (UIImage*) getImageForAnchor:(RZNotificationAnchor)anchor
+{
+    NSString *imageName = nil;
+    switch (anchor) {
+        case RZNotificationAnchorArrow:
+            imageName = @"notif_anchor_arrow";
+            break;
+        case RZNotificationAnchorX:
+            imageName = @"notif_anchor_cross";
+            break;
+        default:
+            break;
+    }
+    return [UIImage imageNamed:imageName];
 }
 
 - (void) setCustomIcon:(NSString *)customIcon
 {
-    RZ_RELEASE(_customIcon);
-    _customIcon = RZ_RETAIN(customIcon);
+    _customIcon = customIcon;
     if (customIcon) {
         _icon = RZNotificationIconCustom;
     }
@@ -358,15 +404,13 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
 
 - (void) setCustomTopColor:(UIColor *)customTopColor
 {
-    RZ_RELEASE(_customTopColor);
-    _customTopColor = RZ_RETAIN(customTopColor);
+    _customTopColor = customTopColor;
     [self setNeedsDisplay];
 }
 
 - (void) setCustomBottomColor:(UIColor *)customBottomColor
 {
-    RZ_RELEASE(_customBottomColor);
-    _customBottomColor = RZ_RETAIN(customBottomColor);
+    _customBottomColor = customBottomColor;
     [self setNeedsDisplay];
 }
 
@@ -379,12 +423,11 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
 - (void) setMessage:(NSString *)message
 {
     NSString *tempMessage = message;
-    RZ_RELEASE(_message);
-    _message = RZ_RETAIN(message);
+    _message = message;
     
     NSInteger maxLenght = _messageMaxLenght;
     if (maxLenght == 0)
-        maxLenght = DEFAULT_MAX_MESSAGE_LENGHT;
+        maxLenght = kDefaultMaxMessageLength;
     
     if(maxLenght < [message length])
         tempMessage = [[message substringToIndex:maxLenght] stringByAppendingString:@"..."]; // Tail truncation
@@ -402,7 +445,7 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
     _textLabel.frame   = frameL;
     [_textLabel sizeToFit];
     
-    _textLabel.text = message;
+    _textLabel.text = message; // FIXME: Why? We should keep the truncated text
     
     [self adjustHeightAndRedraw:CGRectGetHeight(_textLabel.frame)];
 }
@@ -410,8 +453,7 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
 - (void) setSound:(NSString *)sound
 {
     if(sound && ((NSNull*)sound != [NSNull null])) {
-        RZ_RELEASE(_sound);
-        _sound = RZ_RETAIN(sound);
+        _sound = sound;
         
         NSURL *soundURL   = [[NSBundle mainBundle] URLForResource: [_sound stringByDeletingPathExtension]
                                                     withExtension: [_sound pathExtension]];
@@ -441,28 +483,14 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
     }
 }
 
-- (void) setContentMarginHeight:(CGFloat)contentMarginHeight
+- (void)setAnchor:(RZNotificationAnchor)anchor
 {
-    _contentMarginHeight = contentMarginHeight;
+    _anchor = anchor;
     
-    CGFloat height;
-    
-    if ([(UIView*)_customView superview]) {
-        height = [_customView resizeForWidth:CGRectGetWidth(self.frame) - [self getOffsetXLeft] - [self getOffsetXRight]];
-    }
-    else{
-        height = CGRectGetHeight(_textLabel.frame);
-    }
-    [self adjustHeightAndRedraw:height];
-}
-
-- (void) setDisplayAnchor:(BOOL)displayAnchor
-{
-    _displayAnchor = displayAnchor;
-    if (_displayAnchor && !_anchorView.superview) {
+    if (_anchor != RZNotificationAnchorNone && !_anchorView.superview) {
         [self addSubview:_anchorView];
     }
-    else if (!_displayAnchor && _anchorView.superview){
+    else if (_anchor == RZNotificationAnchorNone && _anchorView.superview){
         [_anchorView removeFromSuperview];
     }
 }
@@ -472,14 +500,11 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
     if(customView){
         [_textLabel removeFromSuperview];
         [_customView removeFromSuperview];
-        RZ_RELEASE(_customView);
-        _customView = RZ_RETAIN(customView);
-        RZ_RELEASE(_textLabel);
+        _customView = customView;
         [self addSubview:(UIView*)_customView];
     }
     else{
         [_customView removeFromSuperview];
-        RZ_RELEASE(_customView);
         
         [self addTextLabelIfNeeded];
         
@@ -499,8 +524,7 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
         }
     }
     
-    RZ_RELEASE(_completionBlock);
-    _completionBlock = RZ_RETAIN(completionBlock);
+    _completionBlock = completionBlock;
 }
 
 - (void) setMessageMaxLenght:(NSInteger)messageMaxLenght
@@ -511,6 +535,37 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
     }
 }
 
+- (void) setContainer:(id<RZNotificationViewManagerProtocol>)container
+{
+    NSAssert([container conformsToProtocol:@protocol(RZNotificationViewManagerProtocol)], @"The container should conforms to `RZNotificationViewManagerProtocol`");
+    _container = container;
+}
+
+- (void) setContext:(RZNotificationContext)context
+{
+    _context = context;
+    if (_context != RZNotificationContextTopMostController) {
+        self.contextController = [UIViewController topMostController];
+    }
+}
+
+#pragma mark - Default configuration
+
++ (void)registerMinimumHeight:(CGFloat)minimumHeight
+{
+    kMinHeight = minimumHeight;
+}
+
++ (void)registerContentMarginOnHeight:(CGFloat)contentMarginHeight
+{
+    kDefaultContentMarginHeight = contentMarginHeight;
+}
+
++ (void)registerDefaultOffsetOnX:(CGFloat)defaultXOffset
+{
+    kDefaultOffsetX = defaultXOffset;
+}
+
 #pragma mark - Subviews build
 
 - (void) addTextLabelIfNeeded
@@ -518,9 +573,8 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
     if (!_textLabel) {
         _textLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.bounds) - [self getOffsetXLeft] - [self getOffsetXRight], 0)];
         _textLabel.numberOfLines = 0;
-        _textLabel.font = [UIFont fontWithName:@"Helvetica-Bold" size:12.0];
+        _textLabel.font = _labelFont;
         _textLabel.backgroundColor = [UIColor clearColor];
-        _textLabel.shadowOffset = CGSizeMake(0.0, 1.0);
         _textLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
         if (RZSystemVersionGreaterOrEqualThan(6.0))
         {
@@ -536,7 +590,6 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
 #pragma clang diagnostic pop
         }
         _textLabel.textColor = [UIColor blackColor];
-        _textLabel.shadowColor = [UIColor whiteColor];
     }
     
     if (!_textLabel.superview)
@@ -545,10 +598,10 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
 
 #pragma mark - Init methods
 
-- (id) initWithFrame:(CGRect)frame icon:(RZNotificationIcon)icon position:(RZNotificationPosition)position color:(RZNotificationColor)color assetColor:(RZNotificationContentColor)assetColor textColor:(RZNotificationContentColor)textColor delay:(NSTimeInterval)delay
+- (id) initWithFrame:(CGRect)frame icon:(RZNotificationIcon)icon anchor:(RZNotificationAnchor)anchor position:(RZNotificationPosition)position color:(RZNotificationColor)color assetColor:(RZNotificationContentColor)assetColor textColor:(RZNotificationContentColor)textColor duration:(NSTimeInterval)duration
 {
     CGRect mFrame = frame;
-    mFrame.size.height = MAX(CGRectGetHeight(frame), MIN_HEIGHT);
+    mFrame.size.height = MAX(CGRectGetHeight(frame), kMinHeight);
     
     self = [super initWithFrame:mFrame];
     if (self)
@@ -557,15 +610,17 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
         self.autoresizingMask = UIViewAutoresizingFlexibleWidth;
         
         // Set default values
-        _delay = delay;
+        _delay = duration;
         _position = position;
         _color = color;
-        _vibrate = DEFAULT_VIBRATE;
+        _vibrate = kDefaultVibrate;
         _assetColor = assetColor;
         _textColor = textColor;
         _icon = icon;
-        _displayAnchor = YES;
-        _contentMarginHeight = DEFAULT_CONTENT_MARGIN_HEIGHT;
+        _anchor = anchor;
+        _labelFont = [UIFont fontWithName:@"Avenir" size:15.0];
+        
+        kDefaultContentMarginHeight = kDefaultContentMarginHeight;
         
         // Add icon view
         _iconView = [[UIImageView alloc] initWithFrame:CGRectZero];
@@ -576,13 +631,16 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
         [self addSubview:_iconView];
         
         // Add Anchor view
-        _anchorView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"notif_anchor.png"]];
+        _anchorView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"notif_anchor"]];
         _anchorView.contentMode = UIViewContentModeCenter;
         _anchorView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
         _anchorView.clipsToBounds = NO;
         _anchorView.opaque = YES;
         _anchorView.backgroundColor = [UIColor clearColor];
-        [self addSubview:_anchorView];
+        if (_anchor != RZNotificationAnchorNone)
+        {
+            [self addSubview:_anchorView];
+        }
         
         // Initialize the text label
         [self addTextLabelIfNeeded];
@@ -603,46 +661,44 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
 - (id) initWithFrame:(CGRect)frame
 {
     return [self initWithFrame:frame
-                          icon:DEFAULT_ICON
-                      position:DEFAULT_POSITION
-                         color:DEFAULT_COLOR
-                    assetColor:DEFAULT_ASSET_COLOR
-                     textColor:DEFAULT_TEXT_COLOR
-                         delay:DEFAULT_DELAY];
+                          icon:kDefaultIcon
+                        anchor:kDefaultAnchor
+                      position:kDefaultPosition
+                         color:kDefaultColor
+                    assetColor:kDefaultAssetColor
+                     textColor:kDefaultTextColor
+                      duration:kDefaultDuration];
 }
 
-- (id) initWithController:(UIViewController*)controller icon:(RZNotificationIcon)icon position:(RZNotificationPosition)position color:(RZNotificationColor)color assetColor:(RZNotificationContentColor)assetColor delay:(NSTimeInterval)delay
+- (id) initWithController:(UIViewController*)controller icon:(RZNotificationIcon)icon anchor:(RZNotificationAnchor)anchor position:(RZNotificationPosition)position color:(RZNotificationColor)color assetColor:(RZNotificationContentColor)assetColor textColor:(RZNotificationContentColor)textColor duration:(NSTimeInterval)duration completion:(RZNotificationCompletion)completionBlock
 {
-    CGRect frame = self.bounds;
-    frame.size.width = CGRectGetWidth(controller.view.frame);
-    self = [self initWithFrame:frame
-                          icon:icon
-                      position:position
-                         color:color
-                    assetColor:assetColor
-                     textColor:assetColor
-                         delay:delay];
-    if (self)
-    {
-        self.controller = controller;
-    }
-    return self;
+    return [self initWithContainer:controller
+                              icon:icon
+                            anchor:anchor
+                          position:position
+                             color:color
+                        assetColor:assetColor
+                         textColor:textColor
+                          duration:duration
+                        completion:completionBlock];
 }
 
-- (id) initWithController:(UIViewController*)controller icon:(RZNotificationIcon)icon position:(RZNotificationPosition)position color:(RZNotificationColor)color assetColor:(RZNotificationContentColor)assetColor textColor:(RZNotificationContentColor)textColor delay:(NSTimeInterval)delay completion:(RZNotificationCompletion)completionBlock;
+- (id) initWithContainer:(id<RZNotificationViewManagerProtocol>)container icon:(RZNotificationIcon)icon anchor:(RZNotificationAnchor)anchor position:(RZNotificationPosition)position color:(RZNotificationColor)color assetColor:(RZNotificationContentColor)assetColor textColor:(RZNotificationContentColor)textColor duration:(NSTimeInterval)duration completion:(RZNotificationCompletion)completionBlock;
 {
     CGRect frame = self.bounds;
-    frame.size.width = CGRectGetWidth(controller.view.frame);
+    frame.size.width = CGRectGetWidth(PPScreenBounds());
+    
     self = [self initWithFrame:frame
                           icon:icon
+                        anchor:anchor
                       position:position
                          color:color
                     assetColor:assetColor
                      textColor:textColor
-                         delay:delay];
+                      duration:duration];
     if (self)
     {
-        self.controller = controller;
+        self.container = container;
         self.completionBlock = completionBlock;
     }
     return self;
@@ -655,69 +711,91 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
     self = [self initWithFrame:frame];
     if (self)
     {
-        self.controller = controller;
+        self.container = controller;
     }
     return self;
 }
 
 // Freely adapted from MBProgressHUD
-+ (RZNotificationView*) showNotificationWithMessage:(NSString*)message icon:(RZNotificationIcon)icon position:(RZNotificationPosition)position color:(RZNotificationColor)color assetColor:(RZNotificationContentColor)assetColor  textColor:(RZNotificationContentColor)textColor addedToController:(UIViewController*)controller withCompletion:(RZNotificationCompletion)completionBlock
++ (RZNotificationView*) showNotificationWithMessage:(NSString*)message icon:(RZNotificationIcon)icon anchor:(RZNotificationAnchor)anchor position:(RZNotificationPosition)position color:(RZNotificationColor)color assetColor:(RZNotificationContentColor)assetColor  textColor:(RZNotificationContentColor)textColor addedToController:(UIViewController*)controller withCompletion:(RZNotificationCompletion)completionBlock
 {
     return [RZNotificationView showNotificationWithMessage:message
                                                       icon:icon
+                                                    anchor:anchor
                                                   position:position
                                                      color:color
                                                 assetColor:assetColor
                                                  textColor:textColor
-                                                     delay:DEFAULT_DELAY
+                                                  duration:kDefaultDuration
                                          addedToController:controller
                                             withCompletion:completionBlock];
 }
 
-+ (RZNotificationView*) showNotificationWithMessage:(NSString*)message icon:(RZNotificationIcon)icon position:(RZNotificationPosition)position color:(RZNotificationColor)color assetColor:(RZNotificationContentColor)assetColor textColor:(RZNotificationContentColor)textColor  delay:(NSTimeInterval)delay addedToController:(UIViewController*)controller withCompletion:(RZNotificationCompletion)completionBlock;
++ (RZNotificationView*) showNotificationWithMessage:(NSString*)message icon:(RZNotificationIcon)icon anchor:(RZNotificationAnchor)anchor position:(RZNotificationPosition)position color:(RZNotificationColor)color assetColor:(RZNotificationContentColor)assetColor textColor:(RZNotificationContentColor)textColor duration:(NSTimeInterval)duration addedToController:(UIViewController*)controller withCompletion:(RZNotificationCompletion)completionBlock;
 {
     RZNotificationView *notification = [[RZNotificationView alloc] initWithController:controller
                                                                                  icon:icon
+                                                                               anchor:anchor
                                                                              position:position
                                                                                 color:color
                                                                            assetColor:assetColor
                                                                             textColor:textColor
-                                                                                delay:delay
+                                                                             duration:duration
                                                                            completion:completionBlock];
     [notification setMessage:message];
     [notification show];
-    return RZ_AUTORELEASE(notification);
+    return notification;
 }
 
-+ (RZNotificationView *)showNotificationOnTopMostControllerWithMessage:(NSString *)message icon:(RZNotificationIcon)icon position:(RZNotificationPosition)position color:(RZNotificationColor)color assetColor:(RZNotificationContentColor)assetColor textColor:(RZNotificationContentColor)textColor withCompletion:(RZNotificationCompletion)completionBlock
++ (RZNotificationView*) showNotificationOn:(RZNotificationContext)context message:(NSString*)message icon:(RZNotificationIcon)icon anchor:(RZNotificationAnchor)anchor position:(RZNotificationPosition)position color:(RZNotificationColor)color assetColor:(RZNotificationContentColor)assetColor textColor:(RZNotificationContentColor)textColor withCompletion:(RZNotificationCompletion)completionBlock
 {
     
-    return [RZNotificationView showNotificationOnTopMostControllerWithMessage:message
-                                                                         icon:icon
-                                                                     position:position
-                                                                        color:color
-                                                                   assetColor:assetColor
-                                                                    textColor:textColor
-                                                                        delay:DEFAULT_DELAY
-                                                               withCompletion:completionBlock];
+    return [RZNotificationView showNotificationOn:context
+                                          message:message
+                                             icon:icon
+                                           anchor:anchor
+                                         position:position
+                                            color:color
+                                       assetColor:assetColor
+                                        textColor:textColor
+                                         duration:kDefaultDuration
+                                   withCompletion:completionBlock];
 }
 
-+ (RZNotificationView *)showNotificationOnTopMostControllerWithMessage:(NSString *)message icon:(RZNotificationIcon)icon position:(RZNotificationPosition)position color:(RZNotificationColor)color assetColor:(RZNotificationContentColor)assetColor textColor:(RZNotificationContentColor)textColor delay:(NSTimeInterval)delay withCompletion:(RZNotificationCompletion)completionBlock
++ (RZNotificationView*) showNotificationOn:(RZNotificationContext)context message:(NSString*)message icon:(RZNotificationIcon)icon anchor:(RZNotificationAnchor)anchor position:(RZNotificationPosition)position color:(RZNotificationColor)color assetColor:(RZNotificationContentColor)assetColor textColor:(RZNotificationContentColor)textColor duration:(NSTimeInterval)duration withCompletion:(RZNotificationCompletion)completionBlock
 {
-    RZNotificationView *notification = [[RZNotificationView alloc] initWithController:[UIViewController topMostController]
-                                                                                 icon:icon
-                                                                             position:position
-                                                                                color:color
-                                                                           assetColor:assetColor
-                                                                            textColor:textColor
-                                                                                delay:delay
-                                                                           completion:completionBlock];
+    RZNotificationView *notification = [[RZNotificationView alloc] initWithContainer:[self containerForContext:context]
+                                                                                icon:icon
+                                                                              anchor:anchor
+                                                                            position:position
+                                                                               color:color
+                                                                          assetColor:assetColor
+                                                                           textColor:textColor
+                                                                            duration:duration
+                                                                          completion:completionBlock];
+    [notification setContext:context];
     [notification setMessage:message];
     [notification show];
-    return RZ_AUTORELEASE(notification);
+    return notification;
 }
 
-+ (BOOL) hideNotificationForController:(UIViewController*)controller
++ (id<RZNotificationViewManagerProtocol>)containerForContext:(RZNotificationContext)context
+{
+    id <RZNotificationViewManagerProtocol> toReturn = nil;
+    switch (context) {
+        case RZNotificationContextTopMostController:
+            toReturn = [UIViewController topMostController];
+            break;
+            case RZNotificationContextAboveStatusBar:
+            case RZNotificationContextBelowStatusBar:
+            toReturn = [RZNotificationViewManager notificationWindow];
+        default:
+            break;
+    }
+    return toReturn;
+}
+
++ (BOOL) hideLastNotificationForController:(UIViewController*)controller
 {
     RZNotificationView *notification = [RZNotificationView notificationForController:controller];
 	if (notification != nil) {
@@ -738,43 +816,40 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
 
 + (RZNotificationView*) notificationForController:(UIViewController*)controller
 {
-    RZNotificationView *notification = nil;
-	NSArray *subviews = controller.view.subviews;
-	Class notificationClass = [RZNotificationView class];
-	for (UIView *aView in subviews) {
-		if ([aView isKindOfClass:notificationClass]) {
-			notification = (RZNotificationView *)aView;
-		}
-	}
-	return notification;
+    return [RZNotificationViewManager notificationForContainer:controller];
 }
 
 + (NSArray*) allNotificationsForController:(UIViewController*)controller
 {
-    NSMutableArray *notifications = [NSMutableArray array];
-	NSArray *subviews = controller.view.subviews;
-	Class notificationClass = [RZNotificationView class];
-	for (UIView *aView in subviews) {
-		if ([aView isKindOfClass:notificationClass]) {
-			[notifications addObject:aView];
-		}
-	}
-	return [NSArray arrayWithArray:notifications];
+    return [RZNotificationViewManager allNotificationsForContainer:controller];
 }
 
 #pragma mark - Show hide methods
 - (CGFloat) _getFinalOriginForPosition:(RZNotificationPosition)position
 {
-    UIViewController *c = _controller;
     CGFloat finalOrigin = 0.0f;
     
-    if ([c conformsToProtocol:@protocol(RZNotificationViewProtocol)]) {
-        finalOrigin = [(UIViewController<RZNotificationViewProtocol>*)c yOriginForRZNotificationViewForPosition:position];
-    } else {
+    if ([_container isKindOfClass:[UIViewController class]]) {
+        UIViewController *c = (UIViewController*)_container;
+        
+        if ([c conformsToProtocol:@protocol(RZNotificationViewProtocol)] && [c respondsToSelector:@selector(yOriginForRZNotificationViewForPosition:)]) {
+            finalOrigin = [(UIViewController<RZNotificationViewProtocol>*)c yOriginForRZNotificationViewForPosition:position];
+        } else {
+            if (position == RZNotificationPositionTop) {
+                finalOrigin = [c.topLayoutGuide length];
+            } else {
+                finalOrigin = CGRectGetHeight(c.view.frame) - [c.bottomLayoutGuide length];
+            }
+        }
+    }
+    else
+    {
+        UIView *v = (UIView*)_container;
+        
         if (position == RZNotificationPositionTop) {
             finalOrigin = 0.0f;
         } else {
-            finalOrigin = CGRectGetHeight(_controller.view.frame);
+            finalOrigin = CGRectGetHeight(v.frame);
         }
     }
     
@@ -784,12 +859,19 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
 - (void) placeToOrigin
 {
     CGFloat yOrigin = 0.0f;
-    
-    if (_position == RZNotificationPositionTop) {
-        yOrigin = [self _getFinalOriginForPosition:_position]-CGRectGetHeight(self.frame);
+    UIView *view = nil;
+    if ([_container isKindOfClass:[UIViewController class]]) {
+        view = [(UIViewController*)_container view];
     }
     else {
-        yOrigin = [self _getFinalOriginForPosition:_position];
+        view = (UIView*)_container;
+    }
+    
+    if (_position == RZNotificationPositionTop) {
+        yOrigin = -CGRectGetHeight(self.frame);
+    }
+    else {
+        yOrigin = CGRectGetHeight(view.frame);
     }
     
     [self setYOrigin:yOrigin];
@@ -802,7 +884,7 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
     if (_position == RZNotificationPositionTop) {
         yFinalOrigin = [self _getFinalOriginForPosition:_position];
     } else {
-        yFinalOrigin = [self _getFinalOriginForPosition:_position]-CGRectGetHeight(self.frame);
+        yFinalOrigin = [self _getFinalOriginForPosition:_position] - CGRectGetHeight(self.frame);
     }
     
     [self setYOrigin:yFinalOrigin];
@@ -827,10 +909,38 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
         self.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
     }
     
-    if ([_controller conformsToProtocol:@protocol(RZNotificationViewProtocol)]) {
-        [(UIViewController<RZNotificationViewProtocol>*)_controller addRZNotificationView:self];
-    } else {
-        [_controller.view addSubview:self];
+    if ([_container isKindOfClass:[UIViewController class]]) {
+        UIViewController *c = (UIViewController*)_container;
+        if ([c conformsToProtocol:@protocol(RZNotificationViewProtocol)] && [c respondsToSelector:@selector(addRZNotificationView:)]) {
+            [(UIViewController<RZNotificationViewProtocol>*)c addRZNotificationView:self];
+        } else {
+            [c.view addSubview:self];
+        }
+    }
+    else
+    {
+        NSAssert([_container respondsToSelector:@selector(addSubview:)], @"Your container should at least responds to `addSubview:`");
+        UIWindow *w = (UIWindow*)_container;
+        
+        if (self.context == RZNotificationContextAboveStatusBar) {
+            w.windowLevel = UIWindowLevelStatusBar + 1.0f;
+        }
+        else {
+            w.windowLevel = UIWindowLevelNormal;
+        }
+        
+        [w setSize:self.bounds.size];
+    
+        if (_position == RZNotificationPositionTop) {
+            [w setOrigin:CGPointZero];
+        }
+        else {
+            [w setOrigin:CGPointMake(0.0f, CGRectGetHeight(PPScreenBounds()) - CGRectGetHeight(w.bounds))];
+        }
+        
+        [_container performSelector:@selector(addSubview:) withObject:self];
+        w.userInteractionEnabled = YES;
+        self.userInteractionEnabled = YES;
     }
     
     if(_vibrate)
@@ -845,10 +955,11 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
         AudioServicesPlaySystemSound (_soundFileObject);
     }
     
+    [RZNotificationViewManager registerNotification:self];
     
+    self.hidden = NO;
     [UIView animateWithDuration:0.4
                      animations:^{
-                         self.hidden = NO;
                          [self placeToFinalPosition];
                      }
      ];
@@ -871,6 +982,7 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
                      }
                      completion:^(BOOL finished) {
                          [self removeFromSuperview];
+                         [RZNotificationViewManager removeNotification:self];
                          _isShowing = NO;
                      }];
 }
@@ -887,7 +999,15 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
 - (void) adjustHeightAndRedraw:(CGFloat)height
 {
     CGRect frame = self.frame;
-    frame.size.height = MAX(MIN_HEIGHT , height + 2.0*_contentMarginHeight + NOTIFICATION_SHADOW_BLUR_RADIUS);
+    
+    if (_context == RZNotificationContextBelowStatusBar && _position == RZNotificationPositionTop) {
+        _topOffset = PPStatusBarHeight() / 2.0f;
+    }
+    else {
+        _topOffset = 0.0f;
+    }
+    
+    frame.size.height = MAX(kMinHeight , height + 2.0*kDefaultContentMarginHeight + _topOffset);
     self.frame = frame;
     [self setNeedsDisplay];
 }
@@ -897,33 +1017,42 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
 - (void) deviceOrientationDidChange:(NSNotification*)notification
 {
     if(self.superview){
-        UIDevice *device = (UIDevice*)notification.object;
-        if ([_controller shouldAutorotateToInterfaceOrientation:device.orientation]) {
-            if(_textLabel){
-                self.message = _message;
+        if ([_container isKindOfClass:[UIViewController class]]) {
+            UIViewController *c = (UIViewController*)_container;
+
+            UIDevice *device = (UIDevice*)notification.object;
+            if ([c shouldAutorotate] && (RZOrientationMaskContainsOrientation([c supportedInterfaceOrientations], device.orientation))) {
+                if(_textLabel){
+                    self.message = _message;
+                }
+                else{
+                    CGFloat height = [_customView resizeForWidth:CGRectGetWidth(self.frame) - [self getOffsetXLeft] - [self getOffsetXRight]];
+                    [self adjustHeightAndRedraw:height];
+                }
+                
+                CGRect frame = self.frame;
+                CGFloat yOrigin = 0.0f;
+                
+                if (_position == RZNotificationPositionTop) {
+                    yOrigin = [self _getFinalOriginForPosition:_position];
+                }
+                else {
+                    yOrigin = [self _getFinalOriginForPosition:_position]-CGRectGetHeight(self.frame);
+                }
+                
+                frame.origin.y = yOrigin;
+                
+                if (c.view.frame.size.width != 0)
+                    frame.size.width = c.view.frame.size.width;
+                self.frame = frame;
+                
+                _highlightedView.frame = self.bounds;
             }
-            else{
-                CGFloat height = [_customView resizeForWidth:CGRectGetWidth(self.frame) - [self getOffsetXLeft] - [self getOffsetXRight]];
-                [self adjustHeightAndRedraw:height];
-            }
-            
-            CGRect frame = self.frame;
-            CGFloat yOrigin = 0.0f;
-            
-            if (_position == RZNotificationPositionTop) {
-                yOrigin = [self _getFinalOriginForPosition:_position];
-            }
-            else {
-                yOrigin = [self _getFinalOriginForPosition:_position]-CGRectGetHeight(self.frame);
-            }
-            
-            frame.origin.y = yOrigin;
-            
-            if (_controller.view.frame.size.width != 0)
-                frame.size.width = _controller.view.frame.size.width;
-            self.frame = frame;
-            
-            _highlightedView.frame = CGRectOffset(CGRectInset(self.bounds, 0.0, 1.5), 0.0, _position == RZNotificationPositionTop ? -NOTIFICATION_SHADOW_BLUR_RADIUS : NOTIFICATION_SHADOW_BLUR_RADIUS);
+        }
+        else
+        {
+            // TODO: handle rotation for window
+            NSLog(@"Handle rotation: TODO :/");
         }
     }
 }
@@ -959,13 +1088,12 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
                 _highlightedView = [[UIView alloc] init];
                 [_highlightedView setBackgroundColor:[UIColor colorWithWhite:0.3 alpha:0.3]];
             }
-            _highlightedView.frame = CGRectOffset(CGRectInset(self.bounds, 0.0, 1.5), 0.0, _position == RZNotificationPositionTop ? -NOTIFICATION_SHADOW_BLUR_RADIUS : NOTIFICATION_SHADOW_BLUR_RADIUS);
+            _highlightedView.frame = self.bounds;
             [self addSubview:_highlightedView];
         }
         else
         {
             [_highlightedView removeFromSuperview];
-            RZ_RELEASE(_highlightedView);
         }
     }
 }
@@ -975,24 +1103,250 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIDeviceOrientationDidChangeNotification object:nil];
     
     AudioServicesDisposeSystemSoundID(_soundFileObject);
+}
+
+#pragma mark - deprecated
+
+- (void) setContentMarginHeight:(CGFloat)contentMarginHeight
+{
+    kDefaultContentMarginHeight = contentMarginHeight;
     
-    RZ_RELEASE(_highlightedView);
-    RZ_RELEASE(_controller);
-    RZ_RELEASE(_iconView);
-    RZ_RELEASE(_anchorView);
-    RZ_RELEASE(_textLabel);
-    RZ_RELEASE(_message);
-    RZ_RELEASE(_customView);
-    RZ_RELEASE(_customTopColor);
-    RZ_RELEASE(_customBottomColor);
-    RZ_RELEASE(_sound);
-    RZ_RELEASE(_customIcon);
-    if (_completionBlock)
-        RZ_RELEASE(_completionBlock);
+    CGFloat height;
     
-#if !RZ_ARC_ENABLED
-    [super dealloc];
-#endif
+    if ([(UIView*)_customView superview]) {
+        height = [_customView resizeForWidth:CGRectGetWidth(self.frame) - [self getOffsetXLeft] - [self getOffsetXRight]];
+    }
+    else{
+        height = CGRectGetHeight(_textLabel.frame);
+    }
+    [self adjustHeightAndRedraw:height];
+}
+
+- (void) setDisplayAnchor:(BOOL)displayAnchor
+{
+    _displayAnchor = displayAnchor;
+    if (_displayAnchor && !_anchorView.superview) {
+        [self addSubview:_anchorView];
+    }
+    else if (!_displayAnchor && _anchorView.superview){
+        [_anchorView removeFromSuperview];
+    }
+}
+
+
+- (id) initWithController:(UIViewController*)controller icon:(RZNotificationIcon)icon position:(RZNotificationPosition)position color:(RZNotificationColor)color assetColor:(RZNotificationContentColor)assetColor textColor:(RZNotificationContentColor)textColor delay:(NSTimeInterval)delay completion:(RZNotificationCompletion)completionBlock;
+{
+    return [self initWithController:controller icon:icon anchor:RZNotificationAnchorArrow position:position color:color assetColor:assetColor textColor:textColor duration:delay completion:completionBlock];
+}
+
++ (RZNotificationView*) showNotificationWithMessage:(NSString*)message icon:(RZNotificationIcon)icon position:(RZNotificationPosition)position color:(RZNotificationColor)color assetColor:(RZNotificationContentColor)assetColor  textColor:(RZNotificationContentColor)textColor addedToController:(UIViewController*)controller withCompletion:(RZNotificationCompletion)completionBlock
+{
+    return [RZNotificationView showNotificationWithMessage:message
+                                                      icon:icon
+                                                  position:position
+                                                     color:color
+                                                assetColor:assetColor
+                                                 textColor:textColor
+                                                     delay:kDefaultDuration
+                                         addedToController:controller
+                                            withCompletion:completionBlock];
+}
+
++ (RZNotificationView*) showNotificationWithMessage:(NSString*)message icon:(RZNotificationIcon)icon position:(RZNotificationPosition)position color:(RZNotificationColor)color assetColor:(RZNotificationContentColor)assetColor textColor:(RZNotificationContentColor)textColor  delay:(NSTimeInterval)delay addedToController:(UIViewController*)controller withCompletion:(RZNotificationCompletion)completionBlock;
+{
+    RZNotificationView *notification = [[RZNotificationView alloc] initWithController:controller
+                                                                                 icon:icon
+                                                                             position:position
+                                                                                color:color
+                                                                           assetColor:assetColor
+                                                                            textColor:textColor
+                                                                                delay:delay
+                                                                           completion:completionBlock];
+    [notification setMessage:message];
+    [notification show];
+    return notification;
+}
+
++ (RZNotificationView *)showNotificationOnTopMostControllerWithMessage:(NSString *)message icon:(RZNotificationIcon)icon position:(RZNotificationPosition)position color:(RZNotificationColor)color assetColor:(RZNotificationContentColor)assetColor textColor:(RZNotificationContentColor)textColor withCompletion:(RZNotificationCompletion)completionBlock
+{
+    
+    return [RZNotificationView showNotificationOnTopMostControllerWithMessage:message
+                                                                         icon:icon
+                                                                     position:position
+                                                                        color:color
+                                                                   assetColor:assetColor
+                                                                    textColor:textColor
+                                                                        delay:kDefaultDuration
+                                                               withCompletion:completionBlock];
+}
+
++ (RZNotificationView *)showNotificationOnTopMostControllerWithMessage:(NSString *)message icon:(RZNotificationIcon)icon position:(RZNotificationPosition)position color:(RZNotificationColor)color assetColor:(RZNotificationContentColor)assetColor textColor:(RZNotificationContentColor)textColor delay:(NSTimeInterval)delay withCompletion:(RZNotificationCompletion)completionBlock
+{
+    RZNotificationView *notification = [[RZNotificationView alloc] initWithController:[UIViewController topMostController]
+                                                                                 icon:icon
+                                                                             position:position
+                                                                                color:color
+                                                                           assetColor:assetColor
+                                                                            textColor:textColor
+                                                                                delay:delay
+                                                                           completion:completionBlock];
+    [notification setMessage:message];
+    [notification show];
+    return notification;
+}
+
++ (BOOL) hideNotificationForController:(UIViewController*)controller
+{
+    return [self hideLastNotificationForController:controller];
 }
 
 @end
+
+
+#pragma mark - Notification Manager
+
+@implementation UIViewController (RZNotificationViewManager)
+static char rzNotificationsKey;
+
+- (void)setRzNotifications:(NSMutableArray *)rzNotifications
+{
+    objc_setAssociatedObject(self,
+                             &rzNotificationsKey,
+                             rzNotifications,
+                             OBJC_ASSOCIATION_RETAIN);
+}
+
+- (NSMutableArray *) rzNotifications {
+    id notifications = objc_getAssociatedObject(self,
+                                             &rzNotificationsKey);
+    
+    if (!notifications)
+    {
+        notifications = [NSMutableArray array];
+        self.rzNotifications = notifications;
+    }
+    return notifications;
+}
+
+@end
+
+@implementation UIWindow (RZNotificationViewManager)
+static char rzNotificationsKey;
+
+- (void)setRzNotifications:(NSMutableArray *)rzNotifications
+{
+    objc_setAssociatedObject(self,
+                             &rzNotificationsKey,
+                             rzNotifications,
+                             OBJC_ASSOCIATION_RETAIN);
+}
+
+- (NSMutableArray *) rzNotifications {
+    id notifications = objc_getAssociatedObject(self,
+                                                &rzNotificationsKey);
+    
+    if (!notifications)
+    {
+        notifications = [NSMutableArray array];
+        self.rzNotifications = notifications;
+    }
+    return notifications;
+}
+
+@end
+
+@implementation RZNotificationViewManager
+
++ (UIWindow *)notificationWindow
+{
+    static dispatch_once_t pred = 0;
+    __strong static UIWindow *_notificationWindow = nil;
+    dispatch_once(&pred, ^{
+        _notificationWindow = [[UIWindow alloc] initWithFrame:PPScreenBounds()];
+        _notificationWindow.hidden = YES;
+    });
+    return _notificationWindow;
+}
+
++ (void)registerNotification:(RZNotificationView *)notification
+{
+    NSAssert(notification, @"`notification should not be nil`");
+    [notification.container.rzNotifications addObject:notification];
+    
+    if ([notification.container isEqual:[self notificationWindow]]) {
+        [[self notificationWindow] setHidden:NO];
+    }
+}
+
++ (void)removeNotification:(RZNotificationView*)notification
+{
+    NSAssert(notification, @"`notification should not be nil`");
+    if ([notification.container.rzNotifications containsObject:notification]) {
+        [notification.container.rzNotifications removeObject:notification];
+    }
+    
+    if ([notification.container isEqual:[self notificationWindow]]) {
+        if ([notification.container.rzNotifications count] == 0) {
+            [[self notificationWindow] setHidden:YES];
+        }
+    }
+}
+
++ (RZNotificationView *)notificationForContainer:(id<RZNotificationViewManagerProtocol>)container
+{
+    NSAssert([container conformsToProtocol:@protocol(RZNotificationViewManagerProtocol)], @"The container should conforms to `RZNotificationViewManagerProtocol`");
+    
+    if([container isKindOfClass:[UIViewController class]])
+    {
+        // Then we assume that there may be some notifications into a window with a context controller
+        NSArray *allNotifsForWindow = [self allNotificationsForContainer:[self notificationWindow]];
+        NSArray *filtered = [allNotifsForWindow filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"contextController == %@", container]];
+        // We also assume that what is on window is on top
+        if([filtered count] != 0)
+        {
+            return [filtered lastObject];
+        }
+    }
+    
+    return [container.rzNotifications lastObject];
+}
+
++(NSArray *)allNotificationsForContainer:(id<RZNotificationViewManagerProtocol>)container
+{
+    NSAssert([container conformsToProtocol:@protocol(RZNotificationViewManagerProtocol)], @"The container should conforms to `RZNotificationViewManagerProtocol`");
+    NSMutableArray *toReturn = container.rzNotifications;
+    if([container isKindOfClass:[UIViewController class]])
+    {
+        // Then we assume that there may be some notifications into a window with a context controller
+        NSArray *allNotifsForWindow = [self allNotificationsForContainer:[self notificationWindow]];
+        [toReturn addObjectsFromArray:allNotifsForWindow];
+    }
+
+    return [NSArray arrayWithArray:toReturn];
+}
+
+@end
+
+static BOOL RZOrientationMaskContainsOrientation(UIInterfaceOrientationMask mask, UIDeviceOrientation orientation) {
+    
+    UIInterfaceOrientation iOrientation = UIInterfaceOrientationPortrait;
+    
+    switch (orientation) {
+        case UIDeviceOrientationPortrait:
+            iOrientation = UIInterfaceOrientationPortrait;
+            break;
+        case UIDeviceOrientationLandscapeLeft:
+            iOrientation = UIInterfaceOrientationLandscapeLeft;
+            break;
+        case UIDeviceOrientationLandscapeRight:
+            iOrientation = UIInterfaceOrientationLandscapeRight;
+            break;
+        case UIDeviceOrientationPortraitUpsideDown:
+            iOrientation = UIInterfaceOrientationPortraitUpsideDown;
+            break;
+        default:
+            break;
+    }
+    
+    return (mask & (1 << iOrientation)) != 0;
+}
