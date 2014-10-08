@@ -1791,7 +1791,7 @@
 				<key>GCC_WARN_UNUSED_VARIABLE</key>
 				<string>YES</string>
 				<key>IPHONEOS_DEPLOYMENT_TARGET</key>
-				<string>6.0</string>
+				<string>7.0</string>
 				<key>ONLY_ACTIVE_ARCH</key>
 				<string>YES</string>
 				<key>SDKROOT</key>
@@ -1835,7 +1835,7 @@
 				<key>GCC_WARN_UNUSED_VARIABLE</key>
 				<string>YES</string>
 				<key>IPHONEOS_DEPLOYMENT_TARGET</key>
-				<string>6.0</string>
+				<string>7.0</string>
 				<key>OTHER_CFLAGS</key>
 				<string>-DNS_BLOCK_ASSERTIONS=1</string>
 				<key>SDKROOT</key>
@@ -1876,6 +1876,15 @@
 				<string>YES</string>
 				<key>GCC_PREFIX_HEADER</key>
 				<string>RZNotificationView/RZNotificationView-Prefix.pch</string>
+				<key>HEADER_SEARCH_PATHS</key>
+				<array>
+					<string>$(inherited)</string>
+					<string>"${PODS_ROOT}/Headers/Public"</string>
+					<string>"${PODS_ROOT}/Headers/Public/BButton"</string>
+					<string>"${PODS_ROOT}/Headers/Public/MOOMaskedIconView"</string>
+					<string>"${PODS_ROOT}/Headers/Public/PPHelpMe"</string>
+					<string>"${PODS_ROOT}/Headers/Public/TTTAttributedLabel"</string>
+				</array>
 				<key>INFOPLIST_FILE</key>
 				<string>RZNotificationView/RZNotificationView-Info.plist</string>
 				<key>IPHONEOS_DEPLOYMENT_TARGET</key>
@@ -1904,6 +1913,15 @@
 				<string>YES</string>
 				<key>GCC_PREFIX_HEADER</key>
 				<string>RZNotificationView/RZNotificationView-Prefix.pch</string>
+				<key>HEADER_SEARCH_PATHS</key>
+				<array>
+					<string>$(inherited)</string>
+					<string>"${PODS_ROOT}/Headers/Public"</string>
+					<string>"${PODS_ROOT}/Headers/Public/BButton"</string>
+					<string>"${PODS_ROOT}/Headers/Public/MOOMaskedIconView"</string>
+					<string>"${PODS_ROOT}/Headers/Public/PPHelpMe"</string>
+					<string>"${PODS_ROOT}/Headers/Public/TTTAttributedLabel"</string>
+				</array>
 				<key>INFOPLIST_FILE</key>
 				<string>RZNotificationView/RZNotificationView-Info.plist</string>
 				<key>IPHONEOS_DEPLOYMENT_TARGET</key>
