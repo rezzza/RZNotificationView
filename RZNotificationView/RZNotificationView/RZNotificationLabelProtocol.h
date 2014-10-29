@@ -34,4 +34,9 @@
  */
 - (void) removeFromSuperview;
 
+/*
+ * Set if the custom view should automaticaly handle user touch
+ */
+- (BOOL)shouldHandleTouch;
+
 @end
