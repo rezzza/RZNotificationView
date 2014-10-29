@@ -845,7 +845,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    RZSampleFormType type = [_formArray[indexPath.row] integerValue];
+    RZSampleFormType type = [_formArray[indexPath.row] intValue];
 
     switch (type) {
         case RZSampleFormShowButton:

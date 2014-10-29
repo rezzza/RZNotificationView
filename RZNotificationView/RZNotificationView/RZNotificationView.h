@@ -16,7 +16,7 @@
  @enum RZNotificationIcon
  The icon to display
  */
-typedef enum {
+typedef NS_ENUM(NSUInteger, RZNotificationIcon) {
     /** Facebook icon*/
     RZNotificationIconFacebook = 0,
     /** Gift icon*/
@@ -33,33 +33,33 @@ typedef enum {
     RZNotificationIconCustom,
     /** No icon*/
     RZNotificationIconNone
-}RZNotificationIcon;
+};
 
-typedef enum {
+typedef NS_ENUM(NSUInteger, RZNotificationAnchor) {
     /** Arrow anchor*/
     RZNotificationAnchorArrow = 0,
     /** Close anchor*/
     RZNotificationAnchorX,
     /** No anchor*/
     RZNotificationAnchorNone
-}RZNotificationAnchor;
+};
 
 /**
  @enum RZNotificationPosition
  The positon of the notification view
  */
-typedef enum {
+typedef NS_ENUM(NSUInteger, RZNotificationPosition) {
     /** The notification is displayed on top */
     RZNotificationPositionTop = 0,
     /** The notification is displayed on bottom */
     RZNotificationPositionBottom
-}RZNotificationPosition;
+};
 
 /**
  @enum RZNotificationColor
  The color of the notification view
  */
-typedef enum {
+typedef NS_ENUM(NSInteger, RZNotificationColor) {
     /** Yellow color*/
     RZNotificationColorYellow = 0,
     /** Red color*/
@@ -77,13 +77,13 @@ typedef enum {
     RZNotificationColorGrey __attribute__((deprecated)),
     /** Blue color*/
     RZNotificationColorBlue __attribute__((deprecated)) = RZNotificationColorLightBlue,
-}RZNotificationColor;
+};
 
 /**
  @enum RZNotificationContentColor
  The color of the notification view content
  */
-typedef enum {
+typedef NS_ENUM(NSUInteger, RZNotificationContentColor) {
     /** Text is white */
     RZNotificationContentColorLight = 0,
     /** Text is grey */
@@ -94,20 +94,20 @@ typedef enum {
     RZNotificationContentColorAutomaticLight __attribute__((deprecated)),
     /** Text is automatically darker */
     RZNotificationContentColorAutomaticDark __attribute__((deprecated)),
-}RZNotificationContentColor;
+};
 
 /**
  @enum RZNotificationContext
  The context for displaying the notification
  */
-typedef enum {
+typedef NS_ENUM(NSUInteger, RZNotificationContext) {
     /** Will take the controller displayed automatically */
     RZNotificationContextTopMostController,
     /** Will place the notification under the status bar */
     RZNotificationContextBelowStatusBar,
     /** Will place the notification above the status bar */
     RZNotificationContextAboveStatusBar
-}RZNotificationContext;
+};
 
 @class RZNotificationView;
 
