@@ -1,19 +1,19 @@
 PODS:
-  - BButton (2.0.0)
+  - BButton (4.0.1)
   - MOOMaskedIconView (0.1.0)
   - PPHelpMe (1.0.1)
-  - TTTAttributedLabel (1.9.5)
+  - TTTAttributedLabel (1.10.1)
 
 DEPENDENCIES:
-  - BButton (~> 2.0.0)
+  - BButton (~> 4.0.1)
   - MOOMaskedIconView (~> 0.1.0)
   - PPHelpMe (~> 1.0.0)
-  - TTTAttributedLabel (~> 1.9.5)
+  - TTTAttributedLabel (~> 1.10.1)
 
 SPEC CHECKSUMS:
-  BButton: be1adf93e929e7808462a8b5ef2c0e971d8ae895
+  BButton: 396a5e59648e3f687b7d8201b88ebdbad6e36b59
   MOOMaskedIconView: c04f6f19a7ece10f8852b22d422fdcdc4f76d652
   PPHelpMe: 9f4e89fa8256b070c78e1ad119d9c37d9b9bddd8
-  TTTAttributedLabel: 9f727215d63a358f92317a24c83c94c72de78e80
+  TTTAttributedLabel: 94bb04f1e005616002dd2cee0262a0082e533627
 
 COCOAPODS: 0.34.4
