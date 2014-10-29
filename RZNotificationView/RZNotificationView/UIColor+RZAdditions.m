@@ -24,7 +24,7 @@
 + (UIColor *)lighterColorForColor:(UIColor *)oldColor withRgbOffset:(CGFloat)value andAlpha:(CGFloat)alpha
 {
     CGFloat alphaOffset = 0.0;
-    int   totalComponents = CGColorGetNumberOfComponents(oldColor.CGColor);
+    NSUInteger totalComponents = CGColorGetNumberOfComponents(oldColor.CGColor);
     bool  isGreyscale     = totalComponents == 2 ? YES : NO;
     
     CGFloat* oldComponents = (CGFloat *)CGColorGetComponents(oldColor.CGColor);
@@ -38,7 +38,7 @@
 
 + (UIColor *)lighterColorForColor:(UIColor *)oldColor withRgbOffset:(CGFloat)value andAlphaOffset:(CGFloat)alpha
 {
-    int   totalComponents = CGColorGetNumberOfComponents(oldColor.CGColor);
+    NSUInteger totalComponents = CGColorGetNumberOfComponents(oldColor.CGColor);
     bool  isGreyscale     = totalComponents == 2 ? YES : NO;
     
     CGFloat* oldComponents = (CGFloat *)CGColorGetComponents(oldColor.CGColor);
@@ -79,8 +79,8 @@
 + (UIColor *)darkerColorForColor:(UIColor *)oldColor withRgbOffset:(CGFloat)value andAlpha:(CGFloat)alpha
 {
     CGFloat alphaOffset = 0.0;
-    int   totalComponents = CGColorGetNumberOfComponents(oldColor.CGColor);
-    bool  isGreyscale     = totalComponents == 2 ? YES : NO;
+    NSUInteger totalComponents = CGColorGetNumberOfComponents(oldColor.CGColor);
+    bool   isGreyscale     = totalComponents == 2 ? YES : NO;
     
     CGFloat* oldComponents = (CGFloat *)CGColorGetComponents(oldColor.CGColor);
     if (isGreyscale)
@@ -98,8 +98,8 @@
 
 + (UIColor *)darkerColorForColor:(UIColor *)oldColor withRgbOffset:(CGFloat)value andAlphaOffset:(CGFloat)alpha
 {
-    int   totalComponents = CGColorGetNumberOfComponents(oldColor.CGColor);
-    bool  isGreyscale     = totalComponents == 2 ? YES : NO;
+    NSUInteger totalComponents = CGColorGetNumberOfComponents(oldColor.CGColor);
+    bool   isGreyscale     = totalComponents == 2 ? YES : NO;
     
     CGFloat* oldComponents = (CGFloat *)CGColorGetComponents(oldColor.CGColor);
     CGFloat newComponents[4];

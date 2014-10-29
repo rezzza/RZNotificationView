@@ -19,10 +19,10 @@
 #import <PPHelpMe/PPHelpMe.h>
 
 #define RZUIColorFromRGB(rgbValue) [UIColor               \
-colorWithRed:((float)((rgbValue & 0xFF0000) >> 16))/255.0 \
-green:((float)((rgbValue & 0xFF00) >> 8))/255.0           \
-blue:((float)(rgbValue & 0xFF))/255.0                     \
-alpha:1.0]
+colorWithRed:((CGFloat)((rgbValue & 0xFF0000) >> 16))/255.0f \
+green:((CGFloat)((rgbValue & 0xFF00) >> 8))/255.0f           \
+blue:((CGFloat)(rgbValue & 0xFF))/255.0f                     \
+alpha:1.0f]
 
 #pragma mark -
 
@@ -130,10 +130,10 @@ static BOOL RZOrientationMaskContainsOrientation(UIInterfaceOrientationMask mask
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
         case RZNotificationContentColorAutomaticDark:
-            colorToReturn = [UIColor darkerColorForColor:c withRgbOffset:0.55];
+            colorToReturn = [UIColor darkerColorForColor:c withRgbOffset:0.55f];
             break;
         case RZNotificationContentColorAutomaticLight:
-            colorToReturn = [UIColor lighterColorForColor:c withRgbOffset:0.9];
+            colorToReturn = [UIColor lighterColorForColor:c withRgbOffset:0.9f];
             break;
 #pragma GCC diagnostic pop
             
@@ -173,20 +173,20 @@ static BOOL RZOrientationMaskContainsOrientation(UIInterfaceOrientationMask mask
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
         case RZNotificationContentColorAutomaticLight:
             iconTrait.gradientColors = [NSArray arrayWithObjects:
-                                        [UIColor lighterColorForColor:color withRgbOffset:0.9],
-                                        [UIColor lighterColorForColor:color withRgbOffset:0.8], nil];
-            iconTrait.shadowColor = [UIColor darkerColorForColor:color withRgbOffset:0.35 andAlphaOffset:0.6];
-            iconTrait.innerShadowColor = [UIColor lighterColorForColor:color withRgbOffset:0.88 andAlphaOffset:0.79];
+                                        [UIColor lighterColorForColor:color withRgbOffset:0.9f],
+                                        [UIColor lighterColorForColor:color withRgbOffset:0.8f], nil];
+            iconTrait.shadowColor = [UIColor darkerColorForColor:color withRgbOffset:0.35f andAlphaOffset:0.6f];
+            iconTrait.innerShadowColor = [UIColor lighterColorForColor:color withRgbOffset:0.88f andAlphaOffset:0.79f];
             iconTrait.shadowOffset = CGSizeMake(0.0f, -1.0f);
             iconTrait.innerShadowOffset = CGSizeMake(0.0f, -1.0f);
             iconTrait.clipsShadow = NO;
             break;
         case RZNotificationContentColorAutomaticDark:
             iconTrait.gradientColors = [NSArray arrayWithObjects:
-                                        [UIColor darkerColorForColor:color withRgbOffset:0.6],
-                                        [UIColor darkerColorForColor:color withRgbOffset:0.4], nil];
-            iconTrait.shadowColor = [UIColor lighterColorForColor:color withRgbOffset:0.4 andAlphaOffset:0.6];
-            iconTrait.innerShadowColor = [UIColor darkerColorForColor:color withRgbOffset:0.6 andAlphaOffset:0.8];
+                                        [UIColor darkerColorForColor:color withRgbOffset:0.6f],
+                                        [UIColor darkerColorForColor:color withRgbOffset:0.4f], nil];
+            iconTrait.shadowColor = [UIColor lighterColorForColor:color withRgbOffset:0.4f andAlphaOffset:0.6f];
+            iconTrait.innerShadowColor = [UIColor darkerColorForColor:color withRgbOffset:0.6f andAlphaOffset:0.8f];
             iconTrait.shadowOffset = CGSizeMake(0.0f, 1.0f);
             iconTrait.innerShadowOffset = CGSizeMake(0.0f, 1.0f);
             iconTrait.clipsShadow = NO;
@@ -245,11 +245,11 @@ static BOOL RZOrientationMaskContainsOrientation(UIInterfaceOrientationMask mask
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
             case RZNotificationColorGrey:
-                colorStart = [UIColor colorWithRed: 162.0/255.0 green: 156.0/255.0 blue: 142.0/255.0 alpha: 1];
+                colorStart = [UIColor colorWithRed: 162.0f/255.0f green: 156.0f/255.0f blue: 142.0f/255.0f alpha: 1.0f];
                 break;
 #pragma GCC diagnostic pop
             default:
-                colorStart = [UIColor colorWithRed: 162.0/255.0 green: 156.0/255.0 blue: 142.0/255.0 alpha: 1];
+                colorStart = [UIColor colorWithRed: 162.0f/255.0f green: 156.0f/255.0f blue: 142.0f/255.0f alpha: 1.0f];
                 break;
         }
     }
@@ -303,7 +303,7 @@ static BOOL RZOrientationMaskContainsOrientation(UIInterfaceOrientationMask mask
     
     //// Subframes
     _iconView.frame = CGRectMake(0.0f,
-                                 CGRectGetMinY(notificationFrame) + _topOffset + floor((CGRectGetHeight(notificationFrame) - kIconHeight) * 0.5),
+                                 CGRectGetMinY(notificationFrame) + _topOffset + (CGFloat)floor((CGRectGetHeight(notificationFrame) - kIconHeight) * 0.5f),
                                  kIconWidth,
                                  kIconHeight);
     _iconView.center = CGPointMake(kDefaultOffsetX + kIconWidth * 0.5f, _iconView.center.y);
@@ -319,7 +319,7 @@ static BOOL RZOrientationMaskContainsOrientation(UIInterfaceOrientationMask mask
     _anchorView.image = [self image:[self getImageForAnchor:_anchor] withColor:colorStart];
     [_anchorView setSize:_anchorView.image.size];
     
-    _anchorView.frame = CGRectMake(0.0f, CGRectGetMinY(notificationFrame) + _topOffset + floor((CGRectGetHeight(notificationFrame) - kIconHeight) * 0.5), kIconWidth, kIconHeight);
+    _anchorView.frame = CGRectMake(0.0f, CGRectGetMinY(notificationFrame) + _topOffset + (CGFloat)floor((CGRectGetHeight(notificationFrame) - kIconHeight) * 0.5f), kIconWidth, kIconHeight);
     _anchorView.center = CGPointMake(CGRectGetMaxX(notificationFrame) - (kDefaultOffsetX + kIconWidth * 0.5f), _anchorView.center.y);
 
     if (_textColor != RZNotificationContentColorManual) {
@@ -1013,7 +1013,7 @@ static BOOL RZOrientationMaskContainsOrientation(UIInterfaceOrientationMask mask
         _topOffset = 0.0f;
     }
     
-    frame.size.height = MAX(kMinHeight , height + 2.0*kDefaultContentMarginHeight + _topOffset);
+    frame.size.height = MAX(kMinHeight , height + 2.0f*kDefaultContentMarginHeight + _topOffset);
     self.frame = frame;
     [self setNeedsDisplay];
 }
@@ -1092,7 +1092,7 @@ static BOOL RZOrientationMaskContainsOrientation(UIInterfaceOrientationMask mask
         if (highlighted) {
             if (!_highlightedView) {
                 _highlightedView = [[UIView alloc] init];
-                [_highlightedView setBackgroundColor:[UIColor colorWithWhite:0.3 alpha:0.3]];
+                [_highlightedView setBackgroundColor:[UIColor colorWithWhite:0.3f alpha:0.3f]];
             }
             _highlightedView.frame = self.bounds;
             [self addSubview:_highlightedView];

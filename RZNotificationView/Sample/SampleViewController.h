@@ -12,13 +12,13 @@
 #import "WEPopoverController.h"
 #import "ColorViewController.h"
 
-typedef enum {
+typedef NS_ENUM(NSInteger, SampleMessage) {
     SampleMessageShort = 0,
     SampleMessageMedium,
     SampleMessageLong
-}SampleMessage;
+};
 
-typedef enum
+typedef NS_ENUM(NSInteger, RZSampleFormType)
 {
     RZSampleFormShowButton,
     RZSampleFormDelay,
@@ -37,7 +37,7 @@ typedef enum
     RZSampleFormMaxLength,
     RZSampleFormIcon,
     RZSampleFormContext
-}RZSampleFormType;
+};
 
 @class PrettyGridTableViewCell;
 
