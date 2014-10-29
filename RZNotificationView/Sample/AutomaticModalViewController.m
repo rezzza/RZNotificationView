@@ -31,7 +31,7 @@
         self.navigationController.navigationBar.tintColor = [UIColor colorWithRed:0.6 green:0.0 blue:0.0 alpha:1];
     }
     else
-        self.title = [NSString stringWithFormat:@"Modal Level %d", self.navigationController.viewControllers.count+1];
+        self.title = [NSString stringWithFormat:@"Modal Level %lu", self.navigationController.viewControllers.count+1];
     
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Cancel"
                                                                              style:UIBarButtonItemStylePlain

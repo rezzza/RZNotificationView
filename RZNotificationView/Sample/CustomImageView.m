@@ -28,4 +28,8 @@
     return self.frame.size.height;
 }
 
+- (BOOL) shouldHandleTouch {
+    return YES;
+}
+
 @end

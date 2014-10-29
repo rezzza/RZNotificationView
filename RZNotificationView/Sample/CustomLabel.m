@@ -16,7 +16,11 @@
     frame.size.width = width;
     self.frame = frame;
     [self sizeToFit];
-    return self.frame.size.height + 5.0;
+    return self.frame.size.height + 5.0f;
+}
+
+- (BOOL) shouldHandleTouch {
+    return YES;
 }
 
 @end

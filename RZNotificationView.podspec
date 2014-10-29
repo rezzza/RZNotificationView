@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name         = "RZNotificationView"
-  s.version      = "1.1.2"
+  s.version      = "1.1.3"
   s.summary      = "Notifications done right"
   s.description  = "This notification class will allow you to show notification within a context without any effort. You can also just ask to display the notification on controller displayed, all automatically!."
   s.homepage     = "https://github.com/rezzza/RZNotificationView"
