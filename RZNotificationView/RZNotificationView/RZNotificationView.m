@@ -502,6 +502,12 @@ static BOOL RZOrientationMaskContainsOrientation(UIInterfaceOrientationMask mask
         [_customView removeFromSuperview];
         _customView = customView;
         [self addSubview:(UIView*)_customView];
+        
+        if ([_customView shouldHandleTouch] && [_customView isKindOfClass:[UIControl class]]) {
+            [((UIControl *)_customView) addTarget:self
+                            action:@selector(handleTouch)
+                  forControlEvents:UIControlEventTouchUpInside];
+        }
     }
     else{
         [_customView removeFromSuperview];
