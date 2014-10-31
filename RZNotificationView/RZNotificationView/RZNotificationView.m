@@ -648,9 +648,6 @@ static BOOL RZOrientationMaskContainsOrientation(UIInterfaceOrientationMask mask
             [self addSubview:_anchorView];
         }
         
-        // Initialize the text label
-        [self addTextLabelIfNeeded];
-        
         // Observe device orientation changes
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(deviceOrientationDidChange:) name:UIDeviceOrientationDidChangeNotification object:nil];
         
