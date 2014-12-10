@@ -360,7 +360,8 @@ static BOOL RZOrientationMaskContainsOrientation(UIInterfaceOrientationMask mask
         default:
             break;
     }
-    return [UIImage imageNamed:imageName];
+    
+    return imageName ? [UIImage imageNamed:imageName] : nil;
 }
 
 - (UIImage*) getImageForAnchor:(RZNotificationAnchor)anchor
