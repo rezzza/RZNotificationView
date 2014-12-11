@@ -85,7 +85,7 @@ static BOOL RZOrientationMaskContainsOrientation(UIInterfaceOrientationMask mask
     
     CGFloat _topOffset; // For below status bar
 }
-@property (nonatomic, strong) id <RZNotificationViewManagerProtocol> container;
+@property (nonatomic, weak) id <RZNotificationViewManagerProtocol> container;
 @property (nonatomic, strong) UIViewController *contextController;
 @property (nonatomic, assign) RZNotificationContext context;
 @end
