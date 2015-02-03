@@ -720,6 +720,24 @@ static BOOL RZOrientationMaskContainsOrientation(UIInterfaceOrientationMask mask
     return self;
 }
 
+- (id) initWithContext:(RZNotificationContext)context icon:(RZNotificationIcon)icon anchor:(RZNotificationAnchor)anchor position:(RZNotificationPosition)position color:(RZNotificationColor)color assetColor:(RZNotificationContentColor)assetColor textColor:(RZNotificationContentColor)textColor duration:(NSTimeInterval)duration completion:(RZNotificationCompletion)completionBlock {
+    
+    id<RZNotificationViewManagerProtocol> container = [[self class] containerForContext:context];
+    self = [self initWithContainer:container
+                              icon:icon
+                            anchor:anchor
+                          position:position
+                             color:color
+                        assetColor:assetColor
+                         textColor:textColor
+                          duration:duration
+                        completion:completionBlock];
+    if (self) {
+        self.context = context;
+    }
+    return self;
+}
+
 // Freely adapted from MBProgressHUD
 + (RZNotificationView*) showNotificationWithMessage:(NSString*)message icon:(RZNotificationIcon)icon anchor:(RZNotificationAnchor)anchor position:(RZNotificationPosition)position color:(RZNotificationColor)color assetColor:(RZNotificationContentColor)assetColor  textColor:(RZNotificationContentColor)textColor addedToController:(UIViewController*)controller withCompletion:(RZNotificationCompletion)completionBlock
 {
@@ -768,16 +786,15 @@ static BOOL RZOrientationMaskContainsOrientation(UIInterfaceOrientationMask mask
 
 + (RZNotificationView*) showNotificationOn:(RZNotificationContext)context message:(NSString*)message icon:(RZNotificationIcon)icon anchor:(RZNotificationAnchor)anchor position:(RZNotificationPosition)position color:(RZNotificationColor)color assetColor:(RZNotificationContentColor)assetColor textColor:(RZNotificationContentColor)textColor duration:(NSTimeInterval)duration withCompletion:(RZNotificationCompletion)completionBlock
 {
-    RZNotificationView *notification = [[RZNotificationView alloc] initWithContainer:[self containerForContext:context]
-                                                                                icon:icon
-                                                                              anchor:anchor
-                                                                            position:position
-                                                                               color:color
-                                                                          assetColor:assetColor
-                                                                           textColor:textColor
-                                                                            duration:duration
-                                                                          completion:completionBlock];
-    [notification setContext:context];
+    RZNotificationView *notification = [[RZNotificationView alloc] initWithContext:context
+                                                                              icon:icon
+                                                                            anchor:anchor
+                                                                          position:position
+                                                                             color:color
+                                                                        assetColor:assetColor
+                                                                         textColor:textColor
+                                                                          duration:duration
+                                                                        completion:completionBlock];
     [notification setMessage:message];
     [notification show];
     return notification;
