@@ -297,6 +297,22 @@ typedef void (^RZNotificationCompletion)(BOOL touched);
  */
 - (id) initWithController:(UIViewController*)controller icon:(RZNotificationIcon)icon anchor:(RZNotificationAnchor)anchor position:(RZNotificationPosition)position color:(RZNotificationColor)color assetColor:(RZNotificationContentColor)assetColor textColor:(RZNotificationContentColor)textColor duration:(NSTimeInterval)delay completion:(RZNotificationCompletion)completionBlock;
 
+/**
+ Init a notification view for a specific context without displaying it
+ You should use this method when you want to use a customView instead of the textLabel
+ @param context The context to display a notification
+ @param icon The icon
+ @param anchor The anchor
+ @param position The position
+ @param color The notification color
+ @param assetColor The asset color
+ @param textColor The text color
+ @param delay The delay before hiding the notification view
+ @param completionBlock The completionBlock to execute
+ return the notification view initialized
+ */
+- (id) initWithContext:(RZNotificationContext)context icon:(RZNotificationIcon)icon anchor:(RZNotificationAnchor)anchor position:(RZNotificationPosition)position color:(RZNotificationColor)color assetColor:(RZNotificationContentColor)assetColor textColor:(RZNotificationContentColor)textColor duration:(NSTimeInterval)delay completion:(RZNotificationCompletion)completionBlock;
+
 /**---------------------------------------------------------------------------------------
  * @name Other methods
  *  ---------------------------------------------------------------------------------------
