@@ -84,6 +84,7 @@ static BOOL RZOrientationMaskContainsOrientation(UIInterfaceOrientationMask mask
     UIView *_highlightedView;
     
     CGFloat _topOffset; // For below status bar
+    CGFloat _safeTopInset, _safeBottomInset;
 }
 @property (nonatomic, weak) id <RZNotificationViewManagerProtocol> container;
 @property (nonatomic, strong) UIViewController *contextController;
@@ -303,7 +304,7 @@ static BOOL RZOrientationMaskContainsOrientation(UIInterfaceOrientationMask mask
     
     //// Subframes
     _iconView.frame = CGRectMake(0.0f,
-                                 CGRectGetMinY(notificationFrame) + _topOffset + (CGFloat)floor((CGRectGetHeight(notificationFrame) - kIconHeight) * 0.5f),
+                                 CGRectGetMinY(notificationFrame) + _topOffset + (CGFloat)floor((CGRectGetHeight(notificationFrame) - kIconHeight - _safeBottomInset + _safeTopInset) * 0.5f),
                                  kIconWidth,
                                  kIconHeight);
     _iconView.center = CGPointMake(kDefaultOffsetX + kIconWidth * 0.5f, _iconView.center.y);
@@ -311,7 +312,7 @@ static BOOL RZOrientationMaskContainsOrientation(UIInterfaceOrientationMask mask
     CGRect contentFrame = CGRectMake(CGRectGetMinX(notificationFrame) + [self getOffsetXLeft],
                                      CGRectGetMinY(notificationFrame) + kDefaultContentMarginHeight + _topOffset,
                                      CGRectGetWidth(notificationFrame) - [self getOffsetXLeft] - [self getOffsetXRight],
-                                     CGRectGetHeight(notificationFrame) - 2*kDefaultContentMarginHeight);
+                                     CGRectGetHeight(notificationFrame) - 2*kDefaultContentMarginHeight - _safeBottomInset + _safeTopInset);
     _textLabel.frame = contentFrame;
     [_customView setFrame:contentFrame];
 
@@ -319,7 +320,7 @@ static BOOL RZOrientationMaskContainsOrientation(UIInterfaceOrientationMask mask
     _anchorView.image = [self image:[self getImageForAnchor:_anchor] withColor:colorStart];
     [_anchorView setSize:_anchorView.image.size];
     
-    _anchorView.frame = CGRectMake(0.0f, CGRectGetMinY(notificationFrame) + _topOffset + (CGFloat)floor((CGRectGetHeight(notificationFrame) - kIconHeight) * 0.5f), kIconWidth, kIconHeight);
+    _anchorView.frame = CGRectMake(0.0f, CGRectGetMinY(notificationFrame) + _topOffset + (CGFloat)floor((CGRectGetHeight(notificationFrame) - kIconHeight - _safeBottomInset + _safeTopInset) * 0.5f), kIconWidth, kIconHeight);
     _anchorView.center = CGPointMake(CGRectGetMaxX(notificationFrame) - (kDefaultOffsetX + kIconWidth * 0.5f), _anchorView.center.y);
 
     if (_textColor != RZNotificationContentColorManual) {
@@ -860,6 +861,9 @@ static BOOL RZOrientationMaskContainsOrientation(UIInterfaceOrientationMask mask
                 finalOrigin = [c.topLayoutGuide length];
             } else {
                 finalOrigin = CGRectGetHeight(c.view.frame) - [c.bottomLayoutGuide length];
+                if (@available(iOS 11.0, *)) {
+                    finalOrigin -= c.view.safeAreaInsets.bottom;
+                }
             }
         }
     }
@@ -871,6 +875,10 @@ static BOOL RZOrientationMaskContainsOrientation(UIInterfaceOrientationMask mask
             finalOrigin = 0.0f;
         } else {
             finalOrigin = CGRectGetHeight(v.frame);
+            
+            if (@available(iOS 11.0, *)) {
+                finalOrigin -= v.safeAreaInsets.bottom;
+            }
         }
     }
     
@@ -893,6 +901,10 @@ static BOOL RZOrientationMaskContainsOrientation(UIInterfaceOrientationMask mask
     }
     else {
         yOrigin = CGRectGetHeight(view.frame);
+        
+        if (@available(iOS 11.0, *)) {
+            yOrigin -= view.safeAreaInsets.bottom;
+        }
     }
     
     [self setYOrigin:yOrigin];
@@ -1028,7 +1040,29 @@ static BOOL RZOrientationMaskContainsOrientation(UIInterfaceOrientationMask mask
         _topOffset = 0.0f;
     }
     
-    frame.size.height = MAX(kMinHeight , height + 2.0f*kDefaultContentMarginHeight + _topOffset);
+    UIView *view = nil;
+    if ([_container isKindOfClass:[UIViewController class]]) {
+        view = [(UIViewController*)_container view];
+    }
+    else {
+        view = (UIView*)_container;
+    }
+    
+    if (_position == RZNotificationPositionTop) {
+        if (_context != RZNotificationContextTopMostController) {
+            _safeTopInset = view.safeAreaInsets.top;
+            if (self.context == RZNotificationContextBelowStatusBar) {
+                _safeTopInset -= PPStatusBarHeight();
+            }
+        }
+    }
+    else {
+        if (@available(iOS 11.0, *)) {
+            _safeBottomInset = view.safeAreaInsets.bottom;
+        }
+    }
+    
+    frame.size.height = MAX(kMinHeight , height + 2.0f*kDefaultContentMarginHeight + _topOffset + _safeBottomInset + _safeTopInset);
     self.frame = frame;
     [self setNeedsDisplay];
 }
