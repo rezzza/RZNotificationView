@@ -378,7 +378,7 @@ static BOOL RZOrientationMaskContainsOrientation(UIInterfaceOrientationMask mask
         default:
             break;
     }
-    return [UIImage imageNamed:imageName];
+    return imageName ? [UIImage imageNamed:imageName] : nil;
 }
 
 - (void) setCustomIcon:(NSString *)customIcon
@@ -1050,7 +1050,9 @@ static BOOL RZOrientationMaskContainsOrientation(UIInterfaceOrientationMask mask
     
     if (_position == RZNotificationPositionTop) {
         if (_context != RZNotificationContextTopMostController) {
-            _safeTopInset = view.safeAreaInsets.top;
+            if (@available(iOS 11.0, *)) {
+                _safeTopInset = view.safeAreaInsets.top;
+            }
             if (self.context == RZNotificationContextBelowStatusBar) {
                 _safeTopInset -= PPStatusBarHeight();
             }
